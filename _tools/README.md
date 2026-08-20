@@ -53,6 +53,39 @@ yönlendirme kartı çıkar. Bu alan yalnızca spor branşı kategorisinde
 (`SPORT_PROJECT_CATEGORY_ID`) görünür, diğer projeler etkilenmez.
 Metinler: `app/Language/{tr,en}/WebProjects.php` -> `academy`.
 
+## Görseller: WebP
+
+Yönetim panelinden yüklenen her görsel için otomatik olarak `.webp` sürümü
+üretilir (`Backend/BaseController::uploadSingleFile`). Site tarafı görseli
+gönderirken önce `.webp` arar, yoksa orijinali kullanır
+(`Frontend/BaseController::imageControl`).
+
+Orijinal dosyalar **silinmez**; böylece dönüşüm başarısız olsa bile hiçbir
+görsel kırılmaz.
+
+### Mevcut görselleri dönüştürme
+
+```bash
+php _tools/convert_webp.php                      # rapor
+php _tools/convert_webp.php --apply              # tumunu donustur
+php _tools/convert_webp.php --apply --limit=200  # parca parca
+php _tools/convert_webp.php --apply --dir=uploads/news
+```
+
+Ölçülen kazanç: ortalama **%65 boyut azalması**. Animasyonlu GIF'ler
+dönüştürülmez.
+
+Kalite ayarı: `app/Config/Constants.php` -> `IMAGE_UPLOAD_QUALITY`
+
+## Yönetim Paneli Menüsü
+
+Kontrolcüsü ve verisi hazır olduğu halde menüde görünmeyen sayfaları ekler:
+
+```bash
+php _tools/fix_admin_menu.php          # rapor
+php _tools/fix_admin_menu.php --apply  # menuye ekle
+```
+
 ## Mobil API (`/api/mobile`)
 
 Ana site yapısından uyarlanan JSON servisi: 20 uç, Bearer token korumalı.

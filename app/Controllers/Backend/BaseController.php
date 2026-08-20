@@ -171,9 +171,11 @@ class BaseController extends Controller {
 				$this->imageCrop($path.'/'.$name, $width, $height);
 			}
 
-			// Webp
-			if (fileExtension($path.'/'.$name) !== 'gif') { // not gif
-				//$this->createImageWebp($path, $name);
+			// Webp: yuklenen her gorsel icin .webp surumu uretilir.
+			// Site tarafi once .webp arar (bkz. imageControl), boylece
+			// ziyaretciye daha kucuk dosya gonderilir.
+			if (fileExtension($path.'/'.$name) !== 'gif') { // animasyonlu gif haric
+				$this->createImageWebp($path, $name);
 			}
 
 		} catch (CodeIgniter\Images\ImageException $e) {
@@ -199,15 +201,29 @@ class BaseController extends Controller {
 	 * @throws ConversionFailedException
    */
 	public function createImageWebp(string $path, string $name) {
-		if (fileExtension($path.'/'.$name) !== 'gif') { // not gif
-			$webp_image = $path.'/'.pathinfo($name, PATHINFO_FILENAME).'.webp';
-			if (!file_exists($webp_image)) {
-				WebPConvert::convert($path.'/'.$name, $webp_image, [
-					'quality' => 'auto',
-					'max-quality' => IMAGE_UPLOAD_QUALITY,
-					'converters' => ['cwebp', 'gd', 'imagick', 'wpc', 'ewww']
-				]);
-			}
+		if (fileExtension($path.'/'.$name) === 'gif') { // animasyonlu gif donusturulmez
+			return;
+		}
+
+		$webp_image = $path.'/'.pathinfo($name, PATHINFO_FILENAME).'.webp';
+
+		if (file_exists($webp_image)) {
+			return;
+		}
+
+		// Donusum basarisiz olursa yukleme bozulmamali: orijinal dosya
+		// zaten kaydedildi, site .webp yoksa ona duser.
+		try {
+			WebPConvert::convert($path.'/'.$name, $webp_image, [
+				'quality' => 'auto',
+				'max-quality' => IMAGE_UPLOAD_QUALITY,
+				'converters' => ['cwebp', 'gd', 'imagick', 'wpc', 'ewww']
+			]);
+		} catch (\Throwable $e) {
+			log_message('error', 'WebP donusumu basarisiz: {file} - {msg}', [
+				'file' => $path.'/'.$name,
+				'msg'  => $e->getMessage(),
+			]);
 		}
 	}
 }
