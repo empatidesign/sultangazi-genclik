@@ -44,7 +44,6 @@ class Index extends BaseController
 				]
 			],
 			'list' => [
-				'events' => $this->events(),
 				// Etkinlikler: Nexora genel katalog servisi
 				'nexora_events' => $this->nexoraEvents(),
 				'banner' => [
@@ -334,43 +333,6 @@ class Index extends BaseController
 					'project_slug' => $row->project_slug,
 					'image' => [
 						'base' => $this->imageControl(FILE_PATH_PROJECT_MEDIUM, $row->project_image)
-					]
-				];
-			}
-		}
-
-		return $array;
-	}
-
-	public function events()
-	{
-		$array = [];
-		$sql = $this->IndexModel->eventsModel($this->defaultLangId);
-		if (isNotNull($sql)) {
-			foreach ($sql as $row) {
-
-				// Date
-				$day = NULL;
-				$month = NULL;
-				if ($row->event_date != '0000-00-00') {
-					$date = explode('-', $row->event_date);
-					$day = $date[2];
-					$month = monthName($date[1]);
-				}
-
-				$array[] = [
-					'event_id' => $row->event_id,
-					'event_name' => $row->event_name,
-					'event_date' => [
-						'day' => $day,
-						'month' => $month
-					],
-					'event_hour' => $row->event_hour != '00:00:00' ? deleteSeconds($row->event_hour) : NULL,
-					'event_location' => $row->event_location,
-					'event_category_name' => $row->event_category_name,
-					'event_slug' => $row->event_slug,
-					'image' => [
-						'base' => $this->sultanImageControl(FILE_PATH_EVENTS_THUMB, $row->event_image)
 					]
 				];
 			}
