@@ -112,14 +112,24 @@ foreach ($beklenen as $uc => $alanlar) {
     $gorsel = $ilk['primaryImageUrl'] ?? NULL;
     if ($gorsel) {
         $tam = str_starts_with($gorsel, 'http') ? $gorsel : $base . '/' . ltrim($gorsel, '/');
-        $c   = curl_init($tam);
-        curl_setopt_array($c, [CURLOPT_NOBODY => TRUE, CURLOPT_TIMEOUT => 10, CURLOPT_FOLLOWLOCATION => TRUE]);
+        // HEAD yerine kismi GET: bazi CDN'ler HEAD'e 405 doner ama gorsel calisir.
+        $c = curl_init($tam);
+        curl_setopt_array($c, [
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_FOLLOWLOCATION => TRUE,
+            CURLOPT_RANGE          => '0-2047',
+        ]);
         curl_exec($c);
         $gkod = (int) curl_getinfo($c, CURLINFO_HTTP_CODE);
+        $gtip = (string) curl_getinfo($c, CURLINFO_CONTENT_TYPE);
         curl_close($c);
 
-        echo "  Gorsel  : $gorsel -> HTTP $gkod" . ($gkod === 200 ? '' : '  (SORUN)') . "\n";
-        if ($gkod !== 200) {
+        // 200 (tam) veya 206 (kismi icerik) kabul edilir.
+        $gorselTamam = in_array($gkod, [200, 206], TRUE) && str_starts_with($gtip, 'image/');
+
+        echo "  Gorsel  : $gorsel -> HTTP $gkod " . ($gtip ?: '-') . ($gorselTamam ? '' : '  (SORUN)') . "\n";
+        if (!$gorselTamam) {
             $hataSayisi++;
         }
     } else {
