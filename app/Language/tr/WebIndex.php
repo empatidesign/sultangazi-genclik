@@ -37,4 +37,40 @@ return [
       ],
     ],
   ],
+
+  /**
+   * Spor branşları alanı (anasayfa).
+   * Detay bağlantıları Spor Akademisi sitesine gider.
+   */
+  'sport' => [
+    'title'       => 'SPOR',
+    'title_bold'  => 'BRANŞLARIMIZ',
+    'description' => 'Sultangazi Belediyesi olarak 16 branşta, alanında uzman antrenörler eşliğinde ücretsiz spor eğitimi veriyoruz. Tüm branşların ayrıntılı programı, antrenman saatleri ve başvuru koşulları Sultangazi Spor Akademisi\'nde yer alıyor.',
+    'detail'      => 'Akademide İncele',
+    'all'         => 'TÜM BRANŞLAR',
+  ],
+
+  /**
+   * Hizmet tesisleri alanı (anasayfa).
+   * Veriler Spor Akademisi servisinden gelir.
+   */
+  'facilities' => [
+    'title'       => 'HİZMET',
+    'title_bold'  => 'TESİSLERİMİZ',
+    'description' => 'Olimpik havuzdan atletizm pistine, dövüş sanatları salonundan gençlik merkezlerine kadar tüm tesislerimiz sporcularımızın hizmetinde.',
+    'capacity'    => 'Kapasite',
+    'detail'      => 'Tesisi İncele',
+    'all'         => 'TÜM TESİSLER',
+  ],
+
+  /**
+   * Spor Akademisi etkinlik / kurs programı (anasayfa).
+   */
+  'academy_events' => [
+    'title'       => 'AKADEMİ',
+    'title_bold'  => 'PROGRAMI',
+    'description' => 'Sultangazi Spor Akademisi bünyesinde devam eden kurs ve antrenman programları.',
+    'age_group'   => 'Yaş Grubu',
+    'all'         => 'TÜM PROGRAMLAR',
+  ],
 ];

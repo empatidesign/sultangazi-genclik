@@ -90,6 +90,23 @@ defined('APP_BASE_URL') OR define('APP_BASE_URL', ($_SERVER['SERVER_PORT'] == 44
 defined('SULTANGAZI_URL') OR define('SULTANGAZI_URL', 'https://www.sultangazi.bel.tr/');
 
 /*
+ * Spor Akademisi (Nexorada) Servisi
+ * Branş, tesis, etkinlik ve haber verileri buradan okunur.
+ * İstemci: app/Libraries/SportAcademyApi.php
+ */
+const SPORT_ACADEMY_URL = 'https://sporakademi.sultangazi.bel.tr';
+const SPORT_ACADEMY_API_PATH = '/api/public/v1';
+const SPORT_ACADEMY_PATH_BRANCHES = 'branslar';
+const SPORT_ACADEMY_PATH_FACILITIES = 'tesisler';
+
+// Başarılı yanıt önbellek süresi (saniye)
+const SPORT_ACADEMY_CACHE_TTL = 1800;
+// Servis erişilemediğinde kısa bekleme; düzelince site hızla toparlansın
+const SPORT_ACADEMY_CACHE_TTL_ERROR = 120;
+// İstek zaman aşımı (saniye)
+const SPORT_ACADEMY_TIMEOUT = 3;
+
+/*
  * Eğitim Kurumları
  * Anasayfadaki "Eğitim Kurumlarımız" alanında kullanılır.
  * Metinler app/Language/{tr,en}/WebIndex.php -> education.items altındadır.

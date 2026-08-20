@@ -6,17 +6,20 @@ use CodeIgniter\Controller;
 
 use App\Models\Frontend\IndexModel;
 use App\Libraries\PopupModule;
+use App\Libraries\SportAcademyApi;
 
 class Index extends BaseController
 {
 
 	protected $IndexModel;
 	protected $PopupModule;
+	protected $sportAcademy;
 
 	public function __construct()
 	{
 		$this->IndexModel = new IndexModel();
 		$this->PopupModule = new PopupModule();
+		$this->sportAcademy = new SportAcademyApi();
 	}
 
 	public function index()
@@ -39,6 +42,8 @@ class Index extends BaseController
 			],
 			'list' => [
 				'events' => $this->events(),
+				// Spor Akademisi etkinlik/kurs programı
+				'academy_events' => $this->academyEvents(),
 				'banner' => [
 					'main' => $this->mainBanner(),
 					'mini' => $this->miniBanner()
@@ -49,7 +54,7 @@ class Index extends BaseController
 					'categories' => $this->IndexModel->projectCategoriesListModel($this->defaultLangId),
 					'contents' => $projects,
 					'main_project' => $main_project,
-					'sport' => $this->IndexModel->sportProjectsModel($this->defaultLangId),
+					'sport' => $this->sportProjects(),
 				],
 				'news' => [
 					'all' => array_merge($this->newsSlider(), []),
@@ -72,7 +77,9 @@ class Index extends BaseController
 					'video_gallery' => $this->videoGallery()
 				],
 				// Eğitim kurumları: tanımlar Constants.php, metinler WebIndex dil dosyasında
-				'education' => $this->educationInstitutions()
+				'education' => $this->educationInstitutions(),
+				// Spor Akademisi (Nexorada) servisinden gelen tesisler
+				'facilities' => $this->sportFacilities()
 			],
 			'PARAMETER' => [
 				'WEB_URL_ANNOUNCEMENTS' => WEB_URL_ANNOUNCEMENTS,
@@ -89,6 +96,87 @@ class Index extends BaseController
 				'popup' => $this->PopupModule->index()
 			]
 		]);
+	}
+
+	/**
+	 * Spor branşları.
+	 * Yerel proje kayıtlarına Spor Akademisi'ndeki detay adresi eklenir.
+	 * Akademide karşılığı olmayan branşlar branş listesine yönlendirilir.
+	 */
+	private function sportProjects(): array
+	{
+		$list = $this->IndexModel->sportProjectsModel($this->defaultLangId);
+
+		if (!is_array($list)) {
+			return [];
+		}
+
+		foreach ($list as $row) {
+			$row->academy_url = $this->sportAcademy->branchUrl($row->project_slug ?? NULL);
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Spor Akademisi etkinlik / kurs programı.
+	 * Servis erişilemezse boş dizi döner, alan gizlenir.
+	 */
+	private function academyEvents(): array
+	{
+		$list = [];
+
+		foreach ($this->sportAcademy->events() as $row) {
+			$list[] = [
+				'title'       => $row['title'] ?? NULL,
+				'branch'      => $row['branch'] ?? NULL,
+				'age_group'   => $row['ageGroup'] ?? NULL,
+				'schedule'    => $row['schedule'] ?? NULL,
+				'location'    => $row['location'] ?? NULL,
+				'description' => $row['description'] ?? NULL,
+				'image'       => $this->sportAcademy->imageUrl($row['image'] ?? NULL),
+				'url'         => $this->sportAcademy->branchUrl($this->branchSlugFromName($row['branch'] ?? NULL)),
+			];
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Spor Akademisi hizmet tesisleri.
+	 */
+	private function sportFacilities(): array
+	{
+		$list = [];
+
+		foreach ($this->sportAcademy->facilities() as $row) {
+			$list[] = [
+				'name'        => $row['name'] ?? NULL,
+				'location'    => $row['location'] ?? NULL,
+				'capacity'    => $row['capacity'] ?? NULL,
+				'description' => $row['desc'] ?? NULL,
+				'features'    => array_slice($row['features'] ?? [], 0, 4),
+				'sports'      => array_slice($row['sports'] ?? [], 0, 4),
+				'image'       => $this->sportAcademy->imageUrl($row['image'] ?? NULL),
+				'url'         => $this->sportAcademy->facilityUrl($row['slug'] ?? NULL),
+			];
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Branş adından servisteki slug'ı bulur (ör. "Voleybol" -> "voleybol").
+	 */
+	private function branchSlugFromName(?string $name): ?string
+	{
+		if (!isNotNull($name)) {
+			return NULL;
+		}
+
+		$aday = slug($name);
+
+		return in_array($aday, $this->sportAcademy->branchSlugs(), TRUE) ? $aday : NULL;
 	}
 
 	/**

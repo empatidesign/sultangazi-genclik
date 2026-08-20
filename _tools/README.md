@@ -32,3 +32,32 @@ npx @tailwindcss/cli@4.1.11 -i assets/css/style.css -o assets/css/output.css
 | Site adresi, logo, renk teması | `app/Config/Constants.php` (`EDUCATION_INSTITUTIONS`) |
 | Logo dosyaları | `assets/img/education/` |
 | Tasarım | `app/Views/Frontend/index.html.twig` (`Education Institutions`) |
+
+## Spor Akademisi (Nexorada) Servisi
+
+Spor branşları, hizmet tesisleri ve akademi programı `sporakademi.sultangazi.bel.tr`
+üzerindeki genel API'den okunur.
+
+| Konu | Yer |
+| --- | --- |
+| İstemci | `app/Libraries/SportAcademyApi.php` |
+| Adres, önbellek süresi, zaman aşımı | `app/Config/Constants.php` (`SPORT_ACADEMY_*`) |
+| Başlık ve açıklama metinleri | `app/Language/{tr,en}/WebIndex.php` |
+| Tasarım | `app/Views/Frontend/index.html.twig` |
+
+Kullanılan uç noktalar (`/api/public/v1`): `branches`, `facilities`, `courses`, `news`, `achievements`.
+
+Davranış:
+- Yanıtlar 30 dakika önbelleklenir (`SPORT_ACADEMY_CACHE_TTL`).
+- Servis erişilemezse ilgili alanlar gizlenir, site çalışmaya devam eder.
+- Bağlantı kurulamazsa devre kesici devreye girer; aynı sayfa yüklemesinde
+  diğer uç noktalar için tekrar beklenmez.
+
+Önbelleği temizlemek için:
+
+```bash
+rm -rf writable/cache/sport_academy_*
+```
+
+Not: Yerel branş slug'ları akademideki slug'larla eşleşirse (futbol, basketbol,
+voleybol, gures) doğrudan branş detayına, eşleşmezse branş listesine gidilir.

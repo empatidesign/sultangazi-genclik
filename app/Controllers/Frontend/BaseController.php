@@ -763,6 +763,10 @@ class BaseController extends Controller
     $this->twig->addGlobal('FILE_PATH_IMAGES', FILE_PATH_IMAGES);
     $this->twig->addGlobal('FILE_PATH_PROJECT', FILE_PATH_PROJECT);
     $this->twig->addGlobal('FILE_PATH_FLAGS', FILE_PATH_FLAGS);
+    // Spor Akademisi (Nexorada) bağlantıları
+    $this->twig->addGlobal('SPORT_ACADEMY_URL', SPORT_ACADEMY_URL);
+    $this->twig->addGlobal('SPORT_ACADEMY_PATH_BRANCHES', SPORT_ACADEMY_PATH_BRANCHES);
+    $this->twig->addGlobal('SPORT_ACADEMY_PATH_FACILITIES', SPORT_ACADEMY_PATH_FACILITIES);
     $this->twig->addGlobal('FORM_ACTIVE_NUMBER', FORM_ACTIVE_NUMBER);
     $this->twig->addGlobal('FORM_CHECKBOX_VALUE_NUMBER', FORM_CHECKBOX_VALUE_NUMBER);
     $this->twig->addGlobal('WEB_URL_CONTRACTS', WEB_URL_CONTRACTS);

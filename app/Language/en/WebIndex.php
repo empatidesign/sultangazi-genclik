@@ -36,4 +36,38 @@ return [
       ],
     ],
   ],
+
+  /**
+   * Sport branches section (homepage).
+   */
+  'sport' => [
+    'title'       => 'OUR SPORT',
+    'title_bold'  => 'BRANCHES',
+    'description' => 'As Sultangazi Municipality we offer free training in 16 sport branches with expert coaches. Detailed programmes, training hours and application requirements are available at Sultangazi Sport Academy.',
+    'detail'      => 'View at the Academy',
+    'all'         => 'ALL BRANCHES',
+  ],
+
+  /**
+   * Sport facilities section (homepage). Data comes from the Sport Academy service.
+   */
+  'facilities' => [
+    'title'       => 'OUR SPORT',
+    'title_bold'  => 'FACILITIES',
+    'description' => 'From the olympic pool to the athletics track, from the martial arts hall to youth centres, all our facilities serve our athletes.',
+    'capacity'    => 'Capacity',
+    'detail'      => 'View Facility',
+    'all'         => 'ALL FACILITIES',
+  ],
+
+  /**
+   * Sport Academy course programme (homepage).
+   */
+  'academy_events' => [
+    'title'       => 'ACADEMY',
+    'title_bold'  => 'PROGRAMME',
+    'description' => 'Ongoing courses and training programmes at Sultangazi Sport Academy.',
+    'age_group'   => 'Age Group',
+    'all'         => 'ALL PROGRAMMES',
+  ],
 ];

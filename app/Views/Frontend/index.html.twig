@@ -254,26 +254,105 @@
 	{% endif %}
 	<!-- Education Institutions End -->
 
+	<!-- Academy Programme Start -->
+	{# Kurs / antrenman programı Spor Akademisi (Nexorada) servisinden gelir. #}
+	{% if list.academy_events|length > 0 %}
+		<section class="py-16 bg-white space-y-12.5">
+			<div class="container px-6 mx-auto">
+				<div class="max-w-3xl text-center mx-auto space-y-3">
+					<h2 class="text-5xl mb-6 text-primary-700">
+						{{ lang('WebIndex.academy_events.title') }}
+						<strong>{{ lang('WebIndex.academy_events.title_bold') }}</strong>
+					</h2>
+					<p class="text-gray-600">{{ lang('WebIndex.academy_events.description') }}</p>
+				</div>
+			</div>
+
+			<div class="container mx-auto">
+				<div class="flex flex-nowrap overflow-x-auto overflow-y-hidden md:overflow-visible md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 px-6">
+					{% for item in list.academy_events %}
+						<a href="{{ item.url }}" target="_blank" rel="noopener"
+							class="group relative w-[280px] max-w-full md:w-full shrink-0 bg-white border border-gray-200 shadow-[0px_3px_12px_0_rgba(0,0,0,0.05)] hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.1)] rounded-md overflow-hidden lg:transition-all lg:hover:-translate-y-1 lg:duration-300">
+
+							<div class="rimage" style="padding-top: 66%;">
+								{% if item.image %}
+									<img src="{{ item.image }}" class="rimage__img transition-transform duration-500 group-hover:scale-105" alt="{{ item.title }}" loading="lazy"/>
+								{% endif %}
+
+								{% if item.branch %}
+									<span class="absolute top-3 left-3 z-10 rounded-full bg-secondary-500 px-3 py-1 text-xs font-semibold text-white">{{ item.branch }}</span>
+								{% endif %}
+							</div>
+
+							<div class="bg-white p-5">
+								<h3 class="text-base font-bold text-black group-hover:text-primary-500 leading-tight h-[2.4em] overflow-hidden line-clamp-2">{{ item.title }}</h3>
+
+								<div class="border-t border-gray-200 my-3"></div>
+
+								<ul class="space-y-2">
+									{% if item.schedule %}
+										<li class="flex items-baseline gap-2">
+											<div class="grid place-items-center size-5 text-primary-700">
+												<i class="fal fa-clock"></i>
+											</div>
+											<span class="text-sm text-gray-600">{{ item.schedule }}</span>
+										</li>
+									{% endif %}
+
+									{% if item.age_group %}
+										<li class="flex items-baseline gap-2">
+											<div class="grid place-items-center size-5 text-primary-700">
+												<i class="fal fa-user-group"></i>
+											</div>
+											<span class="text-sm text-gray-600">{{ lang('WebIndex.academy_events.age_group') }}: {{ item.age_group }}</span>
+										</li>
+									{% endif %}
+
+									{% if item.location %}
+										<li class="flex items-baseline gap-2">
+											<div class="grid place-items-center size-5 text-primary-700">
+												<i class="fal fa-map-marker-alt"></i>
+											</div>
+											<span class="text-sm text-gray-600">{{ item.location }}</span>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="container px-6 mx-auto grid place-items-center">
+				<a href="{{ SPORT_ACADEMY_URL ~ '/' ~ SPORT_ACADEMY_PATH_BRANCHES }}" target="_blank" rel="noopener"
+					class="inline-flex items-center gap-x-3 text-lg text-primary-600 bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)]">
+					<strong class="font-bold">{{ lang('WebIndex.academy_events.all') }}</strong>
+					<i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+				</a>
+			</div>
+		</section>
+	{% endif %}
+	<!-- Academy Programme End -->
+
 	<!-- Sport Branches Start -->
 	<section class="py-16 bg-gray-100 space-y-12.5">
 		<div class="container px-6 mx-auto">
-			<div class="max-w-lg text-center mx-auto space-y-3">
+			<div class="max-w-3xl text-center mx-auto space-y-3">
 				<h2 class="text-5xl mb-6 text-primary-700">
-					SPOR
-					<strong>BRANŞLARIMIZ</strong>
+					{{ lang('WebIndex.sport.title') }}
+					<strong>{{ lang('WebIndex.sport.title_bold') }}</strong>
 				</h2>
-				<p class="text-gray-600">Sultangazi Eğitim, Gençlik ve Spor faaliyetlerine dair en güncel gelişmeleri, etkinlik duyurularını ve başarı hikayelerini burada</p>
+				<p class="text-gray-600">{{ lang('WebIndex.sport.description') }}</p>
 			</div>
 		</div>
 
 		<div class="container px-6 mx-auto">
 			<div class="flex flex-nowrap overflow-x-auto overflow-y-hidden md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
 				{% for sport in list.projects.sport %}
-					<div
-						href="{{ base_url(PARAMETER.WEB_URL_PROJECTS~'/'~sport.project_slug~'/'~sport.project_id) }}" class="select-none group overflow-hidden relative shrink-0 w-[160px] md:w-full 2xl:aspect-[4/3] p-4 bg-white rounded-lg grid place-items-center shadow-xs transitin-all duration-300 hover:shadow-2xl">
+					<div class="select-none group overflow-hidden relative shrink-0 w-[160px] md:w-full 2xl:aspect-[4/3] p-4 bg-white rounded-lg grid place-items-center shadow-xs transitin-all duration-300 hover:shadow-2xl">
 						<!-- Default Layer Start -->
 						<div class="flex flex-col justify-center items-center gap-y-3 transition-all group-hover:opacity-0 duration-500">
-							<img src="{{ site_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image) }}"/>
+							<img src="{{ site_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image) }}" alt="{{ sport.project_name }}"/>
 
 							<h3 class="font-bold text-lg text-primary-900">{{ sport.project_name }}</h3>
 						</div>
@@ -283,18 +362,34 @@
 						<div class="absolute top-0 left-0 size-full opacity-0 group-hover:opacity-100 transition-all duration-500">
 							<img class="size-full object-cover transitin-all duration-300 scale-0 group-hover:scale-100" alt="{{ sport.project_name }}" src="{{ site_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image2) }}"/>
 
-							<span class="absolute bottom-4 left-0 w-full text-white font-bold text-2xl z-20 text-center scale-0 group-hover:scale-100 transition-all duration-500 delay-100">{{ sport.project_name }}</span>
+							<span class="absolute left-0 top-0 z-10 size-full bg-secondary-600 opacity-0 group-hover:opacity-60 transition-all duration-500"></span>
 
-							<span class="absolute left-0 top-0 z-10 size-full bg-secondary-600 opacity-0 group-hover:opacity-50 transition-all duration-500"></span>
+							<div class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-y-2 px-3 text-center scale-0 group-hover:scale-100 transition-all duration-500 delay-100">
+								<span class="text-white font-bold text-xl leading-tight">{{ sport.project_name }}</span>
+
+								<span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-white/90">
+									{{ lang('WebIndex.sport.detail') }}
+									<i class="fa-solid fa-arrow-up-right-from-square"></i>
+								</span>
+							</div>
 						</div>
 						<!-- Hover Layer End -->
 
-						<!-- Link Layer (Optional) Start -->
-						<a href="{{ base_url(PARAMETER.WEB_URL_PROJECTS~'/'~sport.project_slug~'/'~sport.project_id) }}" class="absolute top-0 left-0 size-full z-[21]"></a>
-						<!-- Link Layer (Optional) End -->
+						<!-- Detay bağlantısı: Spor Akademisi -->
+						<a href="{{ sport.academy_url }}" target="_blank" rel="noopener"
+							class="absolute top-0 left-0 size-full z-[21]"
+							aria-label="{{ sport.project_name }} - {{ lang('WebIndex.sport.detail') }}"></a>
 					</div>
 				{% endfor %}
 			</div>
+		</div>
+
+		<div class="container px-6 mx-auto grid place-items-center">
+			<a href="{{ SPORT_ACADEMY_URL ~ '/' ~ SPORT_ACADEMY_PATH_BRANCHES }}" target="_blank" rel="noopener"
+				class="inline-flex items-center gap-x-3 text-lg text-primary-600 bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)]">
+				<strong class="font-bold">{{ lang('WebIndex.sport.all') }}</strong>
+				<i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+			</a>
 		</div>
 	</section>
 	<!-- Sport Branches End -->
@@ -344,53 +439,86 @@
 	{% endif %}
 
 	<!-- Service Facilities Start -->
-	<section class="py-16 bg-white space-y-12.5">
-		<div class="container px-6 mx-auto">
-			<div class="max-w-lg text-center mx-auto space-y-3">
-				<h2 class="text-5xl mb-6 text-primary-700">
-					HİZMET
-					<strong>TESİSLERİMİZ</strong>
-				</h2>
-				<p class="text-gray-600">Sultangazi Eğitim, Gençlik ve Spor faaliyetlerine dair en güncel gelişmeleri, etkinlik duyurularını ve başarı hikayelerini burada</p>
+	{# Tesis bilgileri Spor Akademisi (Nexorada) servisinden gelir. #}
+	{% if list.facilities|length > 0 %}
+		<section class="py-16 bg-white space-y-12.5">
+			<div class="container px-6 mx-auto">
+				<div class="max-w-3xl text-center mx-auto space-y-3">
+					<h2 class="text-5xl mb-6 text-primary-700">
+						{{ lang('WebIndex.facilities.title') }}
+						<strong>{{ lang('WebIndex.facilities.title_bold') }}</strong>
+					</h2>
+					<p class="text-gray-600">{{ lang('WebIndex.facilities.description') }}</p>
+				</div>
 			</div>
-		</div>
 
-		<div class="container px-6 mx-auto">
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<a href="{{ base_url(WEB_URL_PROJECTS~'/'~list.projects.main_project.project_slug~'/'~list.projects.main_project.project_id) }}" class="bg-white group relative rounded-xl flex flex-col overflow-hidden shadow-xs border border-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.1)]">
-					<div class="grow overflow-hidden">
-						<img src="{{ list.projects.main_project.image.base }}" class="size-full object-cover"/>
-					</div>
+			<div class="container px-6 mx-auto">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					{% for item in list.facilities %}
+						<a href="{{ item.url }}" target="_blank" rel="noopener"
+							class="group bg-white relative rounded-xl flex flex-col overflow-hidden shadow-xs border border-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.12)]">
 
-					<div class="px-6 py-4 flex flex-col gap-1">
-						<h3 class="text-xl md:text-2xl font-semibold text-primary-500">{{ list.projects.main_project.project_name }}</h3>
-						<p class="text-gray-400">{{ main_project.project_name }}</p>
-					</div>
-				</a>
+							<div class="rimage" style="padding-top: 52%;">
+								{% if item.image %}
+									<img src="{{ item.image }}" class="rimage__img transition-transform duration-500 group-hover:scale-105" alt="{{ item.name }}" loading="lazy"/>
+								{% endif %}
 
-				<div class="grid grid-cols-2 gap-4">
-					{% for item in list.projects.contents %}
-						<a href="#" class="bg-white group relative rounded-xl overflow-hidden shadow-xs border border-gray-100 transition-all duration-300 hover:scale-105">
-							<div class="overflow-hidden">
-								<img src="{{ item.image.base }}" class="size-full object-cover"/>
+								<span class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></span>
+
+								<div class="absolute bottom-0 left-0 w-full p-5 space-y-1">
+									<h3 class="text-xl md:text-2xl font-semibold text-white leading-tight">{{ item.name }}</h3>
+
+									{% if item.location %}
+										<span class="inline-flex items-center gap-x-1.5 text-sm text-white/80">
+											<i class="fal fa-map-marker-alt"></i>
+											{{ item.location }}
+										</span>
+									{% endif %}
+								</div>
 							</div>
 
-							<div class="p-4 md:px-6 md:py-4 flex flex-col gap-1 md:gap-1.5">
-								<h3 class="md:text-xl font-semibold text-primary-500">{{ item.project_name }}</h3>
-								<p class="text-xs md:text-sm text-gray-400">{{ item.project_name }}</p>
+							<div class="flex flex-1 flex-col gap-3 p-5">
+								{% if item.description %}
+									<p class="text-sm leading-relaxed text-gray-500 line-clamp-2">{{ item.description }}</p>
+								{% endif %}
+
+								{% if item.features|length > 0 %}
+									<div class="flex flex-wrap gap-2">
+										{% for feature in item.features %}
+											<span class="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">{{ feature }}</span>
+										{% endfor %}
+									</div>
+								{% endif %}
+
+								<div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-3">
+									{% if item.capacity %}
+										<span class="text-xs text-gray-400">
+											{{ lang('WebIndex.facilities.capacity') }}:
+											<strong class="font-semibold text-gray-600">{{ item.capacity }}</strong>
+										</span>
+									{% else %}
+										<span></span>
+									{% endif %}
+
+									<span class="inline-flex items-center gap-x-1.5 text-sm font-medium text-primary-600 transition-colors duration-300 group-hover:text-secondary-600">
+										{{ lang('WebIndex.facilities.detail') }}
+										<i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+									</span>
+								</div>
 							</div>
 						</a>
 					{% endfor %}
 				</div>
 			</div>
-		</div>
 
-		<div class="container px-6 mx-auto grid place-items-center">
-			<a href="{{ base_url(WEB_URL_PROJECTS~'?category=hizmet-tesisleri') }}" class="inline-block text-lg text-primary-600 bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)] backdrop-blur-md">
-				<span class="font-normal">TÜM</span>
-				<strong class="font-bold">TESİSLERİMİZ</strong>
-			</a>
-		</div>
-	</section>
+			<div class="container px-6 mx-auto grid place-items-center">
+				<a href="{{ SPORT_ACADEMY_URL ~ '/' ~ SPORT_ACADEMY_PATH_FACILITIES }}" target="_blank" rel="noopener"
+					class="inline-flex items-center gap-x-3 text-lg text-primary-600 bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)]">
+					<strong class="font-bold">{{ lang('WebIndex.facilities.all') }}</strong>
+					<i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+				</a>
+			</div>
+		</section>
+	{% endif %}
 	<!-- Service Facilities End -->
 {% endblock %}
