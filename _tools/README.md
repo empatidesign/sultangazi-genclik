@@ -74,6 +74,17 @@ nexora.apiKey = dev-public-key-2026
 nexora.portalUrl = https://sultansehir.sultangazi.bel.tr
 ```
 
+Başvuru/detay bağlantıları vatandaş portalına gider:
+
+| Bağlantı | Adres |
+| --- | --- |
+| Etkinlik detayı | `/etkinlikler?eventId={id}` |
+| Tüm etkinlikler | `/etkinlikler` |
+| Tesisler | `/hizmetler` |
+
+Not: Portalda `/etkinlikler/{id}` diye bir rota **yoktur**; detay, liste sayfasındaki
+`eventId` sorgu parametresiyle açılır (citizen-portal `DiscoverTab` deep link).
+
 Davranış:
 - Yanıtlar 15 dakika önbelleklenir (`NEXORA_CACHE_TTL`).
 - API anahtarı boşsa servise hiç gidilmez.

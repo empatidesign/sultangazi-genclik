@@ -105,12 +105,24 @@ class NexoraApi
 
     /**
      * Vatandaş portalındaki etkinlik başvuru adresi.
+     *
+     * Portal tarafında etkinlik detayı ayrı bir rota değil, liste sayfasındaki
+     * `eventId` sorgu parametresidir (bkz. citizen-portal App.tsx ve
+     * public-portal `citizenPortalEventUrl`). `/etkinlikler/{id}` biçimi 404 verir.
      */
     public function eventUrl(?string $id = NULL): string
     {
-        $portal = rtrim(env('nexora.portalUrl', NEXORA_PORTAL_URL), '/');
+        $portal = rtrim(env('nexora.portalUrl', NEXORA_PORTAL_URL), '/') . '/etkinlikler';
 
-        return $id ? $portal . '/etkinlikler/' . $id : $portal . '/etkinlikler';
+        return isNotNull($id) ? $portal . '?eventId=' . rawurlencode($id) : $portal;
+    }
+
+    /**
+     * Vatandaş portalındaki hizmet tesisleri sayfası.
+     */
+    public function facilityUrl(): string
+    {
+        return rtrim(env('nexora.portalUrl', NEXORA_PORTAL_URL), '/') . '/hizmetler';
     }
 
     /**

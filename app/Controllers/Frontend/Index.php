@@ -168,7 +168,8 @@ class Index extends BaseController
 				'description' => $row['description'] ?? ($row['about'] ?? NULL),
 				'features'    => $features,
 				'image'       => $this->nexora->imageUrl($row['primaryImageUrl'] ?? NULL),
-				'url'         => $this->nexora->eventUrl(),
+				// Tesisler portalin hizmetler sayfasina gider
+				'url'         => $this->nexora->facilityUrl(),
 			];
 		}
 
