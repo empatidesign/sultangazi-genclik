@@ -24,7 +24,7 @@ img {max-height: 30vw;}
 <body>
 <div id="middle">
 	<div id="inner">
-		<img src="{{ base_url(PARAMETER.FILE_PATH_ASSETS~'/'~PARAMETER.FILE_PATH_IMAGES~'/'~'maintenance.gif') }}" title="" alt="" />
+		<img src="{{ webp_url(PARAMETER.FILE_PATH_ASSETS~'/'~PARAMETER.FILE_PATH_IMAGES~'/'~'maintenance.gif') }}" title="" alt="" />
 		{% if result.maintenance_mode_title != null %}
 			<h1>{{ result.maintenance_mode_title }}</h1>
 		{% endif %}

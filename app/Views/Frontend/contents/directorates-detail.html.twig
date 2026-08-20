@@ -6,7 +6,7 @@
 <!-- Content Header Start -->
   <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
     <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
-      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ webp_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
     </div>
 
     <div class="relative z-[30]">
@@ -32,7 +32,7 @@
               <div class="filter-card card">
                 <div class="card-header" style="display:flex;justify-content:space-between;align-items:center">
                  <div style="display:flex;align-items:center;">
-                  <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid card-header-img" title="" alt="" />
+                  <img src="{{ webp_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid card-header-img" title="" alt="" />
                   <h5 class="card-header-title mb-0">{{ lang('WebDirectorates.title') }}</h5>
                     </div>
                      <div class="buttonServiceOpens" onclick="openItemNew('newServiceOpen2','iconId2')">
@@ -66,7 +66,7 @@
                   {% if result.person.image.normal != null %}
                     <img src="{{ result.person.image.base }}" class="img-fluid" aria-label="{{ result.directorates_name }}" title="{{ result.directorates_name }}" alt="{{ result.directorates_name }}" />
                   {% else %}
-                    <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/directorates-person-no-image.jpg') }}" class="img-fluid" aria-label="{{ result.directorates_name }}" title="{{ result.directorates_name }}" alt="{{ result.directorates_name }}" />
+                    <img src="{{ webp_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/directorates-person-no-image.jpg') }}" class="img-fluid" aria-label="{{ result.directorates_name }}" title="{{ result.directorates_name }}" alt="{{ result.directorates_name }}" />
                   {% endif %}
                 </div>
               </div>
@@ -113,7 +113,7 @@
             <nav>
               <div class="nav nav-tabs nav-tabs-department-detail" id="nav-tab" role="tablist">
                 <a href="javascript:void(0);" style="border-top-left-radius: 10px;" class="nav-link active" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" role="tab" aria-controls="documents" aria-selected="true">
-                  <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid" title="" alt="" />
+                  <img src="{{ webp_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid" title="" alt="" />
                   {{ lang('WebDirectorates.tabMenu.tab1') }}
                 </a>
                 <a href="javascript:void(0);" class="nav-link" id="announcements-tab" data-bs-toggle="tab" data-bs-target="#announcements" role="tab" aria-controls="announcements" aria-selected="false">

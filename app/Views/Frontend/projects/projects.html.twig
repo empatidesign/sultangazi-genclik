@@ -5,7 +5,7 @@
   <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
     <!-- Background Layer Start -->
     <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
-      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" />
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ webp_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" />
     </div>
     <!-- Background Layer End -->
 
@@ -39,7 +39,7 @@
         {% for row in list.all %}
           <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6 transition-all duration-300 hover:shadow-[0_10px_10px_1px_rgba(0,0,0,0.05)]">
             <div class="flex items-center gap-8 border-b border-gray-200 mb-6 pb-6">
-              <img src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/logo/logo-sultangazi-belediyesi.svg') }}" alt="Sultangazi Belediyesi" class="h-15 lg:h-20" />
+              <img src="{{ webp_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/logo/logo-sultangazi-belediyesi.svg') }}" alt="Sultangazi Belediyesi" class="h-15 lg:h-20" />
               <div>
                 <a href="{{ base_url(PARAMETER.WEB_URL_PROJECTS ~ '/' ~ row.project_slug ~ '/' ~ row.project_id) }}"
                   class="group inline-flex items-center gap-x-2">

@@ -36,7 +36,7 @@ class SportBranches extends BaseController
                     'name'        => $row->project_name,
                     'slug'        => $row->project_slug,
                     'image'       => isNotNull($row->project_image)
-                        ? base_url(FILE_PATH_PROJECT . '/thumb/' . $row->project_image)
+                        ? webp_url(FILE_PATH_PROJECT . '/thumb/' . $row->project_image)
                         : NULL,
                     'web_url'     => base_url(WEB_URL_PROJECTS . '/' . $row->project_slug . '/' . $row->project_id),
                     'academy_url' => $this->sportAcademy->branchUrl($row->project_slug ?? NULL),

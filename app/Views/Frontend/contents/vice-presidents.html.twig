@@ -6,7 +6,7 @@
 <!-- Content Header Start -->
   <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
     <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
-      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ webp_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
     </div>
 
     <div class="relative z-[30]">
@@ -40,7 +40,7 @@
                         <img src="{{ row.vice_president_image.base }}" class="img-fluid" aria-label="{{ row.vice_president_name }} {{ row.vice_president_surname }}" title="{{ row.vice_president_name }} {{ row.vice_president_surname }}" alt="{{ row.vice_president_name }} {{ row.vice_president_surname }}" />
                       </div>
                       <div class="vice-president-list-title">
-                        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" aria-label="" title="" alt="" />
+                        <img src="{{ webp_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" aria-label="" title="" alt="" />
                         <h5 class="name mb-0">{{ row.vice_president_name }} {{ row.vice_president_surname }}</h5>
                       </div>
                     </div>

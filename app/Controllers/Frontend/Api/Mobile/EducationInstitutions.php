@@ -24,7 +24,7 @@ class EducationInstitutions extends BaseController
                 'name'        => lang('WebIndex.education.items.' . $key . '.name'),
                 'subtitle'    => lang('WebIndex.education.items.' . $key . '.subtitle'),
                 'description' => lang('WebIndex.education.items.' . $key . '.description'),
-                'image'       => base_url(FILE_PATH_ASSETS . '/' . FILE_PATH_IMAGES . '/education/' . $item['image']),
+                'image'       => webp_url(FILE_PATH_ASSETS . '/' . FILE_PATH_IMAGES . '/education/' . $item['image']),
                 'url'         => $item['url'],
             ];
         }

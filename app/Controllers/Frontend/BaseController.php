@@ -554,7 +554,7 @@ class BaseController extends Controller
   public function contentImageUrl($path, $name)
   {
     if (!isNotNull($name)) {
-      return base_url('assets/' . FILE_PATH_IMAGES . '/no-image.jpg');
+      return webp_url('assets/' . FILE_PATH_IMAGES . '/no-image.jpg');
     }
 
     $rel = rtrim((string) $path, '/') . '/' . ltrim((string) $name, '/');
@@ -569,7 +569,7 @@ class BaseController extends Controller
     $name = $this->sanitizeFilename($name);
 
     if (empty($path) || empty($name)) {
-      return base_url('assets/' . FILE_PATH_IMAGES . '/no-image.jpg');
+      return webp_url('assets/' . FILE_PATH_IMAGES . '/no-image.jpg');
     }
 
     // .webp dosyasının adını güvenli şekilde oluştur
@@ -583,7 +583,7 @@ class BaseController extends Controller
       if (isNotNull($name) && $this->isValidFilePath($path . '/' . $name)) {
         $image = $path . '/' . $name;
       } else {
-        $image = 'assets/' . FILE_PATH_IMAGES . '/no-image.jpg';
+        $image = 'assets/' . FILE_PATH_IMAGES . '/no-image.webp';
       }
     }
 

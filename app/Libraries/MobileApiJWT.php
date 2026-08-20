@@ -108,9 +108,22 @@ class MobileApiJWT {
 		$ajax_message = [];
 		if ($this->request->getMethod() == 'POST') {
 
-			// POST
-			$username = trim(strip_tags($this->request->getPost('username')));
-			$password = trim(strip_tags($this->request->getPost('password')));
+			// POST: form-encoded veya JSON govde kabul edilir.
+			// Mobil istemciler cogunlukla application/json gonderdigi icin
+			// getPost() bos donuyordu; bu durumda JSON govdeye bakilir.
+			$username = (string) $this->request->getPost('username');
+			$password = (string) $this->request->getPost('password');
+
+			if ($username === '' && $password === '') {
+				$govde = $this->request->getJSON(TRUE);
+				if (is_array($govde)) {
+					$username = (string) ($govde['username'] ?? '');
+					$password = (string) ($govde['password'] ?? '');
+				}
+			}
+
+			$username = trim(strip_tags($username));
+			$password = trim(strip_tags($password));
 
 			if (isNotNull($username) || isNotNull($password)) {
 				if ($username == $this->username && $password == $this->password) {

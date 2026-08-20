@@ -6,7 +6,7 @@
 <!-- Content Header Start -->
   <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
     <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
-      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ webp_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" alt=""/>
     </div>
 
     <div class="relative z-[30]">
@@ -38,7 +38,7 @@
                     {% if row.icon.normal != null %}
                       <img src="{{ row.icon.base }}" class="img-fluid" aria-label="{{ row.directorates_name }}" title="{{ row.directorates_name }}" alt="{{ row.directorates_name }}" />
                     {% else %}
-                      <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/directorates-no-image.jpg') }}" class="img-fluid" aria-label="{{ row.directorates_name }}" title="{{ row.directorates_name }}" alt="{{ row.directorates_name }}" />
+                      <img src="{{ webp_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/directorates-no-image.jpg') }}" class="img-fluid" aria-label="{{ row.directorates_name }}" title="{{ row.directorates_name }}" alt="{{ row.directorates_name }}" />
                     {% endif %}
 
                     <h2>{{ row.directorates_name }}</h2>
