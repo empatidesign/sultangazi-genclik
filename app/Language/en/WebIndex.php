@@ -56,6 +56,7 @@ return [
     'title_bold'  => 'FACILITIES',
     'description' => 'From the olympic pool to the athletics track, from the martial arts hall to youth centres, all our facilities serve our athletes.',
     'capacity'    => 'Capacity',
+    'person'      => 'people',
     'detail'      => 'View Facility',
     'all'         => 'ALL FACILITIES',
   ],

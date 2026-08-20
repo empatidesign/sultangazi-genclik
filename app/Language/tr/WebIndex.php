@@ -59,6 +59,7 @@ return [
     'title_bold'  => 'TESİSLERİMİZ',
     'description' => 'Olimpik havuzdan atletizm pistine, dövüş sanatları salonundan gençlik merkezlerine kadar tüm tesislerimiz sporcularımızın hizmetinde.',
     'capacity'    => 'Kapasite',
+    'person'      => 'kişi',
     'detail'      => 'Tesisi İncele',
     'all'         => 'TÜM TESİSLER',
   ],

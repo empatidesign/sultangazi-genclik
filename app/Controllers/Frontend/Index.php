@@ -163,7 +163,7 @@ class Index extends BaseController
 				'name'        => $row['name'] ?? NULL,
 				'location'    => $row['district'] ?? ($row['city'] ?? NULL),
 				'address'     => $row['address'] ?? NULL,
-				'capacity'    => isNotNull($row['capacity'] ?? NULL) ? $row['capacity'] . ' kişi' : NULL,
+				'capacity'    => isNotNull($row['capacity'] ?? NULL) ? $row['capacity'] . ' ' . lang('WebIndex.facilities.person') : NULL,
 				'description' => $row['description'] ?? ($row['about'] ?? NULL),
 				'features'    => $features,
 				'image'       => $this->nexora->imageUrl($row['primaryImageUrl'] ?? NULL),
@@ -189,10 +189,8 @@ class Index extends BaseController
 			return NULL;
 		}
 
-		$aylar = [1 => 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-				  'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-
-		return date('j', $zaman) . ' ' . $aylar[(int) date('n', $zaman)];
+		// Ay adi secili dile gore gelsin (monthName dil dosyalarindan okur).
+		return date('j', $zaman) . ' ' . monthName((int) date('n', $zaman));
 	}
 
 	/**
