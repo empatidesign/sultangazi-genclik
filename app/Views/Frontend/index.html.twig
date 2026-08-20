@@ -160,7 +160,8 @@
 			<div class="container mx-auto">
 				<div class="flex flex-nowrap overflow-x-auto overflow-y-hidden md:overflow-visible md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 px-6">
 					{% for item in list.nexora_events %}
-						<a href="{{ item.url }}" target="_blank" rel="noopener"
+						{# Site ici detay sayfasi: yeni sekmede acilmaz #}
+						<a href="{{ item.url }}"
 							class="group relative w-[280px] max-w-full md:w-full shrink-0 bg-white border border-gray-200 shadow-[0px_3px_12px_0_rgba(0,0,0,0.05)] hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.1)] rounded-md overflow-hidden lg:transition-all lg:hover:-translate-y-1 lg:duration-300">
 
 							<div class="rimage bg-primary-900" style="padding-top: 66%;">
@@ -225,10 +226,10 @@
 			</div>
 
 			<div class="container px-6 mx-auto grid place-items-center">
-				<a href="{{ NEXORA_PORTAL_URL ~ '/etkinlikler' }}" target="_blank" rel="noopener"
+				<a href="{{ base_url(PARAMETER.WEB_URL_EVENTS) }}"
 					class="inline-flex items-center gap-x-3 text-lg text-primary-600 bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)]">
 					<strong class="font-bold">{{ lang('WebIndex.nexora_events.all') }}</strong>
-					<i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+					<i class="fa-solid fa-arrow-right text-sm"></i>
 				</a>
 			</div>
 		</section>

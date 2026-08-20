@@ -336,24 +336,14 @@ $routes->group('', ['namespace' => APP_NAMESPACE . '\Controllers\Frontend'], fun
 
     /*****************************************************/
 
-    // Events Detail
-    if (isNotNull($segment->getUri()->getSegment(1))) {
-      // Default Lang
-      if ($segment->getUri()->getSegment(1) == WEB_URL_EVENTS && isNotNull($segment->getUri()->getSegment(2))) {
-        $result = $this->RoutingModel->eventDetailModel(NULL, $segment->getUri()->getSegment(2), $segment->getUri()->getSegment(3));
-        if (isNotNull($result)) {
-          $routes->get(WEB_URL_EVENTS . '/(:any)/(:num)', 'Events\Events::detail/$1/$2');
-        }
-      }
-
-      // Other Lang
-      if ($segment->getUri()->getSegment(2) == WEB_URL_EVENTS && isNotNull($segment->getUri()->getSegment(3))) {
-        $result = $this->RoutingModel->eventDetailModel($segment->getUri()->getSegment(1), $segment->getUri()->getSegment(3), $segment->getUri()->getSegment(4));
-        if (isNotNull($result)) {
-          $routes->get('/{locale}/' . WEB_URL_EVENTS . '/(:any)/(:num)', 'Events\Events::detail/$1/$2');
-        }
-      }
-    }
+    // Etkinlikler (liste + detay)
+    // Icerik Nexora'dan cron ile yerel nexora_events tablosuna aktarilir.
+    // Detay kontrolcusu gecmis/bulunamayan etkinlikte 404'e yonlendirir,
+    // bu yuzden rota kosulsuz tanimlanir.
+    $routes->get(WEB_URL_EVENTS, 'Events\Events::index');
+    $routes->get(WEB_URL_EVENTS . '/(:any)/(:num)', 'Events\Events::detail/$1/$2');
+    $routes->get('/{locale}/' . WEB_URL_EVENTS, 'Events\Events::index');
+    $routes->get('/{locale}/' . WEB_URL_EVENTS . '/(:any)/(:num)', 'Events\Events::detail/$1/$2');
 
     /*****************************************************/
 

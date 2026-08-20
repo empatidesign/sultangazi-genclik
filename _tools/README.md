@@ -53,6 +53,37 @@ yönlendirme kartı çıkar. Bu alan yalnızca spor branşı kategorisinde
 (`SPORT_PROJECT_CATEGORY_ID`) görünür, diğer projeler etkilenmez.
 Metinler: `app/Language/{tr,en}/WebProjects.php` -> `academy`.
 
+## Etkinlikler (site içi detay + cron)
+
+Etkinlik detayları artık dış portalda değil, **site içinde** açılır:
+
+| Sayfa | Adres |
+| --- | --- |
+| Liste | `/etkinlikler` (sayfalı, 12'şerli) |
+| Detay | `/etkinlikler/{slug}/{id}` |
+
+Veriler her ziyaretçi isteğinde API'den çekilmez; **cron ile günde iki kez**
+yerel `nexora_events` tablosuna aktarılır:
+
+```bash
+php _tools/sync_events.php            # senkronize et
+php _tools/sync_events.php --dry-run  # yalnizca rapor
+```
+
+Kurulum ve zamanlama: `_tools/cron/README.md`
+
+**Geçmiş etkinlikler gösterilmez.** Üç katmanlı koruma:
+1. Servisten `includePast=false` ile istenir.
+2. Her senkronda `end_date < CURDATE()` kayıtları silinir.
+3. Model sorguları da geçmişi filtreler; cron gecikse bile eski etkinlik çıkmaz.
+   Geçmiş bir etkinliğin detay adresi doğrudan açılırsa 404'e yönlendirilir.
+
+Servis erişilemezse mevcut kayıtlar **silinmez**; site son başarılı senkronun
+içeriğini göstermeye devam eder. Her çalışma `nexora_sync_log` tablosuna yazılır.
+
+Not: Başvurular hâlâ Sultanşehir vatandaş portalına yönlendirir
+(`/etkinlikler?eventId=...`); yalnızca içerik görüntüleme siteye taşındı.
+
 ## Nexora Genel Katalog Servisi (etkinlikler ve hizmet tesisleri)
 
 Etkinlikler ve hizmet tesisleri Nexora backend'inin token gerektirmeyen

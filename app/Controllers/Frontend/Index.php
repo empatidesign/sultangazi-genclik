@@ -8,6 +8,7 @@ use App\Models\Frontend\IndexModel;
 use App\Libraries\PopupModule;
 use App\Libraries\SportAcademyApi;
 use App\Libraries\NexoraApi;
+use App\Models\Frontend\Events\NexoraEventsModel;
 
 class Index extends BaseController
 {
@@ -16,6 +17,7 @@ class Index extends BaseController
 	protected $PopupModule;
 	protected $sportAcademy;
 	protected $nexora;
+	protected $NexoraEventsModel;
 
 	public function __construct()
 	{
@@ -23,6 +25,7 @@ class Index extends BaseController
 		$this->PopupModule = new PopupModule();
 		$this->sportAcademy = new SportAcademyApi();
 		$this->nexora = new NexoraApi();
+		$this->NexoraEventsModel = new NexoraEventsModel();
 	}
 
 	public function index()
@@ -121,27 +124,30 @@ class Index extends BaseController
 	}
 
 	/**
-	 * Nexora genel katalog servisinden yaklaşan etkinlikler.
-	 * Servis erişilemezse boş dizi döner, alan gizlenir.
+	 * Yaklaşan etkinlikler.
+	 *
+	 * Veriler cron ile yerel `nexora_events` tablosuna aktarılır
+	 * (bkz. _tools/sync_events.php); burada API'ye gidilmez.
+	 * Kartlar site içindeki detay sayfasına yönlendirir.
 	 */
 	private function nexoraEvents(): array
 	{
 		$list = [];
 
-		foreach ($this->nexora->events(8) as $row) {
+		foreach ($this->NexoraEventsModel->upcoming(8) as $row) {
+			$baslangic = strtotime($row->start_date);
+
 			$list[] = [
-				'name'        => $row['name'] ?? NULL,
-				'category'    => $row['categoryName'] ?? NULL,
-				'place'       => $row['facilityName'] ?? ($row['hallName'] ?? ($row['location']['name'] ?? NULL)),
-				'date'        => $this->nexoraDate($row['startDate'] ?? NULL),
-				'time'        => $this->nexoraTime($row['startTime'] ?? NULL),
-				'is_paid'     => (bool) ($row['isPaid'] ?? FALSE),
-				'price_info'  => $row['priceInfo'] ?? NULL,
-				'open'        => (bool) ($row['registrationOpen'] ?? FALSE),
-				'capacity'    => $row['availableCapacity'] ?? NULL,
-				'description' => $row['description'] ?? NULL,
-				'image'       => $this->nexora->imageUrl($row['primaryImageUrl'] ?? NULL),
-				'url'         => $this->nexora->eventUrl($row['id'] ?? NULL),
+				'name'      => $row->name,
+				'category'  => $row->category_name,
+				'place'     => $row->facility_name ?: ($row->hall_name ?: $row->location_name),
+				'date'      => date('j', $baslangic) . ' ' . monthName((int) date('n', $baslangic)),
+				'time'      => isNotNull($row->start_time) ? substr($row->start_time, 0, 5) : NULL,
+				'is_paid'   => (bool) $row->is_paid,
+				'open'      => (bool) $row->registration_open,
+				'capacity'  => $row->available_capacity,
+				'image'     => $row->image_url,
+				'url'       => base_url(WEB_URL_EVENTS . '/' . $row->slug . '/' . $row->event_id),
 			];
 		}
 

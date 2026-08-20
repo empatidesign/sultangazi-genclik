@@ -14,8 +14,11 @@ node_modules/
 # Yüklenen dosyalar
 /uploads/
 
-# Veritabanı yedekleri
-/_database/
+# Veritabanı yedekleri (dokümler izlenmez)
+/_database/*
+# Şema dosyaları izlenir (kurulum için gerekli)
+!/_database/*.sql
+!/_database/schema/
 
 # Loglar
 error_log
