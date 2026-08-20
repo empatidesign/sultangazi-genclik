@@ -74,6 +74,45 @@ $routes->group('', ['namespace' => APP_NAMESPACE . '\Controllers\Frontend'], fun
   helper('request');
   $segment = \Config\Services::request();
 
+  /*****************************************************/
+
+  // Mobil API (/api/mobile)
+  // Ana site yapisindan uyarlandi. authenticate disindaki uclar Bearer token
+  // ister; 'mobileapiauth' filtresi JSON 401 doner (adminauth gibi giris
+  // sayfasina yonlendirmez).
+  $routes->group('api', function ($routes) {
+    $routes->group('mobile', function ($routes) {
+      $routes->get('/', 'Api\Mobile\Index::index');
+      $routes->post('authenticate', 'Api\Mobile\Authenticate::index');
+
+      $routes->group('', ['filter' => 'mobileapiauth'], function ($routes) {
+        $routes->get('menu', 'Api\Mobile\Menu::index');
+        $routes->get('banner', 'Api\Mobile\Banner::index');
+        $routes->get('municipal-councils', 'Api\Mobile\MunicipalCouncils::index');
+        $routes->get('council-members', 'Api\Mobile\CouncilMembers::index');
+        $routes->get('directorates', 'Api\Mobile\Directorates::index');
+        $routes->get('vice-presidents', 'Api\Mobile\VicePresidents::index');
+        $routes->get('services', 'Api\Mobile\Services::index');
+        $routes->get('projects', 'Api\Mobile\Projects::index');
+        $routes->get('announcements', 'Api\Mobile\Announcements::index');
+        $routes->get('news', 'Api\Mobile\News::index');
+        $routes->get('events', 'Api\Mobile\Events::index');
+        $routes->get('referances', 'Api\Mobile\Referances::index');
+        $routes->get('contact', 'Api\Mobile\ContactInformation::index');
+        $routes->get('president-general-information', 'Api\Mobile\PresidentGeneralInformation::index');
+        $routes->get('president-contents', 'Api\Mobile\PresidentContents::index');
+        $routes->get('president-gallery', 'Api\Mobile\PresidentGallery::index');
+        $routes->post('push-notifications', 'Api\Mobile\PushNotifications::index');
+
+        // Genclik sitesine ozgu uclar
+        $routes->get('sport-branches', 'Api\Mobile\SportBranches::index');
+        $routes->get('education-institutions', 'Api\Mobile\EducationInstitutions::index');
+      });
+    });
+  });
+
+  /*****************************************************/
+
   $routes->post('wapi/search', function () {
     $request = \Config\Services::request();
     $db = \Config\Database::connect();

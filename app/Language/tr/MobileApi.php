@@ -7,6 +7,7 @@ return [
 		'wrong' => 'Kullanıcı Adı veya Şifre bilgileri yanlış.',
 		'noRecord' => 'Bearer token hatalı.',
 		'token' => [
+			'notFound' => 'Authorization basligi bulunamadi.',
 			'expired' => 'Token expired',
 			'signature' => 'Invalid token signature',
 			'notValid' => 'Token not valid yet',

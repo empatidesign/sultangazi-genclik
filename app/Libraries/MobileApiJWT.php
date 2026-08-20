@@ -16,9 +16,10 @@ class MobileApiJWT {
 	protected $response;
 
 	public function __construct() {
-		$this->username = 'sultangazi';
-		$this->password = '1q2w3e@!';
-		$this->tokenExpireTime = 7200; // 2 Hours
+		// Kimlik bilgileri .env'den okunur; tanimli degilse eski sabitler kullanilir.
+		$this->username = (string) (env('mobileApi.username') ?: 'sultangazi');
+		$this->password = (string) (env('mobileApi.password') ?: '1q2w3e@!');
+		$this->tokenExpireTime = (int) (env('mobileApi.tokenExpire') ?: 7200); // varsayilan 2 saat
 		$this->request = \Config\Services::request();
 		$this->response = \Config\Services::response();
 	}
@@ -78,14 +79,25 @@ class MobileApiJWT {
 		header('Access-Control-Allow-Methods: POST');
 	}
 
+	/**
+	 * Token dogrulama.
+	 *
+	 * firebase/php-jwt 6.x ile decode() imzasi degisti: ucuncu parametre
+	 * artik algoritma dizisi degil, referansla gecen $headers. Algoritma
+	 * Key nesnesi icinde tasinir. Istisna siniflari da Firebase\JWT
+	 * ad alanindadir (dosya basinda import edilmis).
+	 */
 	public function ValidateJWTtoken($jwt_token, $password) {
 		try {
-			return [TRUE, JWT::decode($jwt_token, $password, ['HS256'])];
-		} catch (\ExpiredException $e) {
+			// $password bir Key nesnesi degilse (eski cagrilar) sarmala
+			$key = $password instanceof Key ? $password : new Key((string) $password, 'HS256');
+
+			return [TRUE, JWT::decode($jwt_token, $key)];
+		} catch (ExpiredException $e) {
 			return [FALSE, lang('MobileApi.error.token.expired')];
-		} catch (\SignatureInvalidException $e) {
+		} catch (SignatureInvalidException $e) {
 			return [FALSE, lang('MobileApi.error.token.signature')];
-		} catch (\BeforeValidException $e) {
+		} catch (BeforeValidException $e) {
 			return [FALSE, lang('MobileApi.error.token.notValid')];
 		} catch (\Exception $e) {
 			return [FALSE, lang('MobileApi.error.token.invalid')];
@@ -147,6 +159,35 @@ class MobileApiJWT {
 		$ajax_message['detail'] = $this->HttpStatus($_code);
 
 		return json($ajax_message);
+	}
+
+	/**
+	 * Authorization basligindaki Bearer token'i dogrular.
+	 *
+	 * index() yalnizca POST kabul ettigi icin GET uclarinda kullanilamiyordu;
+	 * bu metot HTTP yontemi gozetmeksizin calisir ve filtre tarafindan kullanilir.
+	 *
+	 * @return array [gecerli mi, mesaj]
+	 */
+	public function verifyRequest(): array {
+		$auth_header = $this->request->getServer('HTTP_AUTHORIZATION')
+			?: $this->request->getHeaderLine('Authorization');
+
+		if (!isNotNull($auth_header)) {
+			return [FALSE, lang('MobileApi.error.token.notFound')];
+		}
+
+		$jwt_token = trim(str_ireplace('Bearer', '', $auth_header));
+
+		if (!isNotNull($jwt_token)) {
+			return [FALSE, lang('MobileApi.error.token.notFound')];
+		}
+
+		try {
+			return $this->ValidateJWTtoken($jwt_token, new Key($this->password, 'HS256'));
+		} catch (\Exception $e) {
+			return [FALSE, lang('MobileApi.error.token.invalid')];
+		}
 	}
 
 	public function index() {

@@ -53,6 +53,16 @@ yönlendirme kartı çıkar. Bu alan yalnızca spor branşı kategorisinde
 (`SPORT_PROJECT_CATEGORY_ID`) görünür, diğer projeler etkilenmez.
 Metinler: `app/Language/{tr,en}/WebProjects.php` -> `academy`.
 
+## Mobil API (`/api/mobile`)
+
+Ana site yapısından uyarlanan JSON servisi: 20 uç, Bearer token korumalı.
+Ayrıntılar ve farklar: **`_tools/API.md`**
+
+```bash
+curl -X POST -d "username=...&password=..." http://SITE/api/mobile/authenticate
+curl -H "Authorization: Bearer <token>" http://SITE/api/mobile/events
+```
+
 ## Başkan İçerikleri (ana site API'si + cron)
 
 Başkanın özgeçmişi ve mesajı, Sultangazi Belediyesi ana sitesinin genel mobil

@@ -12,6 +12,7 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\AdminAuth;
+use App\Filters\MobileApiAuth;
 use App\Filters\AdminNoauth;
 use App\Filters\AdminLocale;
 use App\Filters\WebLang;
@@ -35,6 +36,7 @@ class Filters extends BaseFilters
     'pagecache' => PageCache::class,
     'honeypot' => Honeypot::class,
     'adminauth' => AdminAuth::class,
+    'mobileapiauth' => MobileApiAuth::class,
     'adminnoauth' => AdminNoauth::class,
     'adminlocale' => AdminLocale::class,
     'weblang' => WebLang::class,
