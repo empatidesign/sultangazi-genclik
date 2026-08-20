@@ -274,9 +274,14 @@
 						<a href="{{ item.url }}" target="_blank" rel="noopener"
 							class="group relative w-[280px] max-w-full md:w-full shrink-0 bg-white border border-gray-200 shadow-[0px_3px_12px_0_rgba(0,0,0,0.05)] hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.1)] rounded-md overflow-hidden lg:transition-all lg:hover:-translate-y-1 lg:duration-300">
 
-							<div class="rimage" style="padding-top: 66%;">
+							<div class="rimage bg-primary-900" style="padding-top: 66%;">
 								{% if item.image %}
 									<img src="{{ item.image }}" class="rimage__img transition-transform duration-500 group-hover:scale-105" alt="{{ item.title }}" loading="lazy"/>
+								{% else %}
+									{# Servis bu kurs icin gorsel gondermemis: markali yedek gorunum #}
+									<span class="rimage__img flex items-center justify-center bg-gradient-to-br from-primary-700 to-primary-900">
+										<i class="fa-solid fa-medal text-4xl text-white/30"></i>
+									</span>
 								{% endif %}
 
 								{% if item.branch %}
