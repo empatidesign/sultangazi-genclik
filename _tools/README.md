@@ -97,6 +97,19 @@ Davranış:
 rm -rf writable/cache/nexora_* writable/cache/sport_academy_*
 ```
 
+### Canlıya alırken
+
+`nexora.url` varsayılanı **yerel geliştirme adresidir** (`http://localhost:5207`).
+Canlı sunucuda bu adres çalışmaz ve etkinlik/tesis alanları sessizce gizlenir.
+Bu yüzden `CI_ENVIRONMENT = production` iken şu iki durum log'a `CRITICAL`
+olarak yazılır:
+
+- `nexora.apiKey` boş
+- `nexora.url` hâlâ `localhost` / `127.0.0.1` gösteriyor
+
+Yayına almadan önce `.env` içindeki `nexora.url` ve `nexora.apiKey` değerlerini
+gerçek servis bilgileriyle doldurun, sonra `php _tools/check_nexora.php` çalıştırın.
+
 ### Bağlantı doğrulaması
 
 Nexora ayağa kalktığında veya adres/anahtar değiştiğinde:

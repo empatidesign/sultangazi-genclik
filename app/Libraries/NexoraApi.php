@@ -51,6 +51,30 @@ class NexoraApi
         $this->apiKey  = (string) env('nexora.apiKey', '');
         $this->ttl     = NEXORA_CACHE_TTL;
         $this->timeout = NEXORA_TIMEOUT;
+
+        $this->yapilandirmayiDenetle();
+    }
+
+    /**
+     * Canlı ortamda yanlış yapılandırma sessizce alan gizlenmesine yol açar
+     * (etkinlik/tesis alanları hiç görünmez). Bu tür durumları loga yazar.
+     */
+    protected function yapilandirmayiDenetle(): void
+    {
+        if (ENVIRONMENT !== 'production') {
+            return;
+        }
+
+        if ($this->apiKey === '') {
+            log_message('critical', 'Nexora yapilandirma hatasi: .env icinde nexora.apiKey bos. Etkinlik ve tesis alanlari gizlenecek.');
+        }
+
+        // Canlida yerel adres kaldiysa servis hicbir zaman yanit veremez.
+        if (preg_match('/^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)([:\/]|$)/i', $this->siteUrl)) {
+            log_message('critical', 'Nexora yapilandirma hatasi: canli ortamda yerel adres kullaniliyor ({url}). .env icindeki nexora.url degerini guncelleyin.', [
+                'url' => $this->siteUrl,
+            ]);
+        }
     }
 
     /**
