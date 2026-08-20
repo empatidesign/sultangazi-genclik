@@ -85,7 +85,8 @@ defined('Backend') OR define('Backend', 'Backend');
 defined('Frontend') OR define('Frontend', 'Frontend');
 defined('BACKEND_URL') OR define('BACKEND_URL', 'sbyonetim');
 
-defined('APP_BASE_URL') OR define('APP_BASE_URL', ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http').'://'.$_SERVER['SERVER_NAME'].str_replace(basename($_SERVER['SCRIPT_NAME']),'', $_SERVER['SCRIPT_NAME']));
+// HTTP_HOST kullanılır: standart dışı port (ör. yerel geliştirme :8088) korunur.
+defined('APP_BASE_URL') OR define('APP_BASE_URL', ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http').'://'.($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']).str_replace(basename($_SERVER['SCRIPT_NAME']),'', $_SERVER['SCRIPT_NAME']));
 defined('SULTANGAZI_URL') OR define('SULTANGAZI_URL', 'https://www.sultangazi.bel.tr/');
 /*
  * Web Links

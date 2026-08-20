@@ -48,7 +48,7 @@ class CorporateModel extends Model {
 
 			// Submenu
 			$submenu = [];
-			$submenu_sql = $this->leftMenuListModel($result->menu_id, $lang_id);
+			$submenu_sql = isNotNull($result->menu_id) ? $this->leftMenuListModel($result->menu_id, $lang_id) : NULL;
 			if (isNotNull($submenu_sql)) {
 				foreach ($submenu_sql as $row) {
 
@@ -86,7 +86,11 @@ class CorporateModel extends Model {
 		return $menu;
 	}
 
-	public function leftMenuListModel(string $menu_parent_id, int $lang_id) {
+	public function leftMenuListModel(?string $menu_parent_id, int $lang_id) {
+		if (!isNotNull($menu_parent_id)) {
+			return NULL;
+		}
+
 		$query = $this->db->table($this->tableMenus);
 		$query->select($this->tableMenus.'.*,
 						'.$this->tableMenusLang.'.menu_name,
