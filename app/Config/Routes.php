@@ -471,6 +471,14 @@ $routes->group(BACKEND_URL, ['namespace' => APP_NAMESPACE . '\Controllers\Backen
       $routes->post('update', 'Settings\SocialMediaSettings::update', ['filter' => 'adminauth']);
     });
 
+    // Tracking Codes
+    // Kontrolcu, gorunum ve tablo mevcuttu ancak rota tanimli degildi;
+    // panel menusundeki baglanti 404 veriyordu.
+    $routes->group(ADMIN_URL_TRACKING_CODES, function ($routes) {
+      $routes->get('/', 'Settings\TrackingCodes::index', ['filter' => 'adminauth']);
+      $routes->post('update', 'Settings\TrackingCodes::update', ['filter' => 'adminauth']);
+    });
+
     // Maintenance Mode
     $routes->group(ADMIN_URL_MAINTENANCE_MODE, function ($routes) {
       $routes->get('/', 'Settings\MaintenanceMode::index', ['filter' => 'adminauth']);
@@ -524,6 +532,18 @@ $routes->group(BACKEND_URL, ['namespace' => APP_NAMESPACE . '\Controllers\Backen
 
   // Contents
   $routes->group(ADMIN_URL_CONTENTS, function ($routes) {
+
+    // Contracts
+    // Kontrolcu, gorunum ve tablo mevcuttu ancak rota tanimli degildi.
+    $routes->group(ADMIN_URL_CONTRACTS, function ($routes) {
+      $routes->get('/', 'Contents\Contracts::index', ['filter' => 'adminauth']);
+      $routes->get('datatable', 'Contents\Contracts::datatable', ['filter' => 'adminauth']);
+      $routes->get('add', 'Contents\Contracts::add', ['filter' => 'adminauth']);
+      $routes->post('insert', 'Contents\Contracts::insert', ['filter' => 'adminauth']);
+      $routes->get('edit/(:num)', 'Contents\Contracts::edit/$1', ['filter' => 'adminauth']);
+      $routes->post('update/(:num)', 'Contents\Contracts::update/$1', ['filter' => 'adminauth']);
+      $routes->post('delete/(:num)', 'Contents\Contracts::delete/$1', ['filter' => 'adminauth']);
+    });
 
     // Referances
     $routes->group(ADMIN_URL_REFERANCES, function ($routes) {
