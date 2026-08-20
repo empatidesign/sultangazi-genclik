@@ -85,3 +85,15 @@ Davranış:
 ```bash
 rm -rf writable/cache/nexora_* writable/cache/sport_academy_*
 ```
+
+### Bağlantı doğrulaması
+
+Nexora ayağa kalktığında veya adres/anahtar değiştiğinde:
+
+```bash
+php _tools/check_nexora.php
+```
+
+Servise gerçekten bağlanır ve site kodunun beklediği tüm alanların döndüğünü,
+görsel yollarının açıldığını kontrol eder. Sorun varsa 1 ile çıkar; şunları yakalar:
+servis kapalı, geçersiz API anahtarı, eksik alan (sözleşme değişikliği), kırık görsel.
