@@ -99,7 +99,7 @@
 			class="py-16 bg-primary-900 relative overflow-hidden">
 			<!-- Background Layer Start -->
 			<div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
-				<img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ link_tag('assets/img/general/section-bg.webp') }}"/>
+				<img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}"/>
 			</div>
 			<!-- Background Layer End -->
 
@@ -202,6 +202,57 @@
 		</section>
 		<!-- Events End -->
 	{% endif %}
+
+	<!-- Education Institutions Start -->
+	{% if list.education|length > 0 %}
+		<section class="py-16 bg-white space-y-12.5">
+			<div class="container px-6 mx-auto">
+				<div class="max-w-2xl text-center mx-auto space-y-3">
+					<h2 class="text-5xl mb-6 text-primary-700">
+						{{ lang('WebIndex.education.title') }}
+						<strong>{{ lang('WebIndex.education.title_bold') }}</strong>
+					</h2>
+					<p class="text-gray-600">{{ lang('WebIndex.education.description') }}</p>
+				</div>
+			</div>
+
+			<div class="container px-6 mx-auto">
+				<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+					{% for item in list.education %}
+						<a href="{{ item.url }}" target="_blank" rel="noopener"
+							class="group relative flex flex-col overflow-hidden rounded-xl bg-white border border-gray-100 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_40px_0_rgba(0,0,0,0.12)]">
+
+							<!-- Renk Şeridi -->
+							<span class="block h-1.5 w-full bg-gradient-to-r {{ item.theme }}"></span>
+
+							<!-- Logo Alanı -->
+							<div class="relative bg-gray-50 px-6 py-10 grid place-items-center overflow-hidden">
+								<span class="absolute inset-0 bg-gradient-to-br {{ item.theme }} opacity-0 transition-opacity duration-500 group-hover:opacity-10"></span>
+
+								<img class="relative h-20 w-auto max-w-[70%] object-contain transition-transform duration-500 group-hover:scale-110"
+									src="{{ base_url(item.image) }}" alt="{{ item.name }}" loading="lazy"/>
+							</div>
+
+							<!-- İçerik Alanı -->
+							<div class="flex flex-1 flex-col p-6 space-y-2">
+								<span class="text-xs font-semibold uppercase tracking-wide text-secondary-600">{{ item.subtitle }}</span>
+
+								<h3 class="text-xl font-semibold text-primary-700">{{ item.name }}</h3>
+
+								<p class="flex-1 text-sm leading-relaxed text-gray-500">{{ item.description }}</p>
+
+								<span class="inline-flex items-center gap-x-2 pt-2 text-sm font-medium text-primary-600 transition-colors duration-300 group-hover:text-secondary-600">
+									{{ lang('WebIndex.education.visit') }}
+									<i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+								</span>
+							</div>
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+	{% endif %}
+	<!-- Education Institutions End -->
 
 	<!-- Sport Branches Start -->
 	<section class="py-16 bg-gray-100 space-y-12.5">

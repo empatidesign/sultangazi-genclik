@@ -70,7 +70,9 @@ class Index extends BaseController
 				'multimedia' => [
 					'gallery_categories' => $this->galleryCategories(),
 					'video_gallery' => $this->videoGallery()
-				]
+				],
+				// Eğitim kurumları: tanımlar Constants.php, metinler WebIndex dil dosyasında
+				'education' => $this->educationInstitutions()
 			],
 			'PARAMETER' => [
 				'WEB_URL_ANNOUNCEMENTS' => WEB_URL_ANNOUNCEMENTS,
@@ -87,6 +89,30 @@ class Index extends BaseController
 				'popup' => $this->PopupModule->index()
 			]
 		]);
+	}
+
+	/**
+	 * Anasayfadaki "Eğitim Kurumlarımız" alanı için kurum listesi.
+	 * URL/görsel bilgileri Constants.php, metinler dil dosyalarından gelir.
+	 */
+	private function educationInstitutions(): array
+	{
+		$list = [];
+
+		foreach (EDUCATION_INSTITUTIONS as $item) {
+			$key = $item['key'];
+
+			$list[] = [
+				'url'         => $item['url'],
+				'theme'       => $item['theme'],
+				'image'       => FILE_PATH_ASSETS.'/'.FILE_PATH_IMAGES.'/education/'.$item['image'],
+				'name'        => lang('WebIndex.education.items.'.$key.'.name'),
+				'subtitle'    => lang('WebIndex.education.items.'.$key.'.subtitle'),
+				'description' => lang('WebIndex.education.items.'.$key.'.description'),
+			];
+		}
+
+		return $list;
 	}
 
 	public function informations()

@@ -88,6 +88,40 @@ defined('BACKEND_URL') OR define('BACKEND_URL', 'sbyonetim');
 // HTTP_HOST kullanılır: standart dışı port (ör. yerel geliştirme :8088) korunur.
 defined('APP_BASE_URL') OR define('APP_BASE_URL', ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http').'://'.($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']).str_replace(basename($_SERVER['SCRIPT_NAME']),'', $_SERVER['SCRIPT_NAME']));
 defined('SULTANGAZI_URL') OR define('SULTANGAZI_URL', 'https://www.sultangazi.bel.tr/');
+
+/*
+ * Eğitim Kurumları
+ * Anasayfadaki "Eğitim Kurumlarımız" alanında kullanılır.
+ * Metinler app/Language/{tr,en}/WebIndex.php -> education.items altındadır.
+ * Görseller assets/img/education/ klasöründedir.
+ */
+const EDUCATION_INSTITUTIONS = [
+    [
+        'key'   => 'anakucagi',
+        'url'   => 'https://anakucagi.sultangazi.bel.tr',
+        'image' => 'anakucagi.png',
+        'theme' => 'from-rose-500 to-pink-600',
+    ],
+    [
+        'key'   => 'kasifcocuk',
+        'url'   => 'https://kasifcocuk.sultangazi.bel.tr',
+        'image' => 'kasifcocuk.webp',
+        'theme' => 'from-amber-400 to-orange-500',
+    ],
+    [
+        'key'   => 'seda',
+        'url'   => 'https://seda.sultangazi.bel.tr',
+        'image' => 'seda.png',
+        'theme' => 'from-sky-500 to-blue-600',
+    ],
+    [
+        'key'   => 'bilimmerkezi',
+        'url'   => 'https://bilimmerkezi.sultangazi.bel.tr',
+        'image' => 'bilimmerkezi.png',
+        'theme' => 'from-emerald-500 to-teal-600',
+    ],
+];
+
 /*
  * Web Links
 */
@@ -319,6 +353,8 @@ const ADMIN_URL_PRESIDENT_CONTACT_REQUESTS = 'president-contact-requests';
 const FILE_PATH_ASSETS = 'assets';
 const FILE_PATH_IMAGES = 'img';
 const SULTAN_FILE_PATH_IMAGES = 'images';
+// Backend sablonunun gorsel klasoru (assets/Backend/images)
+const BACKEND_FILE_PATH_IMAGES = 'images';
 const FILE_PATH_FLAGS = FILE_PATH_ASSETS.'/'.FILE_PATH_IMAGES.'/flags/';
 const FILE_PATH_MAIN_STORAGE = 'storage/';
 const FILE_PATH_MAIN_STORAGE_PDF = FILE_PATH_MAIN_STORAGE.'pdf';

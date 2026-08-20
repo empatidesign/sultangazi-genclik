@@ -133,6 +133,7 @@ class BaseController extends Controller {
     $this->twig->addGlobal('FLASH_DATA_MESSAGE_ERROR', session()->getFlashdata('flashDataMessageError'));
     $this->twig->addGlobal('FILE_PATH_ASSETS', FILE_PATH_ASSETS);
     $this->twig->addGlobal('FILE_PATH_IMAGES', FILE_PATH_IMAGES);
+    $this->twig->addGlobal('BACKEND_FILE_PATH_IMAGES', BACKEND_FILE_PATH_IMAGES);
     $this->twig->addGlobal('FILE_PATH_MAIN', FILE_PATH_MAIN);
     $this->twig->addGlobal('FORM_ACTIVE_NUMBER', FORM_ACTIVE_NUMBER);
     $this->twig->addGlobal('FORM_PASSIVE_NUMBER', FORM_PASSIVE_NUMBER);
