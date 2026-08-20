@@ -204,7 +204,7 @@ public function sportProjectsModel(int $lang_id)
     // Filtreler
     $query->where("{$this->tableProjects}.status", FORM_ACTIVE_NUMBER);
     $query->where("{$this->tableProjects}.home_page", FORM_ACTIVE_NUMBER);
-    $query->where("{$this->tableProjects}.project_category_id", 8);
+    $query->where("{$this->tableProjects}.project_category_id", SPORT_PROJECT_CATEGORY_ID);
     $query->where("{$this->tableProjectsLang}.project_name !=", '');
     $query->orderBy("{$this->tableProjects}.project_id", 'DESC');
 

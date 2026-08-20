@@ -46,6 +46,13 @@ genel API'den branş listesini okur ve her branş için akademideki detay adresi
 Yerel branş slug'ı akademideki slug ile eşleşirse (futbol, basketbol, voleybol,
 gures) doğrudan branş detayına, eşleşmezse branş listesine gidilir.
 
+Branş **detay sayfaları** (`/projeler/{slug}/{id}`) da bu servisten beslenir:
+eşleşen branşlarda antrenör, yaş grubu, antrenman programı, kazanımlar ve
+gerekli belgeler gösterilir; eşleşmeyenlerde genel tanıtım metni ve akademiye
+yönlendirme kartı çıkar. Bu alan yalnızca spor branşı kategorisinde
+(`SPORT_PROJECT_CATEGORY_ID`) görünür, diğer projeler etkilenmez.
+Metinler: `app/Language/{tr,en}/WebProjects.php` -> `academy`.
+
 ## Nexora Genel Katalog Servisi (etkinlikler ve hizmet tesisleri)
 
 Etkinlikler ve hizmet tesisleri Nexora backend'inin token gerektirmeyen

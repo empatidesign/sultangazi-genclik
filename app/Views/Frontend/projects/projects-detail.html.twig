@@ -57,6 +57,99 @@
 				{{ result.project_description|raw }}
 			</div>
 		{% endif %}
+
+		{# Spor branşı: bilgiler Spor Akademisi servisinden gelir #}
+		{% if academy != null %}
+			<div class="mt-6 space-y-6">
+				{% if academy.matched and academy.description %}
+					<p class="text-gray-600 leading-relaxed">{{ academy.description }}</p>
+				{% else %}
+					<p class="text-gray-600 leading-relaxed">{{ lang('WebProjects.academy.intro') }}</p>
+				{% endif %}
+
+				{% if academy.matched %}
+					{# Özet bilgiler #}
+					<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+						{% set kutular = [
+							{ 'etiket': lang('WebProjects.academy.coach'),    'deger': academy.coach,          'ikon': 'fa-user-tie' },
+							{ 'etiket': lang('WebProjects.academy.ageGroup'), 'deger': academy.age_group,      'ikon': 'fa-child-reaching' },
+							{ 'etiket': lang('WebProjects.academy.sessions'), 'deger': academy.sessions,       'ikon': 'fa-calendar-week' },
+							{ 'etiket': lang('WebProjects.academy.students'), 'deger': academy.total_students, 'ikon': 'fa-users' }
+						] %}
+
+						{% for kutu in kutular %}
+							{% if kutu.deger %}
+								<div class="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-1">
+									<span class="inline-flex items-center gap-x-2 text-xs font-semibold uppercase tracking-wide text-secondary-600">
+										<i class="fa-solid {{ kutu.ikon }}"></i>
+										{{ kutu.etiket }}
+									</span>
+									<div class="text-lg font-semibold text-primary-700">{{ kutu.deger }}</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+
+					{# Antrenman programı #}
+					{% if academy.schedule|length > 0 %}
+						<div class="space-y-3">
+							<h2 class="text-xl font-semibold text-primary-700">{{ lang('WebProjects.academy.schedule') }}</h2>
+
+							<div class="overflow-x-auto rounded-xl border border-gray-100">
+								<table class="w-full text-sm">
+									<tbody>
+										{% for satir in academy.schedule %}
+											<tr class="border-b border-gray-100 last:border-0">
+												<td class="px-4 py-3 font-medium text-gray-700">{{ satir.day }}</td>
+												<td class="px-4 py-3 text-gray-600">{{ satir.time }}</td>
+												<td class="px-4 py-3 text-gray-500">{{ satir.level }}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					{% endif %}
+
+					{# Kazanımlar ve gerekli belgeler #}
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{% for blok in [
+							{ 'baslik': lang('WebProjects.academy.gains'),        'liste': academy.gains,        'ikon': 'fa-circle-check',   'renk': 'text-emerald-600' },
+							{ 'baslik': lang('WebProjects.academy.requirements'), 'liste': academy.requirements, 'ikon': 'fa-file-lines',     'renk': 'text-primary-600' }
+						] %}
+							{% if blok.liste|length > 0 %}
+								<div class="space-y-3">
+									<h2 class="text-xl font-semibold text-primary-700">{{ blok.baslik }}</h2>
+
+									<ul class="space-y-2">
+										{% for madde in blok.liste %}
+											<li class="flex items-start gap-x-2 text-sm text-gray-600">
+												<i class="fa-solid {{ blok.ikon }} {{ blok.renk }} mt-1"></i>
+												<span>{{ madde }}</span>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{# Akademiye yönlendirme #}
+				<a href="{{ academy.url }}" target="_blank" rel="noopener"
+					class="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl bg-primary-900 p-6 transition-all duration-300 hover:bg-primary-800">
+					<div class="space-y-1">
+						<div class="text-lg font-semibold text-white">{{ lang('WebProjects.academy.ctaTitle') }}</div>
+						<p class="text-sm text-white/70">{{ lang('WebProjects.academy.ctaText') }}</p>
+					</div>
+
+					<span class="inline-flex shrink-0 items-center gap-x-2 rounded-lg bg-secondary-500 px-6 py-3 text-sm font-semibold text-white transition-transform duration-300 group-hover:translate-x-1">
+						{{ lang('WebProjects.academy.ctaButton') }}
+						<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					</span>
+				</a>
+			</div>
+		{% endif %}
       </div>
     </div>
   </section>

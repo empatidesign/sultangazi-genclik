@@ -110,6 +110,9 @@ const NEXORA_CACHE_TTL_ERROR = 120;
 // Istek zaman asimi (saniye)
 const NEXORA_TIMEOUT = 3;
 
+// Spor branslari proje kategorisi (projects.project_category_id)
+const SPORT_PROJECT_CATEGORY_ID = 8;
+
 /*
  * Spor Akademisi (Nexorada) Servisi
  * Branş, tesis, etkinlik ve haber verileri buradan okunur.

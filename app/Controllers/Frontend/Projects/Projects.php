@@ -5,16 +5,19 @@ use App\Models\Frontend\Contents\CorporateModel;
 use CodeIgniter\Controller;
 
 use App\Models\Frontend\Projects\ProjectsModel;
+use App\Libraries\SportAcademyApi;
 
 class Projects extends BaseController {
 
 	protected $ProjectsModel;
 	protected $CorporateModel;
 	protected $folder;
+	protected $sportAcademy;
 
 	public function __construct() {
 		$this->ProjectsModel = new ProjectsModel();
 		$this->CorporateModel = new CorporateModel();
+		$this->sportAcademy = new SportAcademyApi();
 		$this->folder = 'projects';
 	}
 
@@ -106,6 +109,8 @@ class Projects extends BaseController {
 					'images' => $this->images($project_id),
 					'left_menu' => $this->CorporateModel->leftMenuSlugInfoModel($segment, $this->defaultLangId, NULL, NULL, $sql->project_id)
 				],
+				// Spor branşı ise Spor Akademisi bilgileri
+				'academy' => $this->academyBranch($sql->project_category_id, $sql->project_slug ?? $slug),
 				'folder' => $this->folder,
 				'PARAMETER' => [
 					'WEB_URL_PROJECTS' => WEB_URL_PROJECTS,
@@ -118,6 +123,51 @@ class Projects extends BaseController {
 		} else {
 			return redirect()->to('404');
 		}
+	}
+
+	/**
+	 * Spor branşı detay sayfası için Spor Akademisi bilgileri.
+	 *
+	 * Akademide karşılığı olan branşlarda antrenör, yaş grubu ve program gibi
+	 * bilgiler doğrudan servisten gelir; olmayanlarda yalnızca akademiye
+	 * yönlendiren genel bir kart gösterilir.
+	 */
+	private function academyBranch(?int $category_id, ?string $slug): ?array
+	{
+		// Yalnızca spor branşı kategorisinde göster
+		if ((int) $category_id !== SPORT_PROJECT_CATEGORY_ID) {
+			return NULL;
+		}
+
+		$eslesen = NULL;
+		foreach ($this->sportAcademy->branches() as $row) {
+			if (($row['slug'] ?? NULL) === $slug) {
+				$eslesen = $row;
+				break;
+			}
+		}
+
+		// Servis kapalıysa veya branş eşleşmiyorsa yalnızca yönlendirme kartı
+		if ($eslesen === NULL) {
+			return [
+				'matched' => FALSE,
+				'url'     => $this->sportAcademy->branchUrl(NULL),
+			];
+		}
+
+		return [
+			'matched'        => TRUE,
+			'url'            => $this->sportAcademy->branchUrl($slug),
+			'description'    => $eslesen['description'] ?? ($eslesen['desc'] ?? NULL),
+			'coach'          => $eslesen['coachName'] ?? NULL,
+			'age_group'      => $eslesen['ageGroup'] ?? NULL,
+			'sessions'       => $eslesen['sessions'] ?? NULL,
+			'weekly_hours'   => $eslesen['weeklyHours'] ?? NULL,
+			'total_students' => $eslesen['totalStudents'] ?? NULL,
+			'gains'          => array_slice($eslesen['gains'] ?? [], 0, 5),
+			'requirements'   => array_slice($eslesen['requirements'] ?? [], 0, 5),
+			'schedule'       => array_slice($eslesen['schedule'] ?? [], 0, 4),
+		];
 	}
 
 	public function allProjects($category = NULL, $neighbourhood = NULL, $status = NULL, $page_start = NULL, $per_page = NULL) {
