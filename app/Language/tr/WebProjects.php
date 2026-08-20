@@ -1,5 +1,6 @@
 <?php
 return [
+	'detail' => 'Detaylar',
 	'title' => 'Projeler',
 	'description' => "Sultangazi'de Hizmette Sınır Tanımıyoruz, Çünkü Siz Değerlisiniz!",
 	'all' => 'Tüm Projeler',
