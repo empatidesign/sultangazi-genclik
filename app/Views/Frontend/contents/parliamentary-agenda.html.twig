@@ -1,0 +1,45 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebParliamentaryAgenda.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebParliamentaryAgenda.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="pages page-inner-top">
+            <h2>{{ lang('WebParliamentaryAgenda.title') }}</h2>
+
+            {% if list.parliamentary_agendas != null %}
+              <div class="files">
+                {% for row in list.parliamentary_agendas %}
+                <div class="files-item">
+                  <a target="_blank" href="{{ row.file.base }}"><i class="fa fa-download"></i> {{ row.parliamentary_agenda_name }}</a>
+                </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

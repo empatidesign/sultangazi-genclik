@@ -1,0 +1,183 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebDirectorates.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <a href="{{ web_url(PARAMETER.WEB_URL_DIRECTORATES) }}" class="breadcrumb-text">{{ lang('WebDirectorates.title') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ result.directorates_name }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3" > 
+          <div class="sidebar">
+            <div class="page-filter">
+              <div class="filter-card card">
+                <div class="card-header" style="display:flex;justify-content:space-between;align-items:center">
+                 <div style="display:flex;align-items:center;">
+                  <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid card-header-img" title="" alt="" />
+                  <h5 class="card-header-title mb-0">{{ lang('WebDirectorates.title') }}</h5>
+                    </div>
+                     <div class="buttonServiceOpens" onclick="openItemNew('newServiceOpen2','iconId2')">
+                      <i id="iconId2" class="fas fa-bars"></i>
+                    </div>
+                </div>
+                {% if list.directorates != null %}
+                  <div class="card-body" id="newServiceOpen2">
+                    <ul>
+                      {% for row in list.directorates %}
+                      <li class="filter-item {{ row.directorates_id == result.directorates_id ? 'active' : null }}">
+                        <a href="{{ row.link }}" class="filter-link">
+                          <div>
+                            <span>{{ row.directorates_name }}</span>
+                          </div>
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="presidents vice-president-detail page-inner-top">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="vice-president-detail-image">
+                  {% if result.person.image.normal != null %}
+                    <img src="{{ result.person.image.base }}" class="img-fluid" aria-label="{{ result.directorates_name }}" title="{{ result.directorates_name }}" alt="{{ result.directorates_name }}" />
+                  {% else %}
+                    <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/directorates-person-no-image.jpg') }}" class="img-fluid" aria-label="{{ result.directorates_name }}" title="{{ result.directorates_name }}" alt="{{ result.directorates_name }}" />
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="vice-president-detail-text-box">
+                  <div class="vice-president-detail-text-box-header">
+                    <h6 class="name">{{ result.directorates_name }}</h6>
+
+                    {% if result.person.sub_title != null %}
+                      <div class="title">{{ result.person.sub_title }}</div>
+                    {% endif %}
+                  </div>
+
+                  {% if result.contact.email_address != null or result.contact.telephone != null or result.contact.fax != null %}
+                    <div class="vice-president-detail-text-box-body">
+                      {% if result.contact.email_address != null %}
+                        <div class="email">
+                          <i class="fa-solid fa-at"></i>
+                          <span><a href="mailto:{{ result.contact.email_address }}">{{ result.contact.email_address }}</a></span>
+                        </div>
+                      {% endif %}
+
+                      {% if result.contact.telephone != null %}
+                        <div class="phone">
+                          <i class="fa-solid fa-headset"></i>
+                          <span>{{ result.contact.telephone }}</span>
+                        </div>
+                      {% endif %}
+
+                      {% if result.contact.fax != null %}
+                        <div class="phone">
+                          <i class="fa-solid fa-print"></i>
+                          <span>{{ result.contact.fax }}</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="department-detail-tab-menu mb-4">
+            <nav>
+              <div class="nav nav-tabs nav-tabs-department-detail" id="nav-tab" role="tablist">
+                <a href="javascript:void(0);" style="border-top-left-radius: 10px;" class="nav-link active" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" role="tab" aria-controls="documents" aria-selected="true">
+                  <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid" title="" alt="" />
+                  {{ lang('WebDirectorates.tabMenu.tab1') }}
+                </a>
+                <a href="javascript:void(0);" class="nav-link" id="announcements-tab" data-bs-toggle="tab" data-bs-target="#announcements" role="tab" aria-controls="announcements" aria-selected="false">
+                  {{ lang('WebDirectorates.tabMenu.tab2') }}
+                </a>
+                <a href="javascript:void(0);" class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" role="tab" aria-controls="news" aria-selected="false">
+                  {{ lang('WebDirectorates.tabMenu.tab3') }}
+                </a>
+              </div>
+            </nav>
+            <div class="tab-content nav-content-department-detail" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                {% if list.files != null %}
+                  <div class="nav-content-departments">
+                    {% for row in list.files %}
+                    <div class="nav-content-department-item">
+                      <h6 class="mb-0 title">{{ row.category_name }}</h6>
+
+                      {% if row.files != null %}
+                        {% for value in row.files %}
+                        <a target="_blank" href="{{ value.file }}" class="text-decoration-none nav-content-department-item-description d-flex align-items-center {{ not loop.last ? 'mb-3' : null }}">
+                          <i class="fa-solid fa-cloud-arrow-down"></i>
+                          <p class="mb-0">{{ value.file_name }}</p>
+                        </a>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="p-3">{{ lang('Web.error.noRecord') }}</div>
+                {% endif %}
+              </div>
+              <div class="tab-pane fade" id="announcements" role="tabpanel" aria-labelledby="announcements-tab">
+                {% if list.announcements != null %}
+                  <div class="nav-content-departments">
+                    {% for row in list.announcements %}
+                      <div class="nav-content-department-item">
+                        <a target="_blank" href="{{ web_url(PARAMETER.WEB_URL_ANNOUNCEMENTS) }}">
+                          <i class="fa fa-bullhorn"></i> {{ row.announcement_name }}
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="p-3">{{ lang('Web.error.noRecord') }}</div>
+                {% endif %}
+              </div>
+              <div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab">
+                {% if list.news != null %}
+                  <div class="nav-content-departments">
+                    {% for row in list.news %}
+                      <div class="nav-content-department-item">
+                        <a target="_blank" href="{{ web_url(PARAMETER.WEB_URL_NEWS_DETAIL~'/'~row.news_slug~'/'~row.news_id) }}">
+                          <i class="fa fa-bullhorn"></i> {{ row.news_name }}
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="p-3">{{ lang('Web.error.noRecord') }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

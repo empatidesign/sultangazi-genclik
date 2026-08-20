@@ -400,6 +400,44 @@ $routes->group('', ['namespace' => APP_NAMESPACE . '\Controllers\Frontend'], fun
 
     /*****************************************************/
 
+    // Kurumsal sayfalar
+    // Kontrolcu, model ve gorunumler ana siteden uyarlandi. Bu sayfalar
+    // site menusunde (menus tablosu) tanimliydi ancak rota bulunmadigi
+    // icin tamami 404 veriyordu.
+    $routes->get(WEB_URL_MUNICIPAL_COUNCILS, 'Contents\MunicipalCouncils::index');
+    $routes->get('/{locale}/'.WEB_URL_MUNICIPAL_COUNCILS, 'Contents\MunicipalCouncils::index');
+
+    $routes->get(WEB_URL_ORGANIZATION_CHART, 'Contents\OrganizationChart::index');
+    $routes->get('/{locale}/'.WEB_URL_ORGANIZATION_CHART, 'Contents\OrganizationChart::index');
+
+    $routes->get(WEB_URL_COUNCIL_MEMBERS, 'Contents\CouncilMembers::index');
+    $routes->get('/{locale}/'.WEB_URL_COUNCIL_MEMBERS, 'Contents\CouncilMembers::index');
+
+    $routes->get(WEB_URL_DIRECTORATES, 'Contents\Directorates::index');
+    $routes->get('/{locale}/'.WEB_URL_DIRECTORATES, 'Contents\Directorates::index');
+    $routes->get(WEB_URL_DIRECTORATES_DETAIL.'/(:any)/(:num)', 'Contents\Directorates::detail/$1/$2');
+    $routes->get('/{locale}/'.WEB_URL_DIRECTORATES_DETAIL.'/(:any)/(:num)', 'Contents\Directorates::detail/$1/$2');
+
+    $routes->get(WEB_URL_VICE_PRESIDENTS, 'Contents\VicePresidents::index');
+    $routes->get('/{locale}/'.WEB_URL_VICE_PRESIDENTS, 'Contents\VicePresidents::index');
+    $routes->get(WEB_URL_VICE_PRESIDENTS_DETAIL.'/(:any)/(:num)', 'Contents\VicePresidents::detail/$1/$2');
+    $routes->get('/{locale}/'.WEB_URL_VICE_PRESIDENTS_DETAIL.'/(:any)/(:num)', 'Contents\VicePresidents::detail/$1/$2');
+
+    $routes->get(WEB_URL_LOGOS, 'Contents\Logos::index');
+    $routes->get('/{locale}/'.WEB_URL_LOGOS, 'Contents\Logos::index');
+
+    $routes->get(WEB_URL_PARLIAMENTARY_AGENDA, 'Contents\ParliamentaryAgenda::index');
+    $routes->get('/{locale}/'.WEB_URL_PARLIAMENTARY_AGENDA, 'Contents\ParliamentaryAgenda::index');
+
+    $routes->get(WEB_URL_ACTIVITY_REPORT, 'Contents\ActivityReport::index');
+    $routes->get('/{locale}/'.WEB_URL_ACTIVITY_REPORT, 'Contents\ActivityReport::index');
+
+    $routes->get(WEB_URL_STRATEGIC_PLAN_AND_PERFORMANCA, 'Contents\StrategicPlanAndPerformance::index');
+    $routes->get('/{locale}/'.WEB_URL_STRATEGIC_PLAN_AND_PERFORMANCA, 'Contents\StrategicPlanAndPerformance::index');
+
+
+    /*****************************************************/
+
     // News
     $routes->get(WEB_URL_NEWS, 'News\News::index');
     $routes->get('/{locale}/' . WEB_URL_NEWS, 'News\News::index');

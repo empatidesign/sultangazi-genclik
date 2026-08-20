@@ -544,6 +544,24 @@ class BaseController extends Controller
    * @param $path
    * @param $name
    */
+  /**
+   * Kurumsal icerik gorseli.
+   *
+   * Meclis uyeleri, mudurlukler, baskan yardimcilari gibi iceriklerin
+   * gorselleri ana sitede (sultangazi.bel.tr) tutulur. Dosya yerelde
+   * varsa site adresini, yoksa ana site adresini dondurur.
+   */
+  public function contentImageUrl($path, $name)
+  {
+    if (!isNotNull($name)) {
+      return base_url('assets/' . FILE_PATH_IMAGES . '/no-image.jpg');
+    }
+
+    $rel = rtrim((string) $path, '/') . '/' . ltrim((string) $name, '/');
+
+    return is_file(FCPATH . $rel) ? base_url($rel) : sultangazi_url($rel);
+  }
+
   public function imageControl($path, $name)
   {
     // Path ve name parametrelerini temizle ve güvenli hale getir

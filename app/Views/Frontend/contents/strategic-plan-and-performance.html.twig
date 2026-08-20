@@ -1,0 +1,54 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebStrategicPlanAndPerformance.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebStrategicPlanAndPerformance.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="pages strategic-plan page-inner-top">
+            <h2>{{ lang('WebStrategicPlanAndPerformance.title') }}</h2>
+
+            {% if list.strategic_plans != null %}
+              <div class="row">
+                {% for row in list.strategic_plans %}
+                <div class="col-12 col-md-12 col-lg-12 col-xl-6 mb-3">
+                  <div class="strategic-plan-item">
+                    <div class="strategic-plan-item-image">
+                      <img src="{{ row.image.base }}" aria-label="{{ row.strategic_plan_name }}" title="{{ row.strategic_plan_name }}" alt="{{ row.strategic_plan_name }}" />
+                    </div>
+                    <div class="strategic-plan-item-column">
+                      <div class="strategic-plan-item-name">{{ row.strategic_plan_name }}</div>
+                      <div class="strategic-plan-item-number">{{ lang('WebStrategicPlanAndPerformance.number') }}: {{ row.strategic_plan_number }}</div>
+                      <a target="_blank" href="{{ row.file.base }}"><i class="fa fa-eye"></i> {{ lang('WebStrategicPlanAndPerformance.view') }}</a>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

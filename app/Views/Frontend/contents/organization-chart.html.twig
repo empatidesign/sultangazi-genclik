@@ -1,0 +1,95 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% block body %}
+<section class="page-header page-header-president">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebOrganizationChart.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebOrganizationChart.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="inner-page__content bg _schema">
+  {% if list.organization_chart.first != null or list.organization_chart.second != null or list.organization_chart.third != null %}
+    <div class="schema my-5">
+      {% if list.organization_chart.first != null %}
+        <div class="schema-header">
+          {% for row in list.organization_chart.first %}
+          <ul class="schema-list no line">
+            <li>
+              {% if row.organization_chart_link != null %}
+                <a href="{{ row.organization_chart_link }}">
+              {% else %}
+                <a>
+              {% endif %}
+                <div class="title">{{ row.organization_chart_name }}</div>
+                <div class="text">{{ row.organization_chart_sub_title }}</div>
+              </a>
+            </li>
+          </ul>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if list.organization_chart.second != null %}
+        <div class="schema-middle">
+          <ul class="schema-list justify-around">
+            {% for row in list.organization_chart.second %}
+            <li {{ loop.first ? 'class="line-right" style="margin-bottom: 20px;"' : null }}>
+              {% if row.organization_chart_link != null %}
+                <a href="{{ row.organization_chart_link }}">
+              {% else %}
+                <a>
+              {% endif %}
+                <div class="title style-1">{{ row.organization_chart_name }}</div>
+                <div class="text">{{ row.organization_chart_sub_title }}</div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if list.organization_chart.third != null %}
+        <div class="schema-footer">
+          <div class="row">
+            {% for row in list.organization_chart.third %}
+              {% if loop.index0 is divisible by(6) %}
+                <div class="col-md-2">
+              {% endif %}
+
+              {% if row.organization_chart_name != null %}
+                <ul class="schema-list {{ not loop.index0 is divisible by(6) ? 'no line' : null }}">
+                  <li class="title-column">
+                    {% if row.organization_chart_link != null %}
+                      <a href="{{ row.organization_chart_link }}">
+                    {% else %}
+                      <a>
+                    {% endif %}
+                      {% if loop.index0 is divisible by(6) %}
+                        <div class="title">{{ row.organization_chart_name }}</div>
+                      {% else %}
+                        <div class="title fw-normal">{{ row.organization_chart_name }}</div>
+                      {% endif %}
+                      <div class="text">{{ row.organization_chart_sub_title }}</div>
+                    </a>
+                  </li>
+                </ul>
+              {% endif %}
+
+              {% if loop.index is divisible by(6) or loop.last %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

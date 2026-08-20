@@ -1,0 +1,41 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebLogos.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebLogos.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="pages page-inner-top">
+            <h2>{{ lang('WebLogos.title') }}</h2>
+
+            <div class="files">
+              <div class="files-item">
+                <a target="_blank" href="{{ base_url(PARAMETER.FILE_PATH_MAIN_STORAGE_PDF~'/SG_Logo.pdf') }}"><i class="fa fa-download"></i> {{ lang('WebLogos.title') }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

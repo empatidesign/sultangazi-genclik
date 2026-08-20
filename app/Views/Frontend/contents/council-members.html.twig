@@ -1,0 +1,60 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebCouncilMembers.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebCouncilMembers.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          {% if list.council_members != null %}
+            <div class="vice-president-list">
+              <div class="row">
+                {% for row in list.council_members %}
+                <div class="col-sm-12 col-md-12 col-lg-4">
+                  <div class="vice-president-list-item text-center">
+                    <div class="vice-president-list-image">
+                      <img src="{{ row.council_member_image.base }}" class="img-fluid" aria-label="{{ row.council_member_name }} {{ row.council_member_surname }}" title="{{ row.council_member_name }} {{ row.council_member_surname }}" alt="{{ row.council_member_name }} {{ row.council_member_surname }}" />
+
+                      <div class="vice-president-list-title">
+                        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" aria-label="" title="" alt="" />
+                        <h5 class="name mb-0">{{ row.council_member_name }} {{ row.council_member_surname }}</h5>
+                      </div>
+                    </div>
+
+                    {% if row.council_member_sub_title != null %}
+                      <div class="sub-title">{{ row.council_member_sub_title }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+
+                <div class="mt-3">
+                  {{ pagination.list|raw }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

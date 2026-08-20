@@ -1,0 +1,100 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebVicePresidents.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <a href="{{ web_url(PARAMETER.WEB_URL_VICE_PRESIDENTS) }}" class="breadcrumb-text">{{ lang('WebVicePresidents.title') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ result.vice_president_name }} {{ result.vice_president_surname }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="presidents vice-president-detail page-inner-top">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-4">
+                <div class="vice-president-detail-image">
+                  <img src="{{ result.image.base }}" class="img-fluid" aria-label="{{ result.vice_president_name }} {{ result.vice_president_surname }}" title="{{ result.vice_president_name }} {{ result.vice_president_surname }}" alt="{{ result.vice_president_name }} {{ result.vice_president_surname }}" />
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-8">
+                <div class="vice-president-detail-text-box">
+                  <div class="vice-president-detail-text-box-header">
+                    <h6 class="name">{{ result.vice_president_name }} {{ result.vice_president_surname }}</h6>
+
+                    {% if result.vice_president_sub_title != null %}
+                      <div class="title">{{ result.vice_president_sub_title }}</div>
+                    {% endif %}
+                  </div>
+
+                  {% if result.vice_president_telephone != null or result.vice_president_email_address != null %}
+                    <div class="vice-president-detail-text-box-body">
+                      {% if result.vice_president_email_address != null %}
+                        <div class="email">
+                          <i class="fa-solid fa-at"></i>
+                          <span><a href="mailto:{{ result.vice_president_email_address }}">{{ result.vice_president_email_address }}</a></span>
+                        </div>
+                      {% endif %}
+
+                      {% if result.vice_president_telephone != null %}
+                        <div class="phone">
+                          <i class="fa-solid fa-headset"></i>
+                          <span>{{ result.vice_president_telephone }}</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if result.vice_president_description != null %}
+            <div class="vice-president-detail-resume">
+              <div class="vice-president-detail-resume-header">
+                <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid" title="" alt="" />
+                <h6 class="mb-0">{{ lang('WebVicePresidents.description') }}</h6>
+              </div>
+
+              <div class="resume-content">
+                <p class="mb-0">{{ result.vice_president_description|raw }}</p>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if list.directorates != null %}
+            <div class="vice-president-detail-department">
+              <div class="vice-president-detail-department-header">
+                <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" class="img-fluid" title="" alt="" />
+                <h6 class="mb-0">{{ lang('WebVicePresidents.directorates') }}</h6>
+              </div>
+              {% for row in list.directorates %}
+              <a target="_blank" href="{{ web_url(PARAMETER.WEB_URL_DIRECTORATES_DETAIL~'/'~row.directorates_slug~'/'~row.directorates_id) }}" class="department-content-item">
+                <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/menu-small-logo-blue.png') }}" class="img-fluid" title="" alt="" />
+                <p class="mb-0">{{ row.directorates_name }}</p>
+              </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

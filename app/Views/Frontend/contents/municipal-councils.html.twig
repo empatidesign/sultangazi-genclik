@@ -1,0 +1,60 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebMunicipalCouncils.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebMunicipalCouncils.title') }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          {% if list.municipal_councils != null %}
+            <div class="vice-president-list">
+              <div class="row">
+                {% for row in list.municipal_councils %}
+                <div class="col-sm-12 col-md-12 col-lg-4">
+                  <div class="vice-president-list-item text-center">
+                    <div class="vice-president-list-image">
+                      <img src="{{ row.municipal_council_image.base }}" class="img-fluid" aria-label="{{ row.municipal_council_name }} {{ row.municipal_council_surname }}" title="{{ row.municipal_council_name }} {{ row.municipal_council_surname }}" alt="{{ row.municipal_council_name }} {{ row.municipal_council_surname }}" />
+
+                      <div class="vice-president-list-title">
+                        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/logo/logo-sultangazi-belediyesi.svg') }}" aria-label="" title="" alt="" />
+                        <h5 class="name mb-0">{{ row.municipal_council_name }} {{ row.municipal_council_surname }}</h5>
+                      </div>
+                    </div>
+
+                    {% if row.municipal_council_sub_title != null %}
+                      <div class="sub-title">{{ row.municipal_council_sub_title }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+
+                <div class="mt-3">
+                  {{ pagination.list|raw }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
