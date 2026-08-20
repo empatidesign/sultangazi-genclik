@@ -1,0 +1,113 @@
+{% if SESSION_USER_ISLOGGEDIN == true %}
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="{{ base_url(BACKEND_URL) }}" class="logo">
+      <span>
+        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~BACKEND_TEMPLATE_PATH~'/'~FILE_PATH_IMAGES~'/logo-small.svg') }}" class="logo-sm" />
+      </span>
+      <span class="web">
+        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~BACKEND_TEMPLATE_PATH~'/'~FILE_PATH_IMAGES~'/logo-white.svg') }}" class="logo-lg" alt="" />
+        <img src="{{ base_url(FILE_PATH_ASSETS~'/'~BACKEND_TEMPLATE_PATH~'/'~FILE_PATH_IMAGES~'/logo-dark.svg') }}" class="logo-lg logo-dark" alt="" />
+      </span>
+    </a>
+  </div>
+  <nav class="navbar-custom">
+    <ul class="list-unstyled topbar-nav float-right mb-0">
+      {% if languages|length > 1 %}
+        <li class="hidden-sm">
+          <a href="javascript:void(0);" class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">
+            {{ lang('Admin.headerMenu.languageChange') }} <i class="mdi mdi-chevron-down"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            {% for row in languages %}
+            <a href="{{ base_url(BACKEND_URL~'/lang/'~row.lang_code) }}" class="dropdown-item"><span>{{ row.lang_title }}</span></a>
+            {% endfor %}
+          </div>
+        </li>
+      {% endif %}
+      <li class="dropdown">
+        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+          {% if users.user_image != null %}
+            <img src="{{ base_url('uploads/users/'~users.user_image) }}" class="rounded-circle" alt="" />
+          {% else %}
+            <img src="{{ base_url(FILE_PATH_ASSETS~'/'~BACKEND_TEMPLATE_PATH~'/images/users.jpg') }}" class="rounded-circle" alt="" />
+          {% endif %}
+          <span class="ml-1 nav-user-name hidden-sm">{{ SESSION_USER_NAME }} <i class="mdi mdi-chevron-down"></i> </span>
+        </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a target="_blank" href="{{ base_url() }}" class="dropdown-item"><i class="dripicons-user text-muted mr-2"></i> {{ lang('Admin.headerMenu.goToTheSite') }}</a>
+            <a href="{{ base_url(BACKEND_URL~'/'~ADMIN_URL_SETTINGS~'/'~ADMIN_URL_GENERAL_SETTINGS) }}" class="dropdown-item"><i class="dripicons-gear text-muted mr-2"></i> {{ lang('Admin.headerMenu.settings') }}</a>
+            <div class="dropdown-divider"></div>
+            <a href="{{ base_url(BACKEND_URL~'/'~ADMIN_URL_LOGOUT) }}" class="dropdown-item"><i class="dripicons-exit text-muted mr-2"></i> {{ lang('Admin.headerMenu.logout') }}</a>
+          </div>
+      </li>
+    </ul>
+    <ul class="list-unstyled topbar-nav mb-0">
+      <li>
+        <button class="button-menu-mobile nav-link waves-effect waves-light">
+          <i class="dripicons-menu nav-icon"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="page-wrapper">
+  <div class="left-sidenav">
+    {% if ADMIN_MENU != null %}
+      <ul class="metismenu left-sidenav-menu">
+      {% for row in ADMIN_MENU %}
+        <li>
+          {% if row.submenu != null %}
+            <a href="javascript:void(0);">
+              {% autoescape 'html' %}
+                <i class="{{ row.dashboard_menu_icon }}"></i>
+              {% endautoescape %}
+              <span>{{ row.dashboard_menu_name }}</span>
+              <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+            </a>
+          {% else %}
+            <a href="{{ base_url(BACKEND_URL~'/'~row.dashboard_menu_url) }}">
+              {% autoescape 'html' %}
+                <i class="{{ row.dashboard_menu_icon }}"></i>
+              {% endautoescape %}
+              <span>{{ row.dashboard_menu_name }}</span>
+            </a>
+          {% endif %}
+
+          {% if row.submenu != null %}
+            <ul class="nav-second-level" aria-expanded="false">
+              {% for value in row.submenu %}
+              <li class="nav-item">
+                {% if value.submenu != null %}
+                  <a href="javascript:void(0);" class="nav-link">
+                    <span>{{ value.dashboard_menu_name }}</span>
+                    <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span>
+                  </a>
+                {% else %}
+                  <a href="{{ base_url(BACKEND_URL~'/'~value.dashboard_menu_url) }}" class="nav-link">{{ value.dashboard_menu_name }}</a>
+                {% endif %}
+
+                {% if value.submenu != null %}
+                  <ul class="nav-second-level" aria-expanded="false">
+                    {% for item in value.submenu %}
+                    <li>
+                      <a href="{{ base_url(BACKEND_URL~'/'~item.dashboard_menu_url) }}">{{ item.dashboard_menu_name }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+
+              </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="page-content">
+    <div class="container-fluid">
+{% endif %}

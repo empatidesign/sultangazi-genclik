@@ -1,0 +1,352 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.popup.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.popup.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.popup.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminContents.popup.general.status') }}</th>
+                      <th>{{ lang('Admin.mobile') }}</th>
+											<th>{{ lang('AdminContents.popup.general.name') }}</th>
+											<th>{{ lang('AdminContents.popup.general.startDate') }}</th>
+											<th>{{ lang('AdminContents.popup.general.endDate') }}</th>
+											<th>{{ lang('AdminContents.popup.general.timing') }}</th>
+											<th>{{ lang('AdminContents.popup.general.displayField') }}</th>
+											<th>{{ lang('AdminContents.popup.general.type') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-3 mb-3">
+								<label for="status">{{ lang('AdminContents.popup.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_name">{{ lang('AdminContents.popup.general.name') }} <span class="tx-danger">*</span></label>
+								<input type="text" name="form[popup_module_name]" id="popup_module_name" class="form-control" />
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_start_date">{{ lang('AdminContents.popup.general.dateRange.title') }}</label>
+								<div class="form-row">
+									<div class="col-12 col-lg-6 mb-lg-0 mb-3">
+										<input type="text" name="form[popup_module_start_date]" id="popup_module_start_date" class="form-control datetime-picker" autocomplete="off" />
+									</div>
+									<div class="col-12 col-lg-6">
+										<input type="text" name="form[popup_module_end_date]" id="popup_module_end_date" class="form-control datetime-picker" autocomplete="off" />
+									</div>
+								</div>
+								{{ form.help(lang('AdminContents.popup.general.dateRange.description')) }}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_timing">{{ lang('AdminContents.popup.general.timing') }} <span class="tx-danger">*</span></label>
+								{% if result.popup_module_timing != null %}
+									<select name="form[popup_module_timing]" id="popup_module_timing" class="form-control select2">
+										<option value="">{{ lang('Admin.choose') }}</option>
+										{% for key, row in result.popup_module_timing %}
+										<option value="{{ key }}">{{ row }}</option>
+										{% endfor %}
+									</select>
+								{% else %}
+									<div class="alert alert-danger mg-b-0" role="alert">{{ lang('Admin.noRecords') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_display_field">{{ lang('AdminContents.popup.general.displayField') }} <span class="tx-danger">*</span></label>
+								{% if result.popup_module_display_field != null %}
+									<select name="form[popup_module_display_field][]" id="popup_module_display_field" class="form-control select2" multiple>
+										{% for key, row in result.popup_module_display_field %}
+										<option value="{{ key }}">{{ row }}</option>
+										{% endfor %}
+									</select>
+									{{ form.help(lang('Admin.process.multipleSelection')) }}
+								{% else %}
+									<div class="alert alert-danger mg-b-0" role="alert">{{ lang('Admin.noRecords') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_type">{{ lang('AdminContents.popup.general.type') }}</label>
+								{% if result.popup_module_type_array != null %}
+									<select name="form[popup_module_type]" id="popup_module_type" class="form-control select2">
+										{% for key, row in result.popup_module_type_array %}
+											<option value="{{ key }}" data-type="{{ row.type }}">{{ row.name }}</option>
+										{% endfor %}
+									</select>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-12 popup_type_html">
+								<label for="popup_module_html">{{ lang('AdminContents.popup.general.description') }}</label>
+								{{ form.textarea('popup_module_html', '', '', 'textarea_editor', '', '') }}
+							</div>
+							<div class="col-12 col-lg-12 popup_type_image" style="display:none;">
+								<div class="row">
+									<div class="col-12 col-lg-6 mb-3">
+										<label for="popup_module_image">{{ lang('AdminContents.popup.general.image.title') }}</label>
+										{{ form.dropify('popup_module_image', '', '', '') }}
+									</div>
+                  <div class="col-12 col-lg-6 mb-3">
+										<label for="popup_module_mobile_image">{{ lang('AdminContents.popup.general.image.mobile') }}</label>
+										{{ form.dropify('popup_module_mobile_image', '', '', '') }}
+									</div>
+									<div class="col-12 col-lg-12">
+										<label for="popup_module_image_link">{{ lang('AdminContents.popup.general.image.link') }}</label>
+										{{ form.input('popup_module_image_link', '', '', '', '') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.popup_module_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-3 mb-3">
+								<label for="status">{{ lang('AdminContents.popup.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_name">{{ lang('AdminContents.popup.general.name') }} <span class="tx-danger">*</span></label>
+								<input type="text" name="form[popup_module_name]" id="popup_module_name" class="form-control" value="{{ result.popup_module_name }}" />
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_start_date">{{ lang('AdminContents.popup.general.dateRange.title') }}</label>
+								<div class="form-row">
+									<div class="col-12 col-lg-6 mb-lg-0 mb-3">
+										<input type="text" name="form[popup_module_start_date]" id="popup_module_start_date" class="form-control datetime-picker" value="{{ result.popup_module_start_date }}" autocomplete="off" />
+									</div>
+									<div class="col-12 col-lg-6">
+										<input type="text" name="form[popup_module_end_date]" id="popup_module_end_date" class="form-control datetime-picker" value="{{ result.popup_module_end_date }}" autocomplete="off" />
+									</div>
+								</div>
+								{{ form.help(lang('AdminContents.popup.general.dateRange.description')) }}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_timing">{{ lang('AdminContents.popup.general.timing') }} <span class="tx-danger">*</span></label>
+								{% if result.popup_module_timing != null %}
+									<select name="form[popup_module_timing]" id="popup_module_timing" class="form-control select2">
+										{% for row in result.popup_module_timing %}
+										<option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+									</select>
+								{% else %}
+									<div class="alert alert-danger mg-b-0" role="alert">{{ lang('Admin.noRecords') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_display_field">{{ lang('AdminContents.popup.general.displayField') }} <span class="tx-danger">*</span></label>
+								{% if result.popup_module_display_field != null %}
+									<select name="form[popup_module_display_field][]" id="popup_module_display_field" class="form-control select2" multiple>
+										{% for row in result.popup_module_display_field %}
+										<option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+									</select>
+									{{ form.help(lang('Admin.process.multipleSelection')) }}
+								{% else %}
+									<div class="alert alert-danger mg-b-0" role="alert">{{ lang('Admin.noRecords') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="popup_module_type">{{ lang('AdminContents.popup.general.type') }}</label>
+								{% if result.popup_module_type_array != null %}
+									<select name="form[popup_module_type]" id="popup_module_type" class="form-control select2">
+										{% for row in result.popup_module_type_array %}
+											<option value="{{ row.id }}" data-type="{{ row.type }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+									</select>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-12 popup_type_html" {{ result.popup_module_type == result.popup_module_type_selected.data.html.id ? 'style="display:block;"' : 'style="display:none;"' }}>
+								<label for="popup_module_html">{{ lang('AdminContents.popup.general.description') }}</label>
+								{{ form.textarea('popup_module_html', lang.data.translations, '', 'textarea_editor', '', '') }}
+							</div>
+							<div class="col-12 col-lg-12 popup_type_image" {{ result.popup_module_type == result.popup_module_type_selected.data.image.id ? 'style="display:block;"' : 'style="display:none;"' }}>
+								<div class="row">
+									<div class="col-12 col-lg-6 mb-3">
+										<label for="popup_module_image">{{ lang('AdminContents.popup.general.image.title') }}</label>
+										{{ form.dropify('popup_module_image', lang.data.translations, 'image_remove', '') }}
+									</div>
+                  <div class="col-12 col-lg-6 mb-3">
+										<label for="popup_module_mobile_image">{{ lang('AdminContents.popup.general.image.mobile') }}</label>
+										{{ form.dropify('popup_module_mobile_image', lang.data.translations, 'mobile_image_remove', '') }}
+									</div>
+									<div class="col-12 col-lg-6">
+										<label for="popup_module_image_link">{{ lang('AdminContents.popup.general.image.link') }}</label>
+										{{ form.input('popup_module_image_link', lang.data.translations, '', '', '') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

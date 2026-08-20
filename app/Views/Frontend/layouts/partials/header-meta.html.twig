@@ -1,0 +1,96 @@
+{{ doctype() }}
+
+<html lang="{{ DEFAULT_LANGUAGES_CODE }}">
+
+	<head>
+		<meta charset="UTF-8"/>
+		<base href="{{ web_url() }}"/>
+		<title>{{ head.title|raw }}</title>
+		<meta name="keywords" content="{{ head.keywords }}"/>
+		<meta name="description" content="{{ head.description|raw }}"/>
+		<meta name="author" content="{{ head.title }}"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800"/>
+
+		{% if settings.seo_google_meta == TRUE %}
+			<meta name="robots" content="index, follow"/>
+			<meta name="googlebot" content="index, follow"/>
+		{% endif %}
+
+		{% if settings.seo_canonical_url == TRUE %}
+			<link rel="canonical" href="{{ base_url() }}"/>
+		{% endif %}
+
+		{% if page == 'product-detail' %}
+			{% if settings.seo_facebook_open_graph_meta == TRUE %}
+				<meta property="og:title" content="{{ result.product_name }}"/>
+				<meta property="og:description" content=""/>
+				<meta property="og:image" content="{{ result.images.first.medium }}"/>
+				<meta property="og:image:url" content="{{ result.images.first.medium }}"/>
+				<meta property="og:url" content="{{ web_url(result.product_slug~'/'~result.product_id) }}"/>
+				<meta property="og:site_name" content="{{ settings.site_title }}"/>
+			{% endif %}
+
+			{% if settings.seo_twitter_meta == TRUE %}
+				<meta property="twitter:card" content="summary"/>
+				<meta property="twitter:site" content="{{ settings.site_title }}"/>
+				<meta property="twitter:title" content="{{ result.product_name }}"/>
+				<meta property="twitter:description" content=""/>
+				<meta property="twitter:image" content="{{ result.images.first.medium }}"/>
+				<meta property="twitter:url" content="{{ web_url(result.product_slug~'/'~result.product_id) }}"/>
+			{% endif %}
+		{% endif %}
+
+		{% if design.favicon == TRUE %}
+			<link rel="shortcut icon" href="{{ base_url(FILE_PATH_MAIN~design.favicon) }}" type="image/png"/>
+		{% endif %}
+
+		{% if languages != null %}
+			<link rel="alternate" hreflang="x-default" href="{{ web_url() }}"/>
+			{% for row in languages %}
+				<link rel="alternate" hreflang="{{ row.lang_code }}" href="{{ loop.first ? web_url() : web_url(row.lang_code) }}"/>
+			{% endfor %}
+		{% endif %}
+
+		{% if tracking_codes.google_web_console != null %}
+			<meta name="google-site-verification" content="{{ tracking_codes.google_web_console }}"/>
+		{% endif %}
+
+		{% if tracking_codes.head_tags != null %}
+			{{ tracking_codes.head_tags|raw }}
+		{% endif %}
+
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+		{{ link_tag('assets/'~FILE_PATH_IMAGES~'/sultangazi-slider-bg.jpg','preload','image') }}
+		{{ link_tag('assets/'~FILE_PATH_IMAGES~'/menu-bg.png','preload','image') }}
+
+		<script src="https://unpkg.com/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+		{{ link_tag('assets/css/output.css') }}
+		{{ link_tag('assets/vendors/fontawesome/css/all.min.css') }}
+
+
+		{% if page_name == 'index' %}
+			{{ link_tag('assets/vendors/swiper/swiper-bundle.min.css') }}
+			<style>
+				.main-slider-thumbnail .swiper-slide {
+					opacity: 0.4;
+					transition: opacity 0.3s;
+					cursor: pointer;
+				}
+				.main-slider-thumbnail .swiper-slide-thumb-active {
+					opacity: 1;
+				}
+			</style>
+		{% elseif page_name == 'news-detail' or page_name == 'projects-detail' %}
+			{{ link_tag('assets/vendors/swiper/swiper-bundle.min.css') }}
+		{% endif %}
+
+		{% if settings.google_map_api_key != null %}
+			<script async src="https://maps.googleapis.com/maps/api/js?key={{ settings.google_map_api_key }}"></script>
+		{% endif %}
+	</head>
+</html>

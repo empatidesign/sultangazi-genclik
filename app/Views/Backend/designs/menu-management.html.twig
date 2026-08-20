@@ -1,0 +1,506 @@
+{% extends BACKEND_TEMPLATE_PATH ~ '/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH ~ '/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="page-title-box">
+        <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">{{ lang('AdminDesigns.designsTitle') }}</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{{ base_url(BACKEND_URL ~ '/' ~ page_url) }}">{{ lang('AdminDesigns.menuManagement.title') }}</a>
+            </li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+        </div>
+        <h4 class="page-title">{{ lang('AdminDesigns.menuManagement.title') }}</h4>
+      </div>
+    </div>
+  </div>
+
+  {% if FLASH_DATA_MESSAGE_SUCCESS %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ FLASH_DATA_MESSAGE_SUCCESS }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'index' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <div class="main-content-label mb-0 pb-0 border-0">
+                  <h4 class="header-title">{{ lang('AdminDesigns.menuManagement.title') }}</h4>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 text-lg-right text-left">
+                <a href="{{ base_url(BACKEND_URL ~ '/' ~ page_url ~ '/add') }}" class="btn btn-purple">{{ lang('Admin.process.addNewRecord') }}</a>
+              </div>
+            </div>
+            <div id="accordionParent" class="accordion">
+              <div class="card mb-0 border">
+                <div id="FilterContent" class="card-header p-0">
+                  <h5 class="my-1">
+                    <button type="button" class="btn btn-link btn-block collapsed text-dark text-left" data-toggle="collapse" data-target="#Filter" aria-expanded="true">
+                      <i class="fas fa-filter mr-2"></i>
+                      {{ lang('Admin.filter.title') }}
+                    </button>
+                  </h5>
+                </div>
+                <div id="Filter" class="collapse" aria-labelledby="FiltreleContent" data-parent="#accordionParent" style="">
+                  {{ form_open(BACKEND_URL ~ '/' ~ page_url, 'id="search-form" class="custom-form" onsubmit="return false"') }}
+                  <div class="card-body">
+                    <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        <label for="status">{{ lang('AdminDesigns.menuManagement.general.status') }}</label>
+                        <select name="status" id="status" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="menu_name">{{ lang('AdminDesigns.menuManagement.general.name') }}</label>
+                        <input type="text" name="menu_name" id="menu_name" class="form-control" />
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="menu_location">{{ lang('AdminDesigns.menuManagement.general.location.title') }}</label>
+                        {% if result.menu_location != null %}
+                          <select name="menu_location" id="menu_location" class="form-control select2">
+                            <option value="">{{ lang('Admin.choose') }}</option>
+                            {% for key, row in result.menu_location %}
+                              <option value="{{ key }}">{{ row }}</option>
+                            {% endfor %}
+                          </select>
+                        {% endif %}
+                      </div>
+                      <div class="col-md-12 text-right">
+                        <button type="button" id="clearFilter" class="btn btn-link">{{ lang('Admin.filter.button.removeFilter') }}</button>
+                        <button type="submit" id="filterSearch" class="btn btn-primary">{{ lang('Admin.filter.button.filter') }}</button>
+                      </div>
+                    </div>
+                  </div>
+                  {{ form_close() }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xl-5 col-xs-12 col-sm-12">
+        <div class="alert alert-warning" role="alert">
+          <strong>{{ lang('Admin.warning.title') }}:</strong>
+          {{ lang('AdminDesigns.menuManagement.alert.order') }}
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div id="nestable" class="myadmin-dd dd" data-url="{{ base_url(BACKEND_URL ~ '/' ~ page_url ~ '/nestable-list') }}" data-update-url="{{ base_url(BACKEND_URL ~ '/' ~ page_url ~ '/nestable-update') }}"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-xl-7 col-xs-12 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+                <thead>
+                  <tr>
+                    <th>{{ lang('AdminDesigns.menuManagement.general.status') }}</th>
+                    <th>{{ lang('Admin.mobile') }}</th>
+                    <th>{{ lang('AdminDesigns.menuManagement.general.parentMenu') }}</th>
+                    <th>{{ lang('AdminDesigns.menuManagement.general.name') }}</th>
+                    <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'add' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        {{ form_open(BACKEND_URL ~ '/' ~ page_url ~ '/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+        <div class="card">
+          <div class="card-body">
+            <div class="main-content-label">
+              <h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+            </div>
+            <div class="row">
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status">
+                  {{ lang('AdminDesigns.menuManagement.general.status') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">
+                  {{ lang('Admin.mobile') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_parent_id">
+                  {{ lang('AdminDesigns.menuManagement.general.parentMenu') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {{ form.selectNested('form[menu_parent_id]', 'menu_parent_id', list.menu, '', 'select2', '', lang('AdminDesigns.menuManagement.general.mainMenu')) }}
+              </div>
+              <div class="col-12 col-lg-12 mb-3">
+                <label for="menu_name">
+                  {{ lang('AdminDesigns.menuManagement.general.name') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {{ form.input('menu_name', '', '', '', '') }}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_type">
+                  {{ lang('AdminDesigns.menuManagement.general.typeConnection.title') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {% if result.menu_type != null %}
+                  <select name="form[menu_type]" id="menu_type" class="form-control select2">
+                    {% for key, row in result.menu_type %}
+                      <option value="{{ key }}" data-type="{{ row.type }}" {{ row.selected }}>{{ row.name }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="menu-pages d-none">
+                  <label for="menu_page_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.pages') }}</label>
+                  {{ form.selectNormal('menu_page_id', list.pages, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-sultangazi-contents d-none">
+                  <label for="menu_sultangazi_content_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.sultangaziContents') }}</label>
+                  {{ form.selectNormal('menu_sultangazi_content_id', list.sultangazi_contents, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-contracts d-none">
+                  <label for="menu_contract_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.contracts') }}</label>
+                  {{ form.selectNormal('menu_contract_id', list.contracts, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-courses d-none">
+                  <label for="menu_course_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.courses') }}</label>
+                  {{ form.selectNormal('menu_course_id', list.courses, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-services d-none">
+                  <label for="menu_service_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.services') }}</label>
+                  {{ form.selectNormal('menu_service_id', list.services, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-projects {{ result.menu_type == result.menu_type_selected.data.project.id ? null : 'd-none' }}">
+                  <label for="menu_project_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.projects') }}</label>
+                  {{ form.selectNormal('menu_project_id', list.projects, result.menu_project_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-president-contents d-none">
+                  <label for="menu_president_content_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.presidentContents') }}</label>
+                  {{ form.selectNormal('menu_president_content_id', list.president_contents, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-link">
+                  <label for="menu_link">
+                    {{ lang('AdminDesigns.menuManagement.general.typeConnection.link.title') }}
+                    -
+                    <a href="#modalPopup" class="modal-effect text-danger" data-effect="effect-scale" data-toggle="modal"><small>{{ lang('AdminDesigns.menuManagement.general.typeConnection.link.subTitle') }}</small></a>
+                  </label>
+                  {{ form.input('menu_link', '', '', '', '') }}
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 mb-lg-0 mb-3">
+                <label for="menu_target">{{ lang('AdminDesigns.menuManagement.general.target.title') }}</label>
+                {% if result.menu_target != null %}
+                  <select name="form[menu_target]" id="menu_target" class="form-control select2">
+                    {% for key, row in result.menu_target %}
+                      <option value="{{ key }}">{{ row }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_location">
+                  {{ lang('AdminDesigns.menuManagement.general.location.title') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {% if result.menu_location != null %}
+                  <select name="form[menu_location][]" id="menu_location" class="form-control select2" multiple>
+                    {% for key, row in result.menu_location %}
+                      <option value="{{ key }}">{{ row }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-lg-0 mb-3 menu-template">
+                <label for="menu_template_sub_menu_id">{{ lang('AdminDesigns.menuManagement.general.template.title') }}</label>
+                {% if result.menu_template != null %}
+                  <select name="form[menu_template_sub_menu_id]" id="menu_template_sub_menu_id" class="form-control select2">
+                    <option value="">{{ lang('Admin.choose') }}</option>
+                    {% for key, row in result.menu_template %}
+                      <option value="{{ key }}">{{ row }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-0">
+          <div class="card-body">
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+                <span class="d-none loading-spinner">
+                  <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                  <span>{{ lang('Admin.loading') }}</span>
+                </span>
+                <span class="button-text">
+                  <i class="mdi mdi-spin mdi-star"></i>
+                  <span>{{ lang('Admin.button.save') }}</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        {{ form_close() }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'edit' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        {{ form_open(BACKEND_URL ~ '/' ~ page_url ~ '/update/' ~ result.menu_id, 'class="custom-form" enctype="multipart/form-data"') }}
+        <div class="card">
+          <div class="card-body">
+            <div class="main-content-label">
+              <h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+            </div>
+            <div class="row">
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status">
+                  {{ lang('AdminDesigns.menuManagement.general.status') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">
+                  {{ lang('Admin.mobile') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_parent_id">
+                  {{ lang('AdminDesigns.menuManagement.general.parentMenu') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {{ form.selectNested('form[menu_parent_id]', 'menu_parent_id', list.menu, result.menu_parent_id, 'select2', '', lang('AdminDesigns.menuManagement.general.mainMenu')) }}
+              </div>
+              <div class="col-12 col-lg-12 mb-3">
+                <label for="menu_name">
+                  {{ lang('AdminDesigns.menuManagement.general.name') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {{ form.input('menu_name', lang.data.translations, '', '', '') }}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_type">
+                  {{ lang('AdminDesigns.menuManagement.general.typeConnection.title') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {% if result.menu_type_array != null %}
+                  <select name="form[menu_type]" id="menu_type" class="form-control select2">
+                    {% for row in result.menu_type_array %}
+                      <option value="{{ row.id }}" data-type="{{ row.type }}" {{ row.selected }}>{{ row.name }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="menu-pages {{ result.menu_type == result.menu_type_selected.data.page.id ? null : 'd-none' }}">
+                  <label for="menu_page_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.pages') }}</label>
+                  {{ form.selectNormal('menu_page_id', list.pages, result.menu_page_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-sultangazi-contents {{ result.menu_type == result.menu_type_selected.data.sultangazi_content.id ? null : 'd-none' }}">
+                  <label for="menu_sultangazi_content_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.sultangaziContents') }}</label>
+                  {{ form.selectNormal('menu_sultangazi_content_id', list.sultangazi_contents, result.menu_sultangazi_content_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-contracts {{ result.menu_type == result.menu_type_selected.data.contract.id ? null : 'd-none' }}">
+                  <label for="menu_contract_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.contracts') }}</label>
+                  {{ form.selectNormal('menu_contract_id', list.contracts, result.menu_contract_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-services {{ result.menu_type == result.menu_type_selected.data.service.id ? null : 'd-none' }}">
+                  <label for="menu_service_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.services') }}</label>
+                  {{ form.selectNormal('menu_service_id', list.services, result.menu_service_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-projects {{ result.menu_type == result.menu_type_selected.data.projects.id ? null : 'd-none' }}">
+                  <label for="menu_project_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.projects') }}</label>
+                  {{ form.selectNormal('menu_project_id', list.projects, result.menu_project_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-president-contents {{ result.menu_type == result.menu_type_selected.data.president_content.id ? null : 'd-none' }}">
+                  <label for="menu_president_content_id">{{ lang('AdminDesigns.menuManagement.general.typeConnection.presidentContents') }}</label>
+                  {{ form.selectNormal('menu_president_content_id', list.president_contents, result.menu_president_content_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-link {{ result.menu_type == result.menu_type_selected.data.link.id ? null : 'd-none' }}">
+                  <label for="menu_link">
+                    {{ lang('AdminDesigns.menuManagement.general.typeConnection.link.title') }}
+                    -
+                    <a href="#modalPopup" class="modal-effect text-danger" data-effect="effect-scale" data-toggle="modal"><small>{{ lang('AdminDesigns.menuManagement.general.typeConnection.link.subTitle') }}</small></a>
+                  </label>
+                  {{ form.input('menu_link', lang.data.translations, '', '', '') }}
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_target">{{ lang('AdminDesigns.menuManagement.general.target.title') }}</label>
+                {% if result.menu_target != null %}
+                  <select name="form[menu_target]" id="menu_target" class="form-control select2">
+                    {% for row in result.menu_target %}
+                      <option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="menu_location">
+                  {{ lang('AdminDesigns.menuManagement.general.location.title') }}
+                  <span class="tx-danger">*</span>
+                </label>
+                {% if result.menu_location != null %}
+                  <select name="form[menu_location][]" id="menu_location" class="form-control select2" multiple>
+                    {% for row in result.menu_location %}
+                      <option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6 mb-lg-0 mb-3 menu-template {{ result.menu_template_sub_menu_id == 0 ? null : 'style=" display: none;"' }}">
+                <label for="menu_template_sub_menu_id">{{ lang('AdminDesigns.menuManagement.general.template.title') }}</label>
+                {% if result.menu_template != null %}
+                  <select name="form[menu_template_sub_menu_id]" id="menu_template_sub_menu_id" class="form-control select2">
+                    <option value="">{{ lang('Admin.choose') }}</option>
+                    {% for key, row in result.menu_template %}
+                      <option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-0">
+          <div class="card-body">
+            <div class="text-center">
+              <div class="row">
+                <div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+                  <button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+                    <span class="d-none loading-spinner">
+                      <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                      <span>{{ lang('Admin.loading') }}</span>
+                    </span>
+                    <span class="button-text">
+                      <i class="mdi mdi-spin mdi-star"></i>
+                      <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+                    </span>
+                  </button>
+                </div>
+                <div class="col-12 col-lg-6 text-lg-left text-center">
+                  <button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+                    <span class="d-none loading-spinner">
+                      <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                      <span>{{ lang('Admin.loading') }}</span>
+                    </span>
+                    <span class="button-text">
+                      <i class="mdi mdi-spin mdi-star"></i>
+                      <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ form_close() }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div id="modalPopup" class="modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title mt-0" id="myLargeModalLabel">{{ lang('AdminDesigns.menuManagement.general.typeConnection.link.subTitle') }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body" style="background-color: #e9e7f7;">
+          <ul class="mb-0">
+            <li>
+              {{ lang('AdminContents.contracts.title') }}:
+              <strong class="ml-3">contracts</strong><br />
+              {{ lang('AdminContents.faq.title') }}:
+              <strong class="ml-3">faq</strong><br />
+              {{ lang('AdminContents.blogContents.title') }}:
+              <strong class="ml-3">blog</strong><br />
+              {{ lang('AdminContents.gallery.title') }}:
+              <strong class="ml-3">gallery</strong><br />
+              {{ lang('AdminContents.referances.title') }}:
+              <strong class="ml-3">referances</strong><br />
+              {{ lang('AdminContents.services.title') }}:
+              <strong class="ml-3">services</strong><br />
+              {{ lang('AdminContents.certificates.title') }}:
+              <strong class="ml-3">certificates</strong><br />
+              {{ lang('AdminContents.teams.title') }}:
+              <strong class="ml-3">management-team</strong><br />
+              {{ lang('AdminContents.businessPartners.title') }}:
+              <strong class="ml-3">business-partners</strong><br />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

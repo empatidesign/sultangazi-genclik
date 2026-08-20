@@ -1,0 +1,21 @@
+<?php
+return [
+	'invalidMonth'   => 'Months must be between 1 and 12. Given: {0}',
+	'invalidDay'     => 'Days must be between 1 and 31. Given: {0}',
+	'invalidOverDay' => 'Days must be between 1 and {0}. Given: {1}',
+	'invalidHours'   => 'Hours must be between 0 and 23. Given: {0}',
+	'invalidMinutes' => 'The minutes must be between 0 and 59. Given: {0}',
+	'invalidSeconds' => 'The seconds must be between 0 and 59. Given: {0}',
+	'years'          => '{0, plural, =1{# year} other{# year}}',
+	'months'         => '{0, plural, =1{# month} other{# month}}',
+	'weeks'          => '{0, plural, =1{# week} other{# week}}',
+	'days'           => '{0, plural, =1{# day} other{# day}}',
+	'hours'          => '{0, plural, =1{# hour} other{# hour}}',
+	'minutes'        => '{0, plural, =1{# minute} other{# minute}}',
+	'seconds'        => '{0, plural, =1{# second} other{# second}}',
+	'ago'            => '{0} önce',
+	'inFuture'       => '{0} de',
+	'yesterday'      => 'Yesterday',
+	'tomorrow'       => 'Tomorrow',
+	'now'            => 'Now',
+];

@@ -1,0 +1,348 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.organizationChart.title') }}</a></li>
+						{% if page_name == 'add' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+						{% endif %}
+
+						{% if page_name == 'edit' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+						{% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.organizationChart.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.organizationChart.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+					<div id="accordionParent" class="accordion">
+						<div class="card mb-0 border">
+							<div id="FilterContent" class="card-header p-0">
+								<h5 class="my-1">
+									<button type="button" class="btn btn-link btn-block collapsed text-dark text-left" data-toggle="collapse" data-target="#Filter" aria-expanded="true">
+										<i class="fas fa-filter mr-2"></i> {{ lang('Admin.filter.title') }}
+									</button>
+								</h5>
+							</div>
+							<div id="Filter" class="collapse" aria-labelledby="FiltreleContent" data-parent="#accordionParent" style="">
+								{{ form_open(BACKEND_URL~'/'~page_url, 'id="search-form" class="custom-form" onsubmit="return false"') }}
+									<div class="card-body">
+										<div class="form-row">
+											<div class="col-md-4 mb-3">
+												<label for="status">{{ lang('AdminContents.organizationChart.general.status') }}</label>
+												<select name="status" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-md-4 mb-3">
+												<label for="organization_chart_name">{{ lang('AdminContents.organizationChart.general.name') }}</label>
+												<input type="text" name="organization_chart_name" id="organization_chart_name" class="form-control" />
+											</div>
+											<div class="col-md-12 text-right">
+												<button type="button" id="clearFilter" class="btn btn-link">{{ lang('Admin.filter.button.removeFilter') }}</button>
+												<button type="submit" id="filterSearch" class="btn btn-primary">{{ lang('Admin.filter.button.filter') }}</button>
+											</div>
+										</div>
+									</div>
+								{{ form_close() }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-5 col-xs-12 col-sm-12">
+			<div class="alert alert-warning" role="alert">
+				<strong>{{ lang('Admin.warning.title') }}:</strong> {{ lang('AdminContents.organizationChart.alert.order') }}
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<div id="nestable" class="myadmin-dd dd" data-url="{{ base_url(BACKEND_URL~'/'~page_url~'/nestable-list') }}" data-update-url="{{ base_url(BACKEND_URL~'/'~page_url~'/nestable-update') }}"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12 col-xl-7 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive">
+						<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+							<thead>
+								<tr>
+									<th>{{ lang('AdminContents.organizationChart.general.status') }}</th>
+                  <th>{{ lang('Admin.mobile') }}</th>
+									<th>{{ lang('AdminContents.organizationChart.general.parentChart') }}</th>
+									<th>{{ lang('AdminContents.organizationChart.general.name') }}</th>
+									<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-3 mb-3">
+								<label for="status">{{ lang('AdminContents.organizationChart.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_parent_id">{{ lang('AdminContents.organizationChart.general.parentChart') }} <span class="tx-danger">*</span></label>
+								{{ form.selectNested('form[organization_chart_parent_id]', 'organization_chart_parent_id', list.menu, '', 'select2', '', lang('AdminContents.organizationChart.general.mainChart')) }}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_name">{{ lang('AdminContents.organizationChart.general.name') }}</label>
+								{{ form.input('organization_chart_name', '', '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_sub_title">{{ lang('AdminContents.organizationChart.general.subTitle') }}</label>
+								{{ form.input('organization_chart_sub_title', '', '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_type">{{ lang('AdminContents.organizationChart.general.typeConnection.title') }} <span class="tx-danger">*</span></label>
+								<select name="form[organization_chart_type]" id="organization_chart_type" class="form-control select2">
+                  {% if result.organization_chart_type != null %}
+                    {% for key, row in result.organization_chart_type %}
+											<option value="{{ key }}" data-type="{{ row.type }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+                  {% endif %}
+								</select>
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+                <div class="menu-president d-none">
+                  <label for="organization_chart_president_id">{{ lang('AdminContents.organizationChart.general.typeConnection.president') }}</label>
+                  {{ form.selectNormal('organization_chart_president_id', list.president, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-vice-presidents d-none">
+                  <label for="organization_chart_vice_president_id">{{ lang('AdminContents.organizationChart.general.typeConnection.vicePresidents') }}</label>
+                  {{ form.selectNormal('organization_chart_vice_president_id', list.vice_presidents, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-directorates d-none">
+                  <label for="organization_chart_directorate_id">{{ lang('AdminContents.organizationChart.general.typeConnection.directorates') }}</label>
+                  {{ form.selectNormal('organization_chart_directorate_id', list.directorates, '', 'select2', '', lang('Admin.choose')) }}
+                </div>
+								<div class="menu-link">
+									<label for="organization_chart_link">{{ lang('AdminContents.organizationChart.general.typeConnection.link.title') }}</label>
+									{{ form.input('organization_chart_link', '', '', '', '') }}
+								</div>
+							</div>
+              <div class="col-12 col-lg-6">
+								<label for="organization_chart_level">{{ lang('AdminContents.organizationChart.general.level.title') }} <span class="tx-danger">*</span></label>
+								<select name="form[organization_chart_level]" id="organization_chart_level" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  {% if result.organization_chart_level != null %}
+										{% for key, row in result.organization_chart_level %}
+											<option value="{{ key }}">{{ row }}</option>
+										{% endfor %}
+                  {% endif %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.organization_chart_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-3 mb-3">
+								<label for="status">{{ lang('AdminContents.organizationChart.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-3 mb-3">
+                <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_parent_id">{{ lang('AdminContents.organizationChart.general.parentChart') }} <span class="tx-danger">*</span></label>
+								{{ form.selectNested('form[organization_chart_parent_id]', 'organization_chart_parent_id', list.menu, result.organization_chart_parent_id, 'select2', '', lang('AdminContents.organizationChart.general.mainChart')) }}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_name">{{ lang('AdminContents.organizationChart.general.name') }}</label>
+								{{ form.input('organization_chart_name', lang.data.translations, '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_sub_title">{{ lang('AdminContents.organizationChart.general.subTitle') }}</label>
+								{{ form.input('organization_chart_sub_title', lang.data.translations, '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="organization_chart_type">{{ lang('AdminContents.organizationChart.general.typeConnection.title') }} <span class="tx-danger">*</span></label>
+								{% if result.organization_chart_type_array != null %}
+									<select name="form[organization_chart_type]" id="organization_chart_type" class="form-control select2">
+										{% for key, row in result.organization_chart_type_array %}
+											<option value="{{ row.id }}" data-type="{{ row.type }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+									</select>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+                <div class="menu-president {{ result.organization_chart_type == result.organization_chart_type_selected.data.president.id ? NULL : 'd-none' }}">
+                  <label for="organization_chart_president_id">{{ lang('AdminContents.organizationChart.general.typeConnection.president') }}</label>
+                  {{ form.selectNormal('organization_chart_president_id', list.president, result.organization_chart_president_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-vice-presidents {{ result.organization_chart_type == result.organization_chart_type_selected.data.vice_presidents.id ? NULL : 'd-none' }}">
+                  <label for="organization_chart_vice_president_id">{{ lang('AdminContents.organizationChart.general.typeConnection.vicePresidents') }}</label>
+                  {{ form.selectNormal('organization_chart_vice_president_id', list.vice_presidents, result.organization_chart_vice_president_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+                <div class="menu-directorates {{ result.organization_chart_type == result.organization_chart_type_selected.data.directorates.id ? NULL : 'd-none' }}">
+                  <label for="organization_chart_directorate_id">{{ lang('AdminContents.organizationChart.general.typeConnection.directorates') }}</label>
+                  {{ form.selectNormal('organization_chart_directorate_id', list.directorates, result.organization_chart_directorate_id, 'select2', '', lang('Admin.choose')) }}
+                </div>
+								<div class="menu-link {{ result.organization_chart_type == result.organization_chart_type_selected.data.link.id ? NULL : 'd-none' }}">
+									<label for="organization_chart_link">{{ lang('AdminContents.organizationChart.general.typeConnection.link.title') }}</label>
+									{{ form.input('organization_chart_link', lang.data.translations, '', '', '') }}
+								</div>
+							</div>
+              <div class="col-12 col-lg-6">
+								<label for="organization_chart_level">{{ lang('AdminContents.organizationChart.general.level.title') }} <span class="tx-danger">*</span></label>
+								<select name="form[organization_chart_level]" id="organization_chart_level" class="form-control select2">
+                  {% if result.organization_chart_level != null %}
+										{% for row in result.organization_chart_level %}
+										<option value="{{ row.id }}" {{ row.selected }}>{{ row.name }}</option>
+										{% endfor %}
+                  {% endif %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

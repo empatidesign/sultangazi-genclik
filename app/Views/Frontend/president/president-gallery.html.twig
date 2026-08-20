@@ -1,0 +1,67 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+	<!-- Content Header Start -->
+	<section
+		class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
+		<!-- Background Layer Start -->
+		<div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
+			<img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/general/section-bg.webp') }}"/>
+		</div>
+		<!-- Background Layer End -->
+
+		<!-- Background Overlay Layer Start -->
+		<div class="hidden absolute z-[15] size-[85%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10"></div>
+		<!-- Background Overlay Layer End -->
+
+		<div class="relative z-[30]">
+			<div class="container px-6 mx-auto">
+				<div class="text-2xl md:text-3xl lg:text-3xl font-bold text-white mb-0.5">
+					{{ lang('WebPresident.gallery') }}
+				</div>
+				<div class="flex flex-nowrap items-center overflow-x-auto overflow-y-hidden gap-1.5">
+					<a href="#" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">
+						{{ lang('Web.general.homePage') }}
+					</a>
+					<i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+					<a href="#" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">
+						{{ lang('WebPresident.title') }}
+					</a>
+					<i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+					<span class="text-sm text-white font-normal">
+						{{ lang('WebPresident.gallery') }}
+					</span>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Content Header End -->
+
+	<!-- Content Start -->
+	<section class="py-6">
+		<div class="container mx-auto px-6 flex flex-col lg:flex-row lg:gap-8">
+			{{ macro.menu(list.left_menu) }}
+
+			<div
+				class="order-0 lg:order-1">
+
+				<!-- Select on Mobile Start -->
+				{{ macro.mobileMenu(list.left_menu) }}
+				<!-- Select on Mobile End -->
+
+				{% if list.gallery != null %}
+					<div class="gap-4 -mx-6 px-6 grid grid-cols-2 xl:grid-cols-3">
+						{% for row in list.gallery %}
+							<a data-fslightbox="gallery" href="{{ row.president_gallery_image }}" class="group shrink-0 bg-white border border-gray-100 rounded-lg shadow-sm p-1.5 md:p-5 transition-all duration-300 hover:shadow-[0_10px_10px_1px_rgba(0,0,0,0.05)]">
+								<img src="{{ row.president_gallery_image }}" class="w-full rounded-lg"/>
+							</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+	<!-- Content End -->
+{% endblock %}

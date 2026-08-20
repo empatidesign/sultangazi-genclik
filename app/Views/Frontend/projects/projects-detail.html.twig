@@ -1,0 +1,64 @@
+{% extends FRONTEND_TEMPLATE_PATH ~ '/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH ~ '/' ~ folder ~ '/partials/menu.html.twig' as macro %}
+
+{% block body %}
+  <!-- Content Header Start -->
+  <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
+    <!-- Background Layer Start -->
+    <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" />
+    </div>
+    <!-- Background Layer End -->
+
+    <!-- Background Overlay Layer Start -->
+    <div class="hidden absolute z-[15] size-[85%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10"></div>
+    <!-- Background Overlay Layer End -->
+
+    <div class="relative z-[30]">
+      <div class="container px-6 mx-auto">
+        <div class="text-2xl md:text-3xl lg:text-3xl font-bold text-white mb-0.5">{{ result.project_name|raw }}</div>
+        <div class="flex flex-nowrap items-center overflow-x-auto overflow-y-hidden gap-1.5">
+          <a href="{{ base_url() }}" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">{{ lang('Web.general.homePage') }}</a>
+          <i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+          <span class="text-sm text-white font-normal">{{ result.project_name|raw }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Content Header End -->
+
+  <!-- Content Start -->
+  <section class="py-6">
+    <div class="container mx-auto px-6 flex flex-col lg:flex-row gap-8">
+      {{ macro.menu(list.left_menu) }}
+
+      <div class="lg:grow">
+        {{ macro.mobileMenu(list.left_menu) }}
+
+		{% if list.images != null %}
+			<div class="w-full">
+			  <div class="news-slider swiper">
+				<div class="swiper-wrapper">
+				  {% for row in list.images %}
+				  <div class="swiper-slide !w-full">
+					<img src="{{ row.image.format }}" class="rounded-xl" title="" alt="" />
+				  </div>
+				  {% endfor %}
+				</div>
+
+				<div class="swiper-pagination"></div>
+			  </div>
+			</div>
+		{% endif %}
+
+		{% if result.project_description != null %}
+			<div class="html-content mt-6">
+				{{ result.project_description|raw }}
+			</div>
+		{% endif %}
+      </div>
+    </div>
+  </section>
+  <!-- Content End -->
+{% endblock %}

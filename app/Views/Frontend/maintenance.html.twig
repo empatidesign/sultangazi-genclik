@@ -1,0 +1,39 @@
+{{ doctype() }}
+
+<html>
+
+<head>
+<meta charset="UTF-8" />
+<title>{{ head.title }}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<meta name="robots" content="noindex" />
+<meta name="googlebot" content="noindex" />
+
+<style media="screen">
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&subset=latin-ext');
+body {background-color: #FFFFFF; color: #A3C6D8; text-align: center; font-family: "Open Sans", sans-serif; display: table; position: absolute; height: 100%; width: 100%; margin: 0px; padding: 0px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -ms-text-size-adjust: 100%;}
+h1 {margin: 3vh auto;}
+a, a:hover, a:visited, a:link {color: #A3C6D8;}
+#middle {display: table-cell; vertical-align: middle;}
+#inner {margin: 0 auto; width: 100%;}
+img {max-height: 30vw;}
+</style>
+</head>
+
+<body>
+<div id="middle">
+	<div id="inner">
+		<img src="{{ base_url(PARAMETER.FILE_PATH_ASSETS~'/'~PARAMETER.FILE_PATH_IMAGES~'/'~'maintenance.gif') }}" title="" alt="" />
+		{% if result.maintenance_mode_title != null %}
+			<h1>{{ result.maintenance_mode_title }}</h1>
+		{% endif %}
+
+		{% if result.maintenance_mode_text != null %}
+  		<h4>{{ result.maintenance_mode_text|raw }}</h4>
+		{% endif %}
+	</div>
+</div>
+</body>
+
+</html>

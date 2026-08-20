@@ -1,0 +1,40 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/project/insert/'~member_id, 'class="member-project-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="member_project_ref_no">{{ lang('AdminMembers.memberManagement.detail.project.ref') }} <span class="tx-danger">*</span></label>
+			<input type="text" name="form[member_project_ref_no]" id="member_project_ref_no" class="form-control" />
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="member_project_label">{{ lang('AdminMembers.memberManagement.detail.project.label') }} <span class="tx-danger">*</span></label>
+			<input type="text" name="form[member_project_label]" id="member_project_label" class="form-control" />
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="member_project_third_party_id">{{ lang('AdminMembers.memberManagement.detail.project.thirdParty') }}</label>
+			<select name="form[member_project_third_party_id]" id="member_project_third_party_id" class="form-control select2">
+				<option value="">{{ lang('Admin.choose') }}</option>
+				{% if list.third_party != null %}
+					{% for row in list.third_party %}
+					<option value="{{ row.member_id }}">{{ row.member_code }} - {{ row.member_third_party }} ({{ row.member_type_name }})</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="member_project_start_date">{{ lang('AdminMembers.memberManagement.detail.project.startDate') }}</label>
+			<input type="text" name="form[member_project_start_date]" id="member_project_start_date" class="form-control datepicker" autocomplete="off" />
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="member_project_end_date">{{ lang('AdminMembers.memberManagement.detail.project.endDate') }}</label>
+			<input type="text" name="form[member_project_end_date]" id="member_project_end_date" class="form-control datepicker" autocomplete="off" />
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="member_project_description">{{ lang('AdminMembers.memberManagement.detail.project.description') }}</label>
+			<textarea name="form[member_project_description]" id="member_project_description" class="form-control" rows="3"></textarea>
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-outline-primary btn-block">{{ lang('Admin.button.save') }}</button>
+		</div>
+	</div>
+{{ form_close() }}

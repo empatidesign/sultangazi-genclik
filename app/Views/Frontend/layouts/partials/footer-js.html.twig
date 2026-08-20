@@ -1,0 +1,188 @@
+<script>
+	window.theme = {
+strings: {
+general: {
+success: {
+title: "{{ lang('Web.success.title') }}"
+},
+error: {
+title: "{{ lang('Web.error.title') }}"
+},
+loading: "{{ lang('Web.general.loading') }}"
+}
+},
+parameter: {
+lang: "{{ DEFAULT_LANGUAGES_CODE }}"
+}
+};
+</script>
+
+{% if page_name == 'index' %}
+	{{ script_tag(FILE_PATH_ASSETS~'/vendors/swiper/swiper-bundle.min.js') }}
+	<script>
+		// Main Slider
+var thumbnailSwiper = new Swiper('.main-slider-thumbnail', {
+spaceBetween: 10,
+slidesPerView: 4,
+freeMode: true,
+watchSlidesProgress: true,
+navigation: {
+nextEl: '.thumbnail-swiper-next',
+prevEl: '.thumbnail-swiper-prev'
+},
+breakpoints: {
+320: {
+slidesPerView: 3
+},
+640: {
+slidesPerView: 5
+},
+768: {
+slidesPerView: 6
+},
+1024: {
+slidesPerView: 7
+},
+1280: {
+slidesPerView: 8
+}
+}
+});
+
+var mainSwiper = new Swiper('.main-slider', {
+loop: true,
+autoplay: {
+delay: 2500,
+disableOnInteraction: false
+},
+pagination: {
+el: '.swiper-pagination',
+clickable: true
+},
+thumbs: {
+swiper: thumbnailSwiper
+}
+});
+
+function startCounters() {
+document.querySelectorAll('[data-counter]').forEach(counter => {
+const target = + counter.getAttribute('data-counter');
+let current = + counter.innerText;
+
+const updateCounter = () => {
+if (current < target) {
+current++;
+counter.innerText = current;
+setTimeout(updateCounter, 20);
+}
+};
+updateCounter();
+});
+}
+
+const counterArea = document.getElementById('counter-area');
+let countersStarted = false;
+
+if (counterArea) {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && ! countersStarted) {
+countersStarted = true;
+startCounters();
+observer.disconnect();
+}
+});
+}, {threshold: 0.5});
+
+observer.observe(counterArea);
+}
+	</script>
+{% elseif page_name == 'projects-detail' or page_name == 'news-detail' %}
+	{{ script_tag(FILE_PATH_ASSETS~'/vendors/swiper/swiper-bundle.min.js') }}
+	<script>
+		const swiper = new Swiper('.news-slider', {
+loop: true,
+pagination: {
+el: '.swiper-pagination',
+clickable: true
+}
+});
+	</script>
+{% elseif page_name == 'president-gallery' %}
+	{{ script_tag(FILE_PATH_ASSETS~'/vendors/fslightbox/fslightbox.js') }}
+{% endif %}
+
+{% if tracking_codes.google_analytics != null %}
+	<script async src='https://www.googletagmanager.com/gtag/js?id={{ tracking_codes.google_analytics }}'></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+function gtag() {
+dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+gtag('config', '{{ tracking_codes.google_analytics }}');
+	</script>
+{% endif %}
+
+{% if tracking_codes.google_remarketing != null %}
+	{{ tracking_codes.google_remarketing|raw }}
+{% endif %}
+
+{% if tracking_codes.facebook_pixel != null %}
+	{{ tracking_codes.facebook_pixel|raw }}
+{% endif %}
+
+{% if tracking_codes.mailchimp != null %}
+	{{ tracking_codes.mailchimp|raw }}
+{% endif %}
+
+{% if tracking_codes.other != null %}
+	{{ tracking_codes.other|raw }}
+{% endif %}
+
+<!-- Search Ajax -->
+{# <script>
+      function openItemFlex(item) {
+        var status = document.getElementById(item).style.display;
+        if (status == "flex") {
+          document.getElementById(item).style.display = "none";
+        } else {
+          document.getElementById(item).style.display = "flex";
+        }
+      }
+
+      document.querySelector('#searchModalInput').addEventListener('input', function(e) {
+          const text = e.target.value;
+
+          const request = fetch('https://sultangazi.bel.tr/wapi/search', {
+              method: 'POST',
+              body: JSON.stringify({
+                lang: 'tr', // TODO: dil değişkeni dinamik olacak
+                value: text
+              }),
+              headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+              }
+          })
+          .then(response => response.json())
+          .then(json => {
+            const results = json.results;
+
+            document.querySelector('.searchMenuOlderSearch').innerHTML = '';
+
+            if (results.length > 0) {
+              results.forEach(result => {
+                let html = `<a href="${result.slug}" class="ClickedModalolders" role="button" aria-pressed="false" aria-label="
+
+                button">
+                  <i class="fa-solid fa-arrow-right"></i>
+                  ${result.name}
+                </a>`;
+
+                document.querySelector('.searchMenuOlderSearch').innerHTML += html;
+              });
+            }
+          })
+      });
+</script> #}</body></html>

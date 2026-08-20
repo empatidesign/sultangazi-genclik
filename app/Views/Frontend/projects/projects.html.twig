@@ -1,0 +1,88 @@
+{% extends FRONTEND_TEMPLATE_PATH ~ '/layouts/default.html.twig' %}
+
+{% block body %}
+  <!-- Content Header Start -->
+  <section class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
+    <!-- Background Layer Start -->
+    <div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
+      <img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/general/section-bg.webp') }}" />
+    </div>
+    <!-- Background Layer End -->
+
+    <!-- Background Overlay Layer Start -->
+    <div class="hidden absolute z-[15] size-[85%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10"></div>
+    <!-- Background Overlay Layer End -->
+
+    <div class="relative z-[30]">
+      <div class="container px-6 mx-auto">
+        <div class="text-2xl md:text-3xl lg:text-3xl font-bold text-white mb-0.5">{{ selected.category.project_category_name ?? lang('WebProjects.title') }}</div>
+        <div class="flex flex-nowrap items-center overflow-x-auto overflow-y-hidden gap-1.5">
+          <a href="#" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">{{ lang('Web.general.homePage') }}</a>
+          <i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+
+          {% if selected.category.project_category_name != NULL %}
+            <a href="{{ base_url(WEB_URL_PROJECTS) }}" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">{{ lang('WebProjects.title') }}</a>
+            <i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+          {% endif %}
+
+          <span class="text-sm text-white font-normal">{{ selected.category.project_category_name ?? lang('WebProjects.title') }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Content Header End -->
+
+  <!-- Content Start -->
+  <section class="py-6 md:py-16">
+    <div class="container mx-auto px-6 space-y-6 lg:space-y-8">
+      {% if list.all != null %}
+        {% for row in list.all %}
+          <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6 transition-all duration-300 hover:shadow-[0_10px_10px_1px_rgba(0,0,0,0.05)]">
+            <div class="flex items-center gap-8 border-b border-gray-200 mb-6 pb-6">
+              <img src="{{ base_url(FILE_PATH_ASSETS ~ '/' ~ FILE_PATH_IMAGES ~ '/logo/logo-sultangazi-belediyesi.svg') }}" alt="Sultangazi Belediyesi" class="h-15 lg:h-20" />
+              <div>
+                <h3 class="text-xl lg:text-4xl text-tertiary-500 font-semibold mb-1">{{ row.project_name }}</h3>
+                <p class="text-sm lg:text-base text-gray-400 font-light">{{ row.project_category_name }}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-nowrap gap-4 overflow-y-hidden overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-40">
+              <img src="{{ row.image.base }}" class="bg-red-100 shrink-0 w-[240px] rounded-lg lg:w-full h-full lg:row-span-2 lg:col-span-16 lg:object-cover" />
+
+              {% for image in row.image.list %}
+                <img src="{{ image.format }}" class="bg-red-100 shrink-0 w-[240px] rounded-lg lg:w-full lg:col-span-8 lg:h-full lg:object-cover" />
+              {% endfor %}
+            </div>
+
+            <div class="w-full flex flex-wrap gap-3 items-center mt-6 lg:mt-10">
+              {% if row.project_location_address != null %}
+                <div class="inline-flex items-baseline gap-1.5">
+                  <span class="grid place-items-center size-5"><i class="fal fa-map-marker-alt text-secondary-500"></i></span>
+                  <span class="text-primary-900">{{ row.project_location_address|raw }}</span>
+                </div>
+              {% endif %}
+
+              <div class="flex flex-wrap items-baseline gap-3 ms-auto">
+                {% if row.project_location_telephone != null %}
+                  <a href="tel:0533 237 45 46" class="flex items-baseline gap-1.5 group transition-all duration-300 hover:bg-primary-100 md:px-3 md:py-2 rounded-full">
+                    <span class="grid place-items-center size-5"><i class="fal fa-user-circle text-secondary-500"></i></span>
+                    <span class="text-primary-900">{{ row.project_location_telephone }}</span>
+                  </a>
+                {% endif %}
+                {% if row.project_location_address != null or row.project_lat_coordinate or row.project_long_coordinate %}
+                  <a href="https://www.google.com/maps/search/{{ row.project_lat_coordinate and row.project_long_coordinate ? row.project_lat_coordinate~','~row.project_long_coordinate : row.project_location_address|raw }}" class="inline-flex items-baseline gap-1.5 group transition-all duration-300 hover:bg-primary-100 md:px-3 md:py-2 rounded-full">
+                    <span class="grid place-items-center size-5"><i class="fal fa-map-pin text-secondary-500"></i></span>
+                    <span class="text-primary-900">Konuma Git</span>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="alert alert-danger">{{ lang('Web.error.noRecord') }}</div>
+      {% endif %}
+    </div>
+  </section>
+  <!-- Content End -->
+{% endblock %}

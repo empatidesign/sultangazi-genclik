@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+
+@layer base {
+    [x-cloak] { display: none !important; }
+
+    @media (max-width: 1279px) {
+        body { padding-top: 5rem; }
+    }
+
+    html {
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    .html-content {
+        h1, h2, h3, h4, h5, h6 {
+            @apply font-semibold text-gray-900 mb-3;
+        }
+
+        h1 {
+            @apply text-3xl;
+        }
+
+        h2 {
+            @apply text-2xl;
+        }
+
+        h3 {
+            @apply text-xl;
+        }
+
+        h4 {
+            @apply text-lg;
+        }
+
+        h5 {
+            @apply text-base;
+        }
+
+        h6 {
+            @apply text-sm;
+        }
+
+        p {
+            @apply text-gray-700 mb-5 leading-7;
+        }
+
+        ul, ol {
+            @apply list-disc list-inside mb-5;
+        }
+
+        li {
+            @apply text-gray-700 mb-2;
+        }
+        
+        a {
+            color: var(--color-tertiary-500);
+            @apply hover:underline;
+        }
+    }
+
+    :root {
+        --swiper-pagination-bullet-width: 15px;
+        --swiper-pagination-bullet-height: 5px;
+        --swiper-pagination-bullet-border-radius: 100px;
+        --swiper-pagination-color: white;
+        --swiper-pagination-bullet-inactive-color: white;
+    }
+}
+
+@theme {
+    --color-primary-50: #f2f1ff;
+    --color-primary-100: #e7e6ff;
+    --color-primary-200: #d2d0ff;
+    --color-primary-300: #b0aaff;
+    --color-primary-400: #8a7aff;
+    --color-primary-500: #6544ff;
+    --color-primary-600: #531eff;
+    --color-primary-700: #430cf5;
+    --color-primary-800: #380acd;
+    --color-primary-900: #2a0993;
+    --color-primary-950: #190372;
+
+    --color-secondary-50: #fffbea;
+    --color-secondary-100: #fff2c5;
+    --color-secondary-200: #ffe485;
+    --color-secondary-300: #ffd046;
+    --color-secondary-400: #ffbb1b;
+    --color-secondary-500: #f79200;
+    --color-secondary-600: #e27000;
+    --color-secondary-700: #bb4b02;
+    --color-secondary-800: #983a08;
+    --color-secondary-900: #7c300b;
+    --color-secondary-950: #481600;
+
+    --color-tertiary-50: #eff9ff;
+    --color-tertiary-100: #def2ff;
+    --color-tertiary-200: #b6e8ff;
+    --color-tertiary-300: #75d8ff;
+    --color-tertiary-400: #2cc4ff;
+    --color-tertiary-500: #009fe3;
+    --color-tertiary-600: #008ad4;
+    --color-tertiary-700: #006eab;
+    --color-tertiary-800: #005d8d;
+    --color-tertiary-900: #064d74;
+    --color-tertiary-950: #04314d;
+
+}

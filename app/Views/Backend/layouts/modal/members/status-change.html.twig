@@ -1,0 +1,28 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/status/change/'~member_id, 'class="custom-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="member_status_id">{{ lang('AdminMembers.memberManagement.general.memberStatus.title') }} <span class="tx-danger">*</span></label>
+			<select name="form[member_status_id]" id="member_status_id" class="form-control select2">
+				<option value="">{{ lang('Admin.choose') }}</option>
+				{% if list.status != null %}
+					{% for row in list.status %}
+					<option value="{{ row.member_status_id }}" {{ row.member_status_id == result.member_status_id ? 'selected' : NULL }}>{{ row.member_status_name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-outline-primary btn-block" id="custom-form-button1">
+				<span class="d-none loading-spinner">
+					<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+					<span>{{ lang('Admin.loading') }}</span>
+				</span>
+				<span class="button-text">
+					<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+{{ form_close() }}

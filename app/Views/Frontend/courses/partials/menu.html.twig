@@ -1,0 +1,44 @@
+{% macro menu(menus) %}
+	{% if menus != null %}
+		<div class="w-full lg:w-[260px] shrink-0 order-1 lg:order-0">
+			<div class="sticky top-5 pb-5">
+				{% if menus.submenu != null %}
+					<ul class="space-y-3 hidden lg:block">
+						{% for row in menus.submenu %}
+							<li class="">
+								<a target="{{ row.menu_target }}" href="{{ row.menu_link }}" class="{{ row.active == true ? 'flex items-stretch gap-3 bg-white shadow-xs border border-gray-200 rounded-lg p-3 min-h-[60px] pointer-events-none' : 'group flex items-stretch gap-3 bg-white shadow-xs border border-gray-200 rounded-lg p-3 min-h-[60px] transitin-all duration-300 hover:bg-gray-100' }}">
+									{{ row.active ? 
+                  '<span class="block w-[3px] bg-tertiary-500 rounded-full"></span>' : 
+                  '<span class="block w-[3px] bg-gray-200 rounded-full group-hover:bg-tertiary-500 transition-all duration-300"></span>' }}
+									<span class="text-base font-bold self-center">{{ row.menu_name }}</span>
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+
+				<div class="bg-tertiary-500 px-7 py-5 rounded-lg flex items-center justify-center gap-4 mt-5">
+					<img src="{{ base_url(FILE_PATH_ASSETS~'/img/general/customer-service.png') }}" alt="Customer Service" class="h-10"/>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+{% macro mobileMenu(menus) %}
+	{% if menus != null %}
+		{% if menus.submenu != null %}
+			<div class="relative mb-6 lg:hidden">
+				<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+					<i class="fal fa-list-alt text-2xl text-tertiary-500"></i>
+				</div>
+
+				<select x-data="" x-on:change="const selectedOption = $event.target.value; if (selectedOption) window.location.href = selectedOption;" class="w-full bg-white h-16 px-6 !ps-18.5 appearance-none outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed">
+					<option value="">{{ lang('Web.general.menu') }}</option>
+					{% for row in menus.submenu %}
+						<option value="{{ row.menu_link }}" selected>{{ row.menu_name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		{% endif %}
+	{% endif %}
+{% endmacro %}

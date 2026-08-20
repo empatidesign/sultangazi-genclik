@@ -1,0 +1,13 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/category/insert/'~member_id, 'class="member-category-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="category_id">{{ lang('AdminProductManagement.products.general.category.title') }} <span class="tx-danger">*</span></label>
+			{{ form.selectNested('form[category_id]', 'category_id', list.category, '', 'select2', '', lang('Admin.choose')) }}
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-outline-primary btn-block">{{ lang('Admin.button.save') }}</button>
+		</div>
+	</div>
+{{ form_close() }}

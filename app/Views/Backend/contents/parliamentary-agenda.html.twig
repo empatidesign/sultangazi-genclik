@@ -1,0 +1,255 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.parliamentaryAgenda.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.parliamentaryAgenda.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.parliamentaryAgenda.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminContents.parliamentaryAgenda.general.status') }}</th>
+											<th class="no-sort">{{ lang('AdminContents.parliamentaryAgenda.general.file.title') }}</th>
+											<th>{{ lang('AdminContents.parliamentaryAgenda.general.name') }}</th>
+                      <th>{{ lang('AdminContents.parliamentaryAgenda.general.month') }}</th>
+                      <th>{{ lang('AdminContents.parliamentaryAgenda.general.year') }}</th>
+											<th>{{ lang('AdminContents.parliamentaryAgenda.general.createdDate') }}</th>
+											<th>{{ lang('AdminContents.parliamentaryAgenda.general.updatedDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="status">{{ lang('AdminContents.parliamentaryAgenda.general.status') }} <span class="tx-danger">*</span></label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="parliamentary_agenda_name">{{ lang('AdminContents.parliamentaryAgenda.general.name') }} <span class="tx-danger">*</span></label>
+								{{ form.input('parliamentary_agenda_name', '', '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="parliamentary_agenda_month">{{ lang('AdminContents.parliamentaryAgenda.general.month') }} <span class="tx-danger">*</span></label>
+                <select name="form[parliamentary_agenda_month]" id="parliamentary_agenda_month" class="form-control select2">
+                  {% set startMonth = date() | date('m') %}
+
+                  {% for i in range(1, 12) %}
+                  <option value="{{ i }}" {{ i == startMonth ? 'selected' : null }}>{{ monthName(i) }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="parliamentary_agenda_year">{{ lang('AdminContents.parliamentaryAgenda.general.year') }} <span class="tx-danger">*</span></label>
+                <select name="form[parliamentary_agenda_year]" id="parliamentary_agenda_year" class="form-control select2">
+                  {% set nowYear = date() | date('Y') %}
+                  {% set startYear = nowYear - 14 %}
+                  {% set endYear = startYear + 19 %}
+
+                  {% for i in range(startYear, endYear) %}
+                  <option value="{{ i }}" {{ i == nowYear ? 'selected' : null }}>{{ i }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+							<div class="col-12 col-lg-12">
+								<label for="parliamentary_agenda_file">{{ lang('AdminContents.parliamentaryAgenda.general.file.title') }}</label>
+								<input type="file" name="parliamentary_agenda_file" id="parliamentary_agenda_file" class="dropify" data-height="200" />
+                {{ form.help(lang('Admin.fileUpload.description1')) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.parliamentary_agenda_id, 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="status">{{ lang('AdminContents.parliamentaryAgenda.general.status') }} <span class="tx-danger">*</span></label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="parliamentary_agenda_name">{{ lang('AdminContents.parliamentaryAgenda.general.name') }}</label>
+								{{ form.input('parliamentary_agenda_name', lang.data.translations, '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="parliamentary_agenda_month">{{ lang('AdminContents.parliamentaryAgenda.general.month') }} <span class="tx-danger">*</span></label>
+                <select name="form[parliamentary_agenda_month]" id="parliamentary_agenda_month" class="form-control select2">
+                  {% for i in range(1, 12) %}
+                  <option value="{{ i }}" {{ i == result.parliamentary_agenda_month ? 'selected' : null }}>{{ monthName(i) }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="parliamentary_agenda_year">{{ lang('AdminContents.parliamentaryAgenda.general.year') }} <span class="tx-danger">*</span></label>
+                <select name="form[parliamentary_agenda_year]" id="parliamentary_agenda_year" class="form-control select2">
+                  {% set startYear = nowYear - 14 %}
+                  {% set endYear = startYear + 20 %}
+
+                  {% for i in range(startYear, endYear) %}
+                  <option value="{{ i }}" {{ i == result.parliamentary_agenda_year ? 'selected' : null }}>{{ i }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+							<div class="col-12 col-lg-12">
+								<label for="parliamentary_agenda_file">{{ lang('AdminContents.parliamentaryAgenda.general.file.title') }}</label>
+								<input type="file" name="parliamentary_agenda_file" id="parliamentary_agenda_file" class="dropify" data-height="200" data-default-file="{{ result.file }}" data-url="{{ result.file_remove }}" />
+                {{ form.help(lang('Admin.fileUpload.description1')) }}
+
+                {% if result.file != null %}
+                  <a target="_blank" href="{{ result.file }}" class="badge badge-danger mt-3">{{ lang('AdminContents.parliamentaryAgenda.general.file.click') }}</a>
+                {% endif %}
+              </div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

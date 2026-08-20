@@ -1,0 +1,44 @@
+{% macro menu(news, events, announcements, tender_announcements) %}
+  <div class="sidebar">
+    <div class="page-filter">
+      <div class="filter-card card">
+        <div class="card-header">
+          <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/menu-small-logo.png') }}" class="img-fluid card-header-img" title="" alt="" />
+          <h5 class="card-header-title mb-0">{{ lang('WebNews.menu.title') }}</h5>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li class="filter-item">
+              <a href="{{ web_url(news) }}" class="filter-link">
+                <div>
+                  <span>{{ lang('WebNews.menu.option1') }}</span>
+                </div>
+              </a>
+            </li>
+            <li class="filter-item">
+              <a href="{{ web_url(events) }}" class="filter-link">
+                <div>
+                  <span>{{ lang('WebNews.menu.option2') }}</span>
+                </div>
+              </a>
+            </li>
+            <li class="filter-item">
+              <a href="{{ web_url(announcements) }}" class="filter-link">
+                <div>
+                  <span>{{ lang('WebNews.menu.option3') }}</span>
+                </div>
+              </a>
+            </li>
+            <li class="filter-item">
+              <a href="{{ web_url(tender_announcements) }}" class="filter-link">
+                <div>
+                  <span>{{ lang('WebNews.menu.option4') }}</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}

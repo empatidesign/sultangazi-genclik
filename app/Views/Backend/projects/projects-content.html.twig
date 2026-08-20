@@ -1,0 +1,564 @@
+{% extends BACKEND_TEMPLATE_PATH ~ '/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH ~ '/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="page-title-box">
+        <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">{{ lang('AdminProjects.projectsTitle') }}</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{{ base_url(BACKEND_URL ~ '/' ~ page_url) }}">{{ lang('AdminProjects.contents.title') }}</a>
+            </li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+        </div>
+        <h4 class="page-title">{{ lang('AdminProjects.contents.title') }}</h4>
+      </div>
+    </div>
+  </div>
+
+  {% if FLASH_DATA_MESSAGE_SUCCESS %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ FLASH_DATA_MESSAGE_SUCCESS }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'project-index' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row row-sm">
+              <div class="col-12 col-lg-6">
+                <div class="main-content-label mb-0 pb-0 border-0">
+                  <h4 class="header-title">{{ lang('AdminProjects.contents.title') }}</h4>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 text-lg-right text-left">
+                <a href="{{ base_url(BACKEND_URL ~ '/' ~ page_url ~ '/add') }}" class="btn btn-purple">{{ lang('Admin.process.addNewRecord') }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row row-sm">
+              <div class="col-lg-12">
+                <div class="table-responsive">
+                  <table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+                    <thead>
+                      <tr>
+                        <th>{{ lang('AdminProjects.contents.general.status') }}</th>
+                        <th>{{ lang('Admin.mobile') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.homePage') }}</th>
+                        <th class="no-sort">{{ lang('AdminProjects.contents.general.image.title') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.name') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.date.start') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.date.end') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.createdDate') }}</th>
+                        <th>{{ lang('AdminProjects.contents.general.updatedDate') }}</th>
+                        <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'add' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        {{ form_open(BACKEND_URL ~ '/' ~ page_url ~ '/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+        <div class="card">
+          <div class="card-body">
+            <div class="main-content-label">
+              <h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+            </div>
+            <div class="panel panel-primary tabs-style-1">
+              <div class="tab-menu-heading">
+                <div class="tabs-menu1">
+                  <ul class="nav nav-pills nav-justified" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab1') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab2') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab3') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab4') }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel-body p-4 border">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab1">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status">{{ lang('AdminProjects.contents.general.status') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status]" id="status" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="home_page">{{ lang('AdminProjects.contents.general.homePage') }} <span class="tx-danger">*</span></label>
+                        <select name="form[home_page]" id="home_page" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="project_category_id">{{ lang('AdminProjects.contents.general.category') }} <span class="tx-danger">*</span></label>
+                        <select name="form[project_category_id]" id="project_category_id" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          {% if list.category != null %}
+                            {% for row in list.category %}
+                              <option value="{{ row.project_category_id }}">{{ row.project_category_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3 fine-uploader-name">
+                        <label for="project_name">{{ lang('AdminProjects.contents.general.name') }} <span class="tx-danger">*</span></label>
+                        {{ form.input('project_name', '', '', '', '') }}
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_status_id">{{ lang('AdminProjects.contents.general.projectStatus') }} <span class="tx-danger">*</span></label>
+                        <select name="form[project_status_id]" id="project_status_id" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          {% if list.status != null %}
+                            {% for row in list.status %}
+                              <option value="{{ row.project_status_id }}">{{ row.project_status_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_start_date">{{ lang('AdminProjects.contents.general.date.start') }}</label>
+                        <input type="text" name="form[project_start_date]" id="project_start_date" class="form-control datepicker" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_end_date">{{ lang('AdminProjects.contents.general.date.end') }}</label>
+                        <input type="text" name="form[project_end_date]" id="project_end_date" class="form-control datepicker" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_description">{{ lang('AdminProjects.contents.general.description') }}</label>
+                        {{ form.textarea('project_description', '', '', 'textarea_editor', '', '') }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_title">{{ lang('AdminProjects.contents.general.seo.title') }}</label>
+                        {{ form.input('project_meta_title', '', '', '', '') }}
+                        {{ form.help(lang('Admin.seo.title')) }}
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_keywords">{{ lang('AdminProjects.contents.general.seo.keywords') }}</label>
+                        {{ form.textarea('project_meta_keywords', '', '', '', '') }}
+                        {{ form.help(lang('Admin.seo.keywords')) }}
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_description">{{ lang('AdminProjects.contents.general.seo.description') }}</label>
+                        {{ form.textarea('project_meta_description', '', '', '', '', '') }}
+                        {{ form.help(lang('Admin.seo.description')) }}
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_slug">{{ lang('AdminProjects.contents.general.seo.slug') }}</label>
+                        {{ form.input('project_slug', '', '', '', '') }}
+                        {{ form.help(lang('Admin.seo.slug')) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_neighbourhood_id">{{ lang('AdminProjects.contents.general.location.neighbourhoods') }}</label>
+                        <select name="form[project_neighbourhood_id]" id="project_neighbourhood_id" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          {% if list.neighbourhoods != null %}
+                            {% for row in list.neighbourhoods %}
+                              <option value="{{ row.neighbourhood_id }}">{{ row.neighbourhood_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_location_address">{{ lang('AdminProjects.contents.general.location.address') }}</label>
+                        <textarea name="form[project_location_address]" id="project_location_address" class="form-control" rows="5"></textarea>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_responsible">{{ lang('AdminProjects.contents.general.location.responsible') }}</label>
+                        <input type="text" name="form[project_responsible]" id="project_responsible" class="form-control" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_location_telephone">{{ lang('AdminProjects.contents.general.location.telephone') }}</label>
+                        <input type="text" name="form[project_location_telephone]" id="project_location_telephone" class="form-control phone" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_lat_coordinate">{{ lang('AdminProjects.contents.general.location.coordinate.lat') }}</label>
+                        <input type="text" name="form[project_lat_coordinate]" id="latitude" class="form-control" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_long_coordinate">{{ lang('AdminProjects.contents.general.location.coordinate.long') }}</label>
+                        <input type="text" name="form[project_long_coordinate]" id="longitude" class="form-control" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <div class="text-danger mb-2">{{ lang('AdminProjects.contents.alert.coordinate') }}</div>
+                        <div id="googleMap"></div>
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_location_map">{{ lang('AdminProjects.contents.general.location.map') }}</label>
+                        <textarea name="form[project_location_map]" id="project_location_map" class="form-control" rows="5"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab4">
+                    <div id="tab-pictures" data-id="{{ last_id }}" data-page-url="{{ page_url }}">
+                      <div class="portlet-body">
+                        <div class="row" id="showcase-picture-grid"></div>
+                        <div id="file-upload-area"></div>
+                      </div>
+                      <div id="file-upload-area"></div>
+                      <script type="text/template" id="qq-template">
+                        <div class="qq-uploader-selector qq-uploader">
+                          <div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+                            <i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+                            <h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+                            <p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+                            <div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+                              <div><i class="fas fa-cloud-upload-alt"></i> {{ lang('Admin.button.upload') }}</div>
+                            </div>
+                          </div>
+                          <span class="qq-drop-processing-selector qq-drop-processing">
+                            <span>common.fileuploader.processing</span>
+                            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                          </span>
+                          <ul class="qq-upload-list-selector qq-upload-list">
+                            <li>
+                              <div class="qq-progress-bar-container-selector">
+                                <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                              </div>
+                              <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                              <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+                              <span class="qq-upload-file-selector qq-upload-file"></span>
+                              <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                              <span class="qq-upload-size-selector qq-upload-size"></span>
+                              <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+                              <a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+                              <a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+                              <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                            </li>
+                          </ul>
+                        </div>
+                      </script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-0">
+          <div class="card-body">
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+                <span class="d-none loading-spinner">
+                  <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                  <span>{{ lang('Admin.loading') }}</span>
+                </span>
+                <span class="button-text"><i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        {{ form_close() }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page_name == 'edit' %}
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+        {{ form_open(BACKEND_URL ~ '/' ~ page_url ~ '/update/' ~ result.project_id, 'class="custom-form" enctype="multipart/form-data"') }}
+        <div class="card">
+          <div class="card-body">
+            <div class="main-content-label">
+              <h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+            </div>
+            <div class="panel panel-primary tabs-style-1">
+              <div class="tab-menu-heading">
+                <div class="tabs-menu1">
+                  <ul class="nav nav-pills nav-justified" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab1') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab2') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab3') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminProjects.contents.tabMenu.tab4') }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel-body p-4 border">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab1">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status">{{ lang('AdminProjects.contents.general.status') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status]" id="status" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="home_page">{{ lang('AdminProjects.contents.general.homePage') }} <span class="tx-danger">*</span></label>
+                        <select name="form[home_page]" id="home_page" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.home_page == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.home_page == FORM_PASSIVE_NUMBER ? 'selected' : null }}>{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="project_category_id">{{ lang('AdminProjects.contents.general.category') }} <span class="tx-danger">*</span></label>
+                        <select name="form[project_category_id]" id="project_category_id" class="form-control select2">
+                          {% if list.category != null %}
+                            {% for row in list.category %}
+                              <option value="{{ row.project_category_id }}" {{ row.project_category_id == result.project_category_id ? 'selected' : null }}>{{ row.project_category_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3 fine-uploader-name">
+                        <label for="project_name">{{ lang('AdminProjects.contents.general.name') }} <span class="tx-danger">*</span></label>
+                        {{ form.input('project_name', lang.data.translations, '', '', '') }}
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_status_id">{{ lang('AdminProjects.contents.general.projectStatus') }} <span class="tx-danger">*</span></label>
+                        <select name="form[project_status_id]" id="project_status_id" class="form-control select2">
+                          {% if list.status != null %}
+                            {% for row in list.status %}
+                              <option value="{{ row.project_status_id }}" {{ row.project_status_id == result.project_status_id ? 'selected' : null }}>{{ row.project_status_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_start_date">{{ lang('AdminProjects.contents.general.date.start') }}</label>
+                        <input type="text" name="form[project_start_date]" id="project_start_date" class="form-control datepicker" value="{{ result.project_date.start }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_end_date">{{ lang('AdminProjects.contents.general.date.end') }}</label>
+                        <input type="text" name="form[project_end_date]" id="project_end_date" class="form-control datepicker" value="{{ result.project_date.end }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_description">{{ lang('AdminProjects.contents.general.description') }}</label>
+                        {{ form.textarea('project_description', lang.data.translations, '', 'textarea_editor', '', '') }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_title">{{ lang('AdminProjects.contents.general.seo.title') }}</label>
+                        {{ form.input('project_meta_title', lang.data.translations, '', '', '') }}
+                        {{ form.help(lang('Admin.seo.title')) }}
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_keywords">{{ lang('AdminProjects.contents.general.seo.keywords') }}</label>
+                        {{ form.textarea('project_meta_keywords', lang.data.translations, '', '', '') }}
+                        {{ form.help(lang('Admin.seo.keywords')) }}
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_meta_description">{{ lang('AdminProjects.contents.general.seo.description') }}</label>
+                        {{ form.textarea('project_meta_description', lang.data.translations, '', '', '', '') }}
+                        {{ form.help(lang('Admin.seo.description')) }}
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_slug">{{ lang('AdminProjects.contents.general.seo.slug') }}</label>
+                        {{ form.input('project_slug', lang.data.translations, '', '', '') }}
+                        {{ form.help(lang('Admin.seo.slug')) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_neighbourhood_id">{{ lang('AdminProjects.contents.general.location.neighbourhoods') }}</label>
+                        <select name="form[project_neighbourhood_id]" id="project_neighbourhood_id" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          {% if list.neighbourhoods != null %}
+                            {% for row in list.neighbourhoods %}
+                              <option value="{{ row.neighbourhood_id }}" {{ row.neighbourhood_id == result.project_neighbourhood_id ? 'selected' : null }}>{{ row.neighbourhood_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="project_location_address">{{ lang('AdminProjects.contents.general.location.address') }}</label>
+                        <textarea name="form[project_location_address]" id="project_location_address" class="form-control" rows="5">{{ result.project_location_address }}</textarea>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_responsible">{{ lang('AdminProjects.contents.general.location.responsible') }}</label>
+                        <input type="text" name="form[project_responsible]" id="project_responsible" class="form-control" value="{{ result.project_responsible }}" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_location_telephone">{{ lang('AdminProjects.contents.general.location.telephone') }}</label>
+                        <input type="text" name="form[project_location_telephone]" id="project_location_telephone" class="form-control phone" value="{{ result.project_location_telephone }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_lat_coordinate">{{ lang('AdminProjects.contents.general.location.coordinate.lat') }}</label>
+                        <input type="text" name="form[project_lat_coordinate]" id="latitude" class="form-control" value="{{ result.project_lat_coordinate }}" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="project_long_coordinate">{{ lang('AdminProjects.contents.general.location.coordinate.long') }}</label>
+                        <input type="text" name="form[project_long_coordinate]" id="longitude" class="form-control" value="{{ result.project_long_coordinate }}" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <div class="text-danger mb-2">{{ lang('AdminProjects.contents.alert.coordinate') }}</div>
+                        <div id="googleMap"></div>
+                      </div>
+                      <div class="col-12 col-lg-12">
+                        <label for="project_location_map">{{ lang('AdminProjects.contents.general.location.map') }}</label>
+                        <textarea name="form[project_location_map]" id="project_location_map" class="form-control" rows="5">{{ result.project_location_map }}</textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab4">
+                    <div id="tab-pictures" data-id="{{ result.project_id }}" data-page-url="{{ page_url }}">
+                      <div class="portlet-body">
+                        <div class="row" id="showcase-picture-grid"></div>
+                        <div id="file-upload-area"></div>
+                      </div>
+                      <div id="file-upload-area"></div>
+                      <script type="text/template" id="qq-template">
+												<div class="qq-uploader-selector qq-uploader">
+													<div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+														<i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+														<h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+														<p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+														<div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+															<div><i class="fas fa-cloud-upload-alt"></i> {{ lang('Admin.button.upload') }}</div>
+														</div>
+													</div>
+													<span class="qq-drop-processing-selector qq-drop-processing">
+														<span>common.fileuploader.processing</span>
+														<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+													</span>
+													<ul class="qq-upload-list-selector qq-upload-list">
+														<li>
+															<div class="qq-progress-bar-container-selector">
+																<div class="qq-progress-bar-selector qq-progress-bar"></div>
+															</div>
+															<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+															<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+															<span class="qq-upload-file-selector qq-upload-file"></span>
+															<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+															<span class="qq-upload-size-selector qq-upload-size"></span>
+															<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+															<a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+															<a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+															<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+														</li>
+													</ul>
+												</div>
+											</script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-0">
+          <div class="card-body">
+            <div class="text-center">
+              <div class="row">
+                <div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+                  <button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+                    <span class="d-none loading-spinner">
+                      <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                      <span>{{ lang('Admin.loading') }}</span>
+                    </span>
+                    <span class="button-text"><i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span></span>
+                  </button>
+                </div>
+                <div class="col-12 col-lg-6 text-lg-left text-center">
+                  <button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+                    <span class="d-none loading-spinner">
+                      <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                      <span>{{ lang('Admin.loading') }}</span>
+                    </span>
+                    <span class="button-text"><i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ form_close() }}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

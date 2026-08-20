@@ -1,0 +1,283 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+						<li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminSettings.districts.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.districts.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminSettings.districts.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+					<div id="accordionParent" class="accordion">
+						<div class="card mb-0 border">
+							<div id="FilterContent" class="card-header p-0">
+								<h5 class="my-1">
+									<button type="button" class="btn btn-link btn-block collapsed text-dark text-left" data-toggle="collapse" data-target="#Filter" aria-expanded="true">
+										<i class="fas fa-filter mr-2"></i> {{ lang('Admin.filter.title') }}
+									</button>
+								</h5>
+							</div>
+							<div id="Filter" class="collapse" aria-labelledby="FiltreleContent" data-parent="#accordionParent" style="">
+								{{ form_open(BACKEND_URL~'/'~page_url, 'id="search-form" class="custom-form" onsubmit="return false"') }}
+									<div class="card-body">
+										<div class="form-row">
+											<div class="col-md-4 mb-3">
+												<label for="country_id" class="w-100">{{ lang('AdminSettings.districts.general.countryName') }}</label>
+												<select name="country_id" id="country_id" class="form-control d-block-important select2" data-change="#city_id" data-get="city_id">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													{% if list.countries != null %}
+														{% for row in list.countries %}
+														<option value="{{ row.country_id }}">{{ row.country_name }}</option>
+														{% endfor %}
+													{% endif %}
+												</select>
+											</div>
+											<div class="col-md-4 mb-3">
+												<label for="city_id">{{ lang('AdminSettings.districts.general.cityName') }}</label>
+												<select name="city_id" id="city_id" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+												</select>
+											</div>
+											<div class="col-md-4 mb-3">
+												<label for="district_name">{{ lang('AdminSettings.districts.general.districtName') }}</label>
+												<input type="text" name="district_name" id="district_name" class="form-control" />
+											</div>
+											<div class="col-md-12 text-right">
+												<button type="button" id="clearFilter" class="btn btn-link">{{ lang('Admin.filter.button.removeFilter') }}</button>
+												<button type="submit" id="filterSearch" class="btn btn-primary">{{ lang('Admin.filter.button.filter') }}</button>
+											</div>
+										</div>
+									</div>
+								{{ form_close() }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminSettings.districts.general.status') }}</th>
+											<th>{{ lang('AdminSettings.districts.general.countryName') }}</th>
+											<th>{{ lang('AdminSettings.districts.general.cityName') }}</th>
+											<th>{{ lang('AdminSettings.districts.general.districtName') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="status">{{ lang('AdminSettings.districts.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="country_id">{{ lang('AdminSettings.districts.general.countryName') }} <span class="tx-danger">*</span></label>
+								{% if list.countries != null %}
+									<select name="form[country_id]" id="country_id" class="form-control select2" data-change="#city_id" data-get="city_id">
+										<option value="">{{ lang('Admin.choose') }}</option>
+										{% for row in list.countries %}
+										<option value="{{ row.country_id }}">{{ row.country_name }}</option>
+										{% endfor %}
+									</select>
+								{% else %}
+									<div class="alert alert-danger mb-0" role="alert">{{ lang('Admin.error.noRecord') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-lg-0 mb-3">
+								<label for="city_id">{{ lang('AdminSettings.districts.general.cityName') }} <span class="tx-danger">*</span></label>
+								<select name="form[city_id]" id="city_id" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+								</select>
+							</div>
+							<div class="col-12 col-lg-6">
+								<label for="district_name">{{ lang('AdminSettings.districts.general.districtName') }} <span class="tx-danger">*</span></label>
+								<input type="text" name="form[district_name]" id="district_name" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.district_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="status">{{ lang('AdminSettings.districts.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="country_id">{{ lang('AdminSettings.districts.general.countryName') }} <span class="tx-danger">*</span></label>
+								{% if list.countries != null %}
+									<select name="form[country_id]" id="country_id" class="form-control select2" data-change="#city_id" data-get="city_id">
+										<option value="">{{ lang('Admin.choose') }}</option>
+										{% for row in list.countries %}
+										<option value="{{ row.country_id }}" {{ row.country_id == result.country_id ? 'selected' : NULL }}>{{ row.country_name }}</option>
+										{% endfor %}
+									</select>
+								{% else %}
+									<div class="alert alert-danger mb-0" role="alert">{{ lang('Admin.error.noRecord') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6 mb-lg-0 mb-3">
+								<label for="city_id">{{ lang('AdminSettings.districts.general.cityName') }} <span class="tx-danger">*</span></label>
+								{% if list.cities != null %}
+									<select name="form[city_id]" id="city_id" class="form-control select2">
+										<option value="">{{ lang('Admin.choose') }}</option>
+										{% for row in list.cities %}
+										<option value="{{ row.city_id }}" {{ row.city_id == result.city_id ? 'selected' : NULL }}>{{ row.city_name }}</option>
+										{% endfor %}
+									</select>
+								{% else %}
+									<div class="alert alert-danger mb-0" role="alert">{{ lang('Admin.error.noRecord') }}</div>
+								{% endif %}
+							</div>
+							<div class="col-12 col-lg-6">
+								<label for="district_name">{{ lang('AdminSettings.districts.general.districtName') }} <span class="tx-danger">*</span></label>
+								<input type="text" name="form[district_name]" id="district_name" class="form-control" value="{{ result.district_name }}" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

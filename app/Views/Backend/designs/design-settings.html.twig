@@ -1,0 +1,575 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminDesigns.designsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminDesigns.designSettings.title') }}</a></li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminDesigns.designSettings.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+		{{ form_open(BACKEND_URL~'/'~page_url~'/update', 'class="custom-form" enctype="multipart/form-data"') }}
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminDesigns.designSettings.title') }}</h4>
+					</div>
+					<div class="panel panel-primary tabs-style-1">
+						<div class="tab-menu-heading">
+							<div class="tabs-menu1">
+								<ul class="nav nav-pills nav-justified" role="tablist">
+									<li class="nav-item waves-effect waves-light">
+										<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminDesigns.designSettings.tabMenu.tab1') }}</a>
+									</li>
+									<li class="nav-item waves-effect waves-light">
+										<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminDesigns.designSettings.tabMenu.tab2') }}</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="panel-body p-4 border">
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab1">
+									<div class="row">
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="home_page_banner_web_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.homePageBanner.webImageSize') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[home_page_banner_web_image_width]" id="home_page_banner_web_image_width" class="form-control" value="{{ result.home_page_banner_web_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[home_page_banner_web_image_height]" id="home_page_banner_web_image_height" class="form-control" value="{{ result.home_page_banner_web_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="home_page_banner_mobile_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.homePageBanner.mobileImageSize') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[home_page_banner_mobile_image_width]" id="home_page_banner_mobile_image_width" class="form-control" value="{{ result.home_page_banner_mobile_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[home_page_banner_mobile_image_height]" id="home_page_banner_mobile_image_height" class="form-control" value="{{ result.home_page_banner_mobile_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="project_thumb_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.project.thumb') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_thumb_image_width]" id="project_thumb_image_width" class="form-control" value="{{ result.project_thumb_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_thumb_image_height]" id="project_thumb_image_height" class="form-control" value="{{ result.project_thumb_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="project_medium_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.project.medium') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_medium_image_width]" id="project_medium_image_width" class="form-control" value="{{ result.project_medium_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_medium_image_height]" id="project_medium_image_height" class="form-control" value="{{ result.project_medium_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="project_big_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.project.big') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_big_image_width]" id="project_big_image_width" class="form-control" value="{{ result.project_big_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[project_big_image_height]" id="project_big_image_height" class="form-control" value="{{ result.project_big_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="popup_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.popup.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[popup_image_width]" id="popup_image_width" class="form-control" value="{{ result.popup_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[popup_image_height]" id="popup_image_height" class="form-control" value="{{ result.popup_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="popup_mobile_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.popup.mobile') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[popup_mobile_image_width]" id="popup_mobile_image_width" class="form-control" value="{{ result.popup_mobile_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[popup_mobile_image_height]" id="popup_mobile_image_height" class="form-control" value="{{ result.popup_mobile_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="service_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.service.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[service_image_width]" id="service_image_width" class="form-control" value="{{ result.service_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[service_image_height]" id="service_image_height" class="form-control" value="{{ result.service_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="news_medium_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.news.medium') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[news_medium_image_width]" id="news_medium_image_width" class="form-control" value="{{ result.news_medium_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[news_medium_image_height]" id="news_medium_image_height" class="form-control" value="{{ result.news_medium_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="news_big_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.news.big') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[news_big_image_width]" id="news_big_image_width" class="form-control" value="{{ result.news_big_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[news_big_image_height]" id="news_big_image_height" class="form-control" value="{{ result.news_big_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="events_thumb_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.events.thumb') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[events_thumb_image_width]" id="events_thumb_image_width" class="form-control" value="{{ result.events_thumb_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[events_thumb_image_height]" id="events_thumb_image_height" class="form-control" value="{{ result.events_thumb_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="events_big_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.events.big') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[events_big_image_width]" id="events_big_image_width" class="form-control" value="{{ result.events_big_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[events_big_image_height]" id="events_big_image_height" class="form-control" value="{{ result.events_big_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="municipal_council_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.municipalCouncils.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[municipal_council_image_width]" id="municipal_council_image_width" class="form-control" value="{{ result.municipal_council_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[municipal_council_image_height]" id="municipal_council_image_height" class="form-control" value="{{ result.municipal_council_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="council_member_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.councilMembers.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[council_member_image_width]" id="council_member_image_width" class="form-control" value="{{ result.council_member_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[council_member_image_height]" id="council_member_image_height" class="form-control" value="{{ result.council_member_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="vice_president_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.vicePresidents.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[vice_president_image_width]" id="vice_president_image_width" class="form-control" value="{{ result.vice_president_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[vice_president_image_height]" id="vice_president_image_height" class="form-control" value="{{ result.vice_president_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="strategic_plan_and_performance_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.strategicPlanAndPerformance.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[strategic_plan_and_performance_image_width]" id="strategic_plan_and_performance_image_width" class="form-control" value="{{ result.strategic_plan_and_performance_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[strategic_plan_and_performance_image_height]" id="strategic_plan_and_performance_image_height" class="form-control" value="{{ result.strategic_plan_and_performance_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="directorates_person_image_width" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.directorates.personImage.size') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[directorates_person_image_width]" id="directorates_person_image_width" class="form-control" value="{{ result.directorates_person_image_width }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.width')) }}
+														</div>
+														<div class="col-2 col-lg-1 col-md-2 text-center">x</div>
+														<div class="col-5 col-lg-2 col-md-5">
+															<input type="number" name="form[directorates_person_image_height]" id="directorates_person_image_height" class="form-control" value="{{ result.directorates_person_image_height }}" min="0" />
+															{{ form.help(lang('AdminDesigns.designSettings.height')) }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="paging_count" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.pagingCount') }}
+												</label>
+												<div class="col-12 col-lg-4 col-md-12">
+													<input type="number" name="form[paging_count]" id="paging_count" class="form-control" value="{{ result.paging_count }}" min="0" />
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="logo" class="col-lg-3 col-form-label tx-13 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.siteLogo.title') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-11 col-lg-7 col-md-11">
+															<input type="file" name="logo" id="logo" class="dropify" data-height="200" data-default-file="{{ result.logo }}" data-url="{{ result.image_remove }}?action=logo" />
+														</div>
+														<div class="col-1 col-lg-1 col-md-1">
+															<a href="javascript:void(0)" data-toggle="tooltip" data-placement="right" class="font-15" title="{{ lang('AdminDesigns.designSettings.design.siteLogo.description') }}">
+																<i class="fa fa-info-circle"></i>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="favicon" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.favicon.title') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-11 col-lg-7 col-md-11">
+															<input type="file" name="favicon" id="favicon" class="dropify" data-height="200" data-default-file="{{ result.favicon }}" data-url="{{ result.image_remove }}?action=favicon" />
+														</div>
+														<div class="col-1 col-lg-1 col-md-1">
+															<a href="javascript:void(0)" data-toggle="tooltip" data-placement="right" class="font-15" title="{{ lang('AdminDesigns.designSettings.design.favicon.description') }}">
+																<i class="fa fa-info-circle"></i>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="logo_footer" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.design.footer.logo') }}
+												</label>
+												<div class="col-12 col-lg-9">
+													<div class="row">
+														<div class="col-11 col-lg-7 col-md-11">
+															<input type="file" name="logo_footer" id="logo_footer" class="dropify" data-height="200" data-default-file="{{ result.logo_footer }}" data-url="{{ result.image_remove }}?action=logo_footer" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-lg-12 mb-3">
+                      <div class="row">
+                        <label for="header_facilities_link" class="col-lg-3 col-form-label tx-13 font-weight-bold text-left">
+                          {{ lang('AdminDesigns.designSettings.design.header.facilitiesFilm') }}
+                        </label>
+                        <div class="col-12 col-lg-9">
+                          {{ form.input('header_facilities_link', lang.data.translations, '', '', '') }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 mb-3">
+                      <div class="row">
+                        <label for="footer_promotion_film" class="col-lg-3 col-form-label tx-13 font-weight-bold text-left">
+                          {{ lang('AdminDesigns.designSettings.design.footer.promotionFilm') }}
+                        </label>
+                        <div class="col-12 col-lg-9">
+                          {{ form.input('footer_promotion_film', lang.data.translations, '', '', '') }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="row">
+                        <label for="virtual_tour_link" class="col-lg-3 col-form-label tx-13 font-weight-bold text-left">
+                          {{ lang('AdminDesigns.designSettings.design.virtualTour') }}
+                        </label>
+                        <div class="col-12 col-lg-9">
+                          <input type="text" name="form[virtual_tour_link]" id="virtual_tour_link" class="form-control" value="{{ result.virtual_tour_link }}" />
+                        </div>
+                      </div>
+                    </div>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab2">
+									<div class="row">
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="slider_status" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.slider.status') }}
+												</label>
+												<div class="col-12 col-lg-4 col-md-12">
+													<select name="form[slider_status]" id="slider_status" class="form-control select2">
+														<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.slider_status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+														<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.slider_status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="slider_arrow_show" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.slider.arrowShow') }}
+												</label>
+												<div class="col-12 col-lg-4 col-md-12">
+													<select name="form[slider_arrow_show]" id="slider_arrow_show" class="form-control select2">
+														<option value="{{ FORM_ACTIVE_TRUE }}" {{ result.slider_arrow_show == FORM_ACTIVE_TRUE ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+														<option value="{{ FORM_PASSIVE_FALSE }}" {{ result.slider_arrow_show == FORM_PASSIVE_FALSE ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12 mb-3">
+											<div class="row">
+												<label for="slider_arrow_color" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.slider.arrowColor') }}
+												</label>
+												<div class="col-12 col-lg-4 col-md-12">
+													<div class="input-group color-picker">
+														<input type="text" name="form[slider_arrow_color]" id="slider_arrow_color" class="form-control input-lg" value="{{ result.slider_arrow_color }}" />
+														<span class="input-group-append">
+															<span class="input-group-text colorpicker-input-addon"><i></i></span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="row">
+												<label for="slider_bullet_show" class="col-lg-3 col-form-label font-12 font-weight-bold text-left">
+													{{ lang('AdminDesigns.designSettings.slider.bulletShow') }}
+												</label>
+												<div class="col-12 col-lg-4 col-md-12">
+													<select name="form[slider_bullet_show]" id="slider_bullet_show" class="form-control select2">
+														<option value="{{ FORM_ACTIVE_TRUE }}" {{ result.slider_bullet_show == FORM_ACTIVE_TRUE ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+														<option value="{{ FORM_PASSIVE_FALSE }}" {{ result.slider_bullet_show == FORM_PASSIVE_FALSE ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-0">
+				<div class="card-body">
+					<div class="text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+  						<span class="d-none loading-spinner">
+  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+  							<span>{{ lang('Admin.loading') }}</span>
+  						</span>
+  						<span class="button-text">
+  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+  						</span>
+  					</button>
+					</div>
+				</div>
+			</div>
+		{{ form_close() }}
+	</div>
+</div>
+{% endblock %}

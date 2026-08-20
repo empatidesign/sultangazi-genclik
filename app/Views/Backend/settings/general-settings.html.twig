@@ -1,0 +1,343 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+    				<li class="breadcrumb-item active">{{ lang('AdminSettings.generalSettings.title') }}</li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.generalSettings.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+		{{ form_open(BACKEND_URL~'/'~page_url~'/update', 'class="custom-form"') }}
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						<div class="col-lg-12 mb-3">
+							<label for="site_title">{{ lang('AdminSettings.generalSettings.siteTitle') }}</label>
+							<input type="text" name="form[site_title]" id="site_title" class="form-control" value="{{ settings.site_title }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="site_keywords">{{ lang('AdminSettings.generalSettings.siteKeywords') }}</label>
+							<textarea name="form[site_keywords]" id="site_keywords" class="form-control" rows="5">{{ settings.site_keywords }}</textarea>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="site_description">{{ lang('AdminSettings.generalSettings.siteDescription') }}</label>
+							<textarea name="form[site_description]" id="site_description" class="form-control maxlength" maxlength="{{ PARAMETER.GENERAL_SETTINGS_DESCRIPTION_LIMITER }}" rows="5">{{ settings.site_description }}</textarea>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="site_footer">{{ lang('AdminSettings.generalSettings.siteFooter') }}</label>
+							{{ form.input('site_footer', lang.data.translations, '', '', '') }}
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="ssl_status">{{ lang('AdminSettings.generalSettings.sslStatus') }}</label>
+							<select name="form[ssl_status]" id="ssl_status" class="form-control select2">
+								<option value="{{ FORM_ACTIVE_NUMBER }}" {{ settings.ssl_status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+								<option value="{{ FORM_PASSIVE_NUMBER }}" {{ settings.ssl_status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+							</select>
+						</div>
+						<div class="col-lg-6">
+							<label for="site_telephone">{{ lang('AdminSettings.generalSettings.siteTelephone') }}</label>
+							<input type="text" name="form[site_telephone]" id="site_telephone" class="form-control phone" value="{{ settings.site_telephone }}" />
+						</div>
+						<div class="col-lg-6">
+							<label for="site_email">{{ lang('AdminSettings.generalSettings.siteEmailAddress') }}</label>
+							<input type="text" name="form[site_email]" id="site_email" class="form-control" value="{{ settings.site_email }}" autocomplete="off" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.company.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						<div class="col-lg-6 mb-3">
+							<label for="company_name">{{ lang('AdminSettings.generalSettings.company.name') }}</label>
+							<input type="text" name="form[company_name]" id="company_name" class="form-control" value="{{ settings.company_name }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="company_owner">{{ lang('AdminSettings.generalSettings.company.owner') }}</label>
+							<input type="text" name="form[company_owner]" id="company_owner" class="form-control" value="{{ settings.company_owner }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="company_email">{{ lang('AdminSettings.generalSettings.company.emailAddress') }}</label>
+							<input type="text" name="form[company_email]" id="company_email" class="form-control" value="{{ settings.company_email }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="company_telephone">{{ lang('AdminSettings.generalSettings.company.telephone') }}</label>
+							<input type="text" name="form[company_telephone]" id="company_telephone" class="form-control phone" value="{{ settings.company_telephone }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="company_tax_administration">{{ lang('AdminSettings.generalSettings.company.taxAdministration') }}</label>
+							<input type="text" name="form[company_tax_administration]" id="company_tax_administration" class="form-control" value="{{ settings.company_tax_administration }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="company_tax_number">{{ lang('AdminSettings.generalSettings.company.taxNumber') }}</label>
+							<input type="text" name="form[company_tax_number]" id="company_tax_number" class="form-control" value="{{ settings.company_tax_number }}" />
+						</div>
+            <div class="col-lg-6 mb-3">
+							<label for="company_kep_address">{{ lang('AdminSettings.generalSettings.company.kep') }}</label>
+							<input type="text" name="form[company_kep_address]" id="company_kep_address" class="form-control" value="{{ settings.company_kep_address }}" />
+						</div>
+						<div class="col-lg-12">
+							<label for="company_address">{{ lang('AdminSettings.generalSettings.company.address') }}</label>
+							<textarea name="form[company_address]" id="company_address" class="form-control" rows="5">{{ settings.company_address }}</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.language.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						{% if languages != null %}
+  						<div class="col-lg-6">
+  							<label for="frontend_lang_default">{{ lang('AdminSettings.generalSettings.language.frontend') }}</label>
+  							<select name="form[frontend_lang_default]" id="frontend_lang_default" class="form-control select2 custom-select">
+  								{% for row in languages %}
+  								<option value="{{ row.lang_id }}" {{ row.lang_id == settings.frontend_lang_default ? 'selected' : NULL }}>{{ row.lang_title }}</option>
+  								{% endfor %}
+  							</select>
+  						</div>
+  						<div class="col-lg-6">
+  							<label for="backend_lang_default">{{ lang('AdminSettings.generalSettings.language.backend') }}</label>
+  							<select name="form[backend_lang_default]" id="backend_lang_default" class="form-control select2 custom-select">
+  								{% for row in languages %}
+  								<option value="{{ row.lang_id }}" {{ row.lang_id == settings.backend_lang_default ? 'selected' : NULL }}>{{ row.lang_title }}</option>
+  								{% endfor %}
+  							</select>
+  						</div>
+						{% else %}
+				      <div class="alert alert-danger mb-0">{{ lang('Admin.error.noRecord') }}</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.seo.title') }}</h4>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="seo_google_meta" class="form-label">{{ lang('AdminSettings.generalSettings.seo.googleMeta') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-control custom-switch">
+								<input type="checkbox" name="form[seo_google_meta]" id="seo_google_meta" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.seo_google_meta == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="seo_google_meta" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="seo_canonical_url" class="form-label">{{ lang('AdminSettings.generalSettings.seo.canonicalUrl') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[seo_canonical_url]" id="seo_canonical_url" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.seo_canonical_url == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="seo_canonical_url" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="seo_facebook_open_graph_meta" class="form-label">{{ lang('AdminSettings.generalSettings.seo.facebook') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[seo_facebook_open_graph_meta]" id="seo_facebook_open_graph_meta" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.seo_facebook_open_graph_meta == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="seo_facebook_open_graph_meta" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="seo_twitter_meta" class="form-label">{{ lang('AdminSettings.generalSettings.seo.twitter') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[seo_twitter_meta]" id="seo_twitter_meta" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.seo_twitter_meta == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="seo_twitter_meta" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label class="form-label">{{ lang('AdminSettings.generalSettings.seo.siteMapUrl') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<a target="_blank" href="{{ base_url('sitemap.xml') }}">{{ base_url('sitemap.xml') }}</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-2">
+							<label for="seo_robots" class="form-label">{{ lang('AdminSettings.generalSettings.seo.siteMapRobots') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<textarea name="form[seo_robots]" id="seo_robots" class="form-control" rows="5">{{ settings.seo_robots }}</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.googleReCaptcha.title') }}</h4>
+					</div>
+					<div class="alert alert-secondary mb-4">{{ lang('AdminSettings.generalSettings.googleReCaptcha.description') }}</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="google_recaptcha_status" class="form-label">{{ lang('AdminSettings.generalSettings.googleReCaptcha.status') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[google_recaptcha_status]" id="google_recaptcha_status" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.google_recaptcha_status == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="google_recaptcha_status" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-lg-2">
+							<label for="google_recaptcha_key" class="form-label">{{ lang('AdminSettings.generalSettings.googleReCaptcha.key') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<input type="text" name="form[google_recaptcha_key]" id="google_recaptcha_key" class="form-control" value="{{ settings.google_recaptcha_key }}" />
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-lg-2">
+							<label for="google_recaptcha_secret" class="form-label">{{ lang('AdminSettings.generalSettings.googleReCaptcha.secret') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<input type="text" name="form[google_recaptcha_secret]" id="google_recaptcha_secret" class="form-control" value="{{ settings.google_recaptcha_secret }}" />
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-lg-2">
+							<label for="google_recaptcha_page_contact" class="form-label">{{ lang('AdminSettings.generalSettings.googleReCaptcha.page.contact') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[google_recaptcha_page_contact]" id="google_recaptcha_page_contact" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.google_recaptcha_page_contact == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="google_recaptcha_page_contact" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+          <div class="row mb-2">
+						<div class="col-lg-2">
+							<label for="google_recaptcha_page_president_contact" class="form-label">{{ lang('AdminSettings.generalSettings.googleReCaptcha.page.presidentContact') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[google_recaptcha_page_president_contact]" id="google_recaptcha_page_president_contact" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.google_recaptcha_page_president_contact == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="google_recaptcha_page_president_contact" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.googleMap.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						<div class="col-lg-12">
+							<label for="google_map_api_key">{{ lang('AdminSettings.generalSettings.googleMap.key') }}</label>
+							<input type="text" name="form[google_map_api_key]" id="google_map_api_key" class="form-control" value="{{ settings.google_map_api_key }}" autocomplete="off" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.generalSettings.cookies.title') }}</h4>
+					</div>
+					<div class="row mb-4">
+						<div class="col-lg-2">
+							<label for="cookies_status" class="form-label">{{ lang('AdminSettings.generalSettings.cookies.status') }}</label>
+						</div>
+						<div class="col-lg-10">
+							<div class="custom-switch switch-primary">
+								<input type="checkbox" name="form[cookies_status]" id="cookies_status" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ settings.cookies_status == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+								<label for="cookies_status" class="custom-control-label"></label>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-lg-2">
+							<label for="cookies_link" class="form-label">{{ lang('AdminSettings.generalSettings.cookies.link') }}</label>
+						</div>
+						<div class="col-lg-10">
+							{{ form.selectNormal('cookies_link', list.contracts, settings.cookies_link, 'select2', '', lang('Admin.choose')) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-2">
+							<label for="cookies_description" class="form-label">{{ lang('AdminSettings.generalSettings.cookies.description') }}</label>
+						</div>
+						<div class="col-lg-10">
+							{{ form.textarea('cookies_description', lang.data.translations, '', '', '', '') }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-0">
+				<div class="card-body">
+					<div class="text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+  						<span class="d-none loading-spinner">
+  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+  							<span>{{ lang('Admin.loading') }}</span>
+  						</span>
+  						<span class="button-text">
+  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+  						</span>
+  					</button>
+					</div>
+				</div>
+			</div>
+		{{ form_close() }}
+	</div>
+</div>
+{% endblock %}

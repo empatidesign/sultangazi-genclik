@@ -1,0 +1,64 @@
+{{ form_open(BACKEND_URL~'/'~page_url~'/'~order_id, 'class="custom-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="order_delivery_name">{{ lang('Admin.form.name') }}</label>
+			<input type="text" name="form[order_delivery_name]" id="order_delivery_name" class="form-control" value="{{ result.order_delivery_name }}" />
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="order_delivery_surname">{{ lang('Admin.form.surname') }}</label>
+			<input type="text" name="form[order_delivery_surname]" id="order_delivery_surname" class="form-control" value="{{ result.order_delivery_surname }}" />
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="order_delivery_telephone">{{ lang('Admin.form.telephone') }}</label>
+			<input type="text" name="form[order_delivery_telephone]" id="order_delivery_telephone" class="form-control phone" value="{{ result.order_delivery_telephone }}" autocomplete="off" />
+		</div>
+		<div class="col-12 col-lg-6 mb-3">
+			<label for="order_delivery_email_address">{{ lang('Admin.form.emailAddress') }}</label>
+			<input type="text" name="form[order_delivery_email_address]" id="order_delivery_email_address" class="form-control" value="{{ result.order_delivery_email_address }}" autocomplete="off" />
+		</div>
+		<div class="col-12 col-md-4 mb-3">
+			<label for="order_delivery_country_id" class="w-100">{{ lang('Admin.form.country') }}</label>
+			<select name="form[order_delivery_country_id]" id="order_delivery_country_id" class="form-control d-block-important select2" data-change="#city_id" data-get="city_id">
+				{% if list.countries != null %}
+					<option value="">{{ lang('Admin.choose') }}</option>
+					{% for row in list.countries %}
+					<option value="{{ row.country_id }}" {{ row.country_id == result.order_delivery_country_id ? 'selected' : NULL }}>{{ row.country_name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-md-4 mb-3">
+			<label for="order_delivery_city_id">{{ lang('Admin.form.city') }}</label>
+			<select name="form[order_delivery_city_id]" id="city_id" class="form-control select2" data-change="#district_id" data-get="district_id">
+				{% if list.cities != null %}
+					<option value="">{{ lang('Admin.choose') }}</option>
+					{% for row in list.cities %}
+					<option value="{{ row.city_id }}" {{ row.city_id == result.order_delivery_city_id ? 'selected' : NULL }}>{{ row.city_name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-md-4 mb-3">
+			<label for="order_delivery_district_id">{{ lang('Admin.form.district') }}</label>
+			<select name="form[order_delivery_district_id]" id="district_id" class="form-control select2">
+				<option value="">{{ lang('Admin.choose') }}</option>
+				{% if list.districts != null %}
+					{% for row in list.districts %}
+					<option value="{{ row.district_id }}" {{ row.district_id == result.order_delivery_district_id ? 'selected' : NULL }}>{{ row.district_name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+				<span class="d-none loading-spinner">
+					<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+					<span>{{ lang('Admin.loading') }}</span>
+				</span>
+				<span class="button-text">
+					<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+{{ form_close() }}

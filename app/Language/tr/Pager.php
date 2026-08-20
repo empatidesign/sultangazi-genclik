@@ -1,0 +1,13 @@
+<?php
+return [
+	'pageNavigation'         => 'Sayfalama',
+	'first'                  => 'İlk',
+	'previous'               => 'Önceki',
+	'next'                   => 'Sonraki',
+	'last'                   => 'Son',
+	'older'                  => 'Eski',
+	'newer'                  => 'Yeni',
+	'invalidTemplate'        => '{0} geçersiz Sayfalama şablonu.',
+	'invalidPaginationGroup' => '{0} geçersiz Sayfalama grubu.',
+	'loadMore'               => 'Daha Fazla Yükle'
+];

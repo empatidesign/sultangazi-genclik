@@ -1,0 +1,94 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+						<li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminSettings.emailSettings.title') }}</a></li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.emailSettings.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+		{{ form_open(BACKEND_URL~'/'~page_url~'/update', 'class="custom-form"') }}
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.emailSettings.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						<div class="col-lg-6 mb-3">
+							<label for="smtp_email_title">{{ lang('AdminSettings.emailSettings.general.subject') }}</label>
+							<input type="text" name="form[smtp_email_title]" id="smtp_email_title" class="form-control" value="{{ result.smtp_email_title }}" />
+							{{ form.help(lang('AdminSettings.emailSettings.general.subjectDesc')) }}
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="smtp_host">{{ lang('AdminSettings.emailSettings.general.server') }}</label>
+							<input type="text" name="form[smtp_host]" id="smtp_host" class="form-control" value="{{ result.smtp_host }}" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="smtp_email">{{ lang('AdminSettings.emailSettings.general.emailAddress') }}</label>
+							<input type="text" name="form[smtp_email]" id="smtp_email" class="form-control" value="{{ result.smtp_email }}" autocomplete="off" />
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="smtp_password">{{ lang('AdminSettings.emailSettings.general.password') }}</label>
+							<input type="password" name="form[smtp_password]" id="smtp_password" class="form-control" value="{{ result.smtp_password }}" />
+						</div>
+						<div class="col-lg-6 mb-lg-0 mb-3">
+							<label for="smtp_port">{{ lang('AdminSettings.emailSettings.general.port') }}</label>
+							<input type="number" name="form[smtp_port]" id="smtp_port" class="form-control" value="{{ result.smtp_port }}" />
+						</div>
+						<div class="col-lg-6">
+							<label for="smtp_crypto">{{ lang('AdminSettings.emailSettings.general.crypto') }}</label>
+							<select name="form[smtp_crypto]" id="smtp_crypto" class="form-control select2">
+								<option value="">--</option>
+								<option value="ssl" {{ result.smtp_crypto == 'ssl' ? 'selected' : NULL }}>SSL</option>
+								<option value="tls" {{ result.smtp_crypto == 'tls' ? 'selected' : NULL }}>TLS</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-0">
+				<div class="card-body">
+					<div class="text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+  						<span class="d-none loading-spinner">
+  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+  							<span>{{ lang('Admin.loading') }}</span>
+  						</span>
+  						<span class="button-text">
+  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+  						</span>
+  					</button>
+					</div>
+				</div>
+			</div>
+		{{ form_close() }}
+	</div>
+</div>
+{% endblock %}

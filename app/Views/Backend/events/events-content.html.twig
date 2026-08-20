@@ -1,0 +1,566 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminEvents.eventsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminEvents.contents.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminEvents.contents.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row row-sm">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminEvents.contents.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row row-sm">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminEvents.contents.general.status') }}</th>
+                      <th>{{ lang('Admin.mobile') }}</th>
+                      <th>{{ lang('Admin.pushNotificationTitle') }}</th>
+											<th class="no-sort">{{ lang('AdminEvents.contents.general.image') }}</th>
+											<th>{{ lang('AdminEvents.contents.general.name') }}</th>
+                      <th>{{ lang('AdminEvents.contents.general.date') }}</th>
+                      <th>{{ lang('AdminEvents.contents.general.hour') }}</th>
+											<th>{{ lang('AdminEvents.contents.general.createdDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab1') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab2') }}</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab3') }}</a>
+                    </li>
+                    <!--
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab4') }}</a>
+                    </li>
+                    -->
+                    <li class="nav-item waves-effect waves-light">
+                      <a href="#tab5" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab5') }}</a>
+                    </li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status">{{ lang('AdminEvents.contents.general.status') }} <span class="tx-danger">*</span></label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_category_id">{{ lang('AdminEvents.contents.general.category') }} <span class="tx-danger">*</span></label>
+												<select name="form[event_category_id]" id="event_category_id" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													{% if list.category != null %}
+                            {% for row in list.category %}
+													  <option value="{{ row.event_category_id }}">{{ row.event_category_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+												</select>
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_name">{{ lang('AdminEvents.contents.general.name') }} <span class="tx-danger">*</span></label>
+												{{ form.input('event_name', '', '', '', '') }}
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_date">{{ lang('AdminEvents.contents.general.date') }}</label>
+												<input type="text" name="form[event_date]" id="event_date" class="form-control datepicker" autocomplete="off" />
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+        								<label for="event_hour">{{ lang('AdminEvents.contents.general.hour') }}</label>
+                        <select name="form[event_hour]" id="event_hour" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+        									{% if list.hours != null %}
+                            {% for row in list.hours %}
+                            <option value="{{ row }}">{{ row }}</option>
+                            {% endfor %}
+                          {% endif %}
+        								</select>
+        							</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_age_group">{{ lang('AdminEvents.contents.general.ageGroup') }}</label>
+												{{ form.input('event_age_group', '', '', '', '') }}
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_quota">{{ lang('AdminEvents.contents.general.quota') }}</label>
+												{{ form.input('event_quota', '', '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_image">{{ lang('AdminEvents.contents.general.image') }}</label>
+												<input type="file" name="event_image" id="event_image" class="dropify" data-height="200" />
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="event_description">{{ lang('AdminEvents.contents.general.description') }}</label>
+												{{ form.textarea('event_description', '', '', 'textarea_editor', '', '') }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_title">{{ lang('AdminEvents.contents.general.seo.title') }}</label>
+												{{ form.input('event_meta_title', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_keywords">{{ lang('AdminEvents.contents.general.seo.keywords') }}</label>
+												{{ form.textarea('event_meta_keywords', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_description">{{ lang('AdminEvents.contents.general.seo.description') }}</label>
+												{{ form.textarea('event_meta_description', '', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="event_slug">{{ lang('AdminEvents.contents.general.seo.slug') }}</label>
+												{{ form.input('event_slug', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location">{{ lang('AdminEvents.contents.general.location.title') }}</label>
+                        <input type="text" name="form[event_location]" id="event_location" class="form-control" />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_address">{{ lang('AdminEvents.contents.general.location.address') }}</label>
+                        <textarea name="form[event_location_address]" id="event_location_address" class="form-control" rows="5"></textarea>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_telephone">{{ lang('AdminEvents.contents.general.location.telephone') }}</label>
+                        <input type="text" name="form[event_location_telephone]" id="event_location_telephone" class="form-control phone" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_map">{{ lang('AdminEvents.contents.general.location.map') }}</label>
+                        <textarea name="form[event_location_map]" id="event_location_map" class="form-control" rows="5"></textarea>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="event_lat_coordinate">{{ lang('AdminEvents.contents.general.location.coordinate.lat') }}</label>
+                        <input type="text" name="form[event_lat_coordinate]" id="latitude" class="form-control" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="event_long_coordinate">{{ lang('AdminEvents.contents.general.location.coordinate.long') }}</label>
+                        <input type="text" name="form[event_long_coordinate]" id="longitude" class="form-control" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <div class="text-danger mb-2">{{ lang('AdminEvents.contents.alert.coordinate') }}</div>
+                        <div id="googleMap"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab4">
+                    <div class="example mb-0">
+                      <div class="highlight clip-widget mt-0 mb-3 p-3">
+                        <h6 class="card-title m-0">
+                          <i class="fas fa-random"></i> {{ lang('AdminEvents.contents.paragraphs.title') }}
+                        </h6>
+                      </div>
+                      <div class="table-responsive">
+                        <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ paragraphs.datatable_url }}">
+                          <thead>
+                            <tr>
+                              <th>{{ lang('Admin.id') }}</th>
+                              <th class="no-sort">{{ lang('AdminEvents.contents.paragraphs.image') }}</th>
+                              <th>{{ lang('AdminEvents.contents.paragraphs.name') }}</th>
+                              <th>{{ lang('AdminEvents.contents.paragraphs.createdDate') }}</th>
+                              <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                      <div class="border-top mt-3 pt-3"></div>
+                      <a href="javascript:void(0)" onclick="modalPage('events_paragraph_add', {{ last_id }})" class="btn btn-light">
+                        <i class="fas fa-plus"></i> {{ lang('Admin.process.addNewRecord') }}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab5">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-5">
+                        <label for="push_notification">{{ lang('Admin.pushNotification') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[push_notification]" id="push_notification" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" />
+                          <label for="push_notification" class="custom-control-label"></label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_mobile_name">{{ lang('AdminEvents.contents.general.name') }}</label>
+                        {{ form.input('event_mobile_name', '', '', '', '') }}
+                      </div>
+                      <div class="col-12 col-lg-12">
+												<label for="event_mobile_description">{{ lang('AdminEvents.contents.general.description') }}</label>
+												{{ form.textarea('event_mobile_description', '', '', '', '', '10') }}
+											</div>
+                    </div>
+                  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.event_id, 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab2') }}</a>
+										</li>
+                    <li class="nav-item waves-effect waves-light">
+											<a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab3') }}</a>
+										</li>
+                    <!--
+                    <li class="nav-item waves-effect waves-light">
+											<a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab4') }}</a>
+										</li>
+                    -->
+                    <li class="nav-item waves-effect waves-light">
+											<a href="#tab5" class="nav-link" data-toggle="tab">{{ lang('AdminEvents.contents.tabMenu.tab5') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status">{{ lang('AdminEvents.contents.general.status') }} <span class="tx-danger">*</span></label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_category_id">{{ lang('AdminEvents.contents.general.category') }} <span class="tx-danger">*</span></label>
+												<select name="form[event_category_id]" id="event_category_id" class="form-control select2">
+													{% if list.category != null %}
+                            {% for row in list.category %}
+													  <option value="{{ row.event_category_id }}" {{ row.event_category_id == result.event_category_id ? 'selected' : NULL }}>{{ row.event_category_name }}</option>
+                            {% endfor %}
+                          {% endif %}
+												</select>
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_name">{{ lang('AdminEvents.contents.general.name') }} <span class="tx-danger">*</span></label>
+												{{ form.input('event_name', lang.data.translations, '', '', '') }}
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_date">{{ lang('AdminEvents.contents.general.date') }}</label>
+												<input type="text" name="form[event_date]" id="event_date" class="form-control datepicker" value="{{ result.event_date }}" autocomplete="off" />
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+        								<label for="event_hour">{{ lang('AdminEvents.contents.general.hour') }}</label>
+                        <select name="form[event_hour]" id="event_hour" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+        									{% if list.hours != null %}
+                            {% for row in list.hours %}
+                            <option value="{{ row }}" {{ row == result.event_hour ? 'selected' : NULL }}>{{ row }}</option>
+                            {% endfor %}
+                          {% endif %}
+        								</select>
+        							</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_age_group">{{ lang('AdminEvents.contents.general.ageGroup') }}</label>
+												{{ form.input('event_age_group', lang.data.translations, '', '', '') }}
+											</div>
+                      <div class="col-12 col-lg-6 mb-3">
+												<label for="event_quota">{{ lang('AdminEvents.contents.general.quota') }}</label>
+												{{ form.input('event_quota', lang.data.translations, '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_image">{{ lang('AdminEvents.contents.general.image') }}</label>
+												<input type="file" name="event_image" id="event_image" class="dropify" data-height="200" data-default-file="{{ result.image }}" data-url="{{ result.image_remove }}" />
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="event_description">{{ lang('AdminEvents.contents.general.description') }}</label>
+												{{ form.textarea('event_description', lang.data.translations, '', 'textarea_editor', '', '') }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_title">{{ lang('AdminEvents.contents.general.seo.title') }}</label>
+												{{ form.input('event_meta_title', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_keywords">{{ lang('AdminEvents.contents.general.seo.keywords') }}</label>
+												{{ form.textarea('event_meta_keywords', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="event_meta_description">{{ lang('AdminEvents.contents.general.seo.description') }}</label>
+												{{ form.textarea('event_meta_description', lang.data.translations, '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="event_slug">{{ lang('AdminEvents.contents.general.seo.slug') }}</label>
+												{{ form.input('event_slug', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location">{{ lang('AdminEvents.contents.general.location.title') }}</label>
+                        <input type="text" name="form[event_location]" id="event_location" class="form-control" value="{{ result.event_location }}" />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_address">{{ lang('AdminEvents.contents.general.location.address') }}</label>
+                        <textarea name="form[event_location_address]" id="event_location_address" class="form-control" rows="5">{{ result.event_location_address }}</textarea>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_telephone">{{ lang('AdminEvents.contents.general.location.telephone') }}</label>
+                        <input type="text" name="form[event_location_telephone]" id="event_location_telephone" class="form-control phone" value="{{ result.event_location_telephone }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_location_map">{{ lang('AdminEvents.contents.general.location.map') }}</label>
+                        <textarea name="form[event_location_map]" id="event_location_map" class="form-control" rows="5">{{ result.event_location_map }}</textarea>
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="event_lat_coordinate">{{ lang('AdminEvents.contents.general.location.coordinate.lat') }}</label>
+                        <input type="text" name="form[event_lat_coordinate]" id="latitude" class="form-control" value="{{ result.event_lat_coordinate }}" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="event_long_coordinate">{{ lang('AdminEvents.contents.general.location.coordinate.long') }}</label>
+                        <input type="text" name="form[event_long_coordinate]" id="longitude" class="form-control" value="{{ result.event_long_coordinate }}" autocomplete="off" readonly />
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <div class="text-danger mb-2">{{ lang('AdminEvents.contents.alert.coordinate') }}</div>
+                        <div id="googleMap"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab4">
+                    <div class="example mb-0">
+                      <div class="highlight clip-widget mt-0 mb-3 p-3">
+                        <h6 class="card-title m-0">
+                          <i class="fas fa-random"></i> {{ lang('AdminEvents.contents.paragraphs.title') }}
+                        </h6>
+                      </div>
+                      <div class="table-responsive">
+                        <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ paragraphs.datatable_url }}">
+                          <thead>
+                            <tr>
+                              <th>{{ lang('Admin.id') }}</th>
+                              <th class="no-sort">{{ lang('AdminEvents.contents.paragraphs.image') }}</th>
+                              <th>{{ lang('AdminEvents.contents.paragraphs.name') }}</th>
+                              <th>{{ lang('AdminEvents.contents.paragraphs.createdDate') }}</th>
+                              <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                      <div class="border-top mt-3 pt-3"></div>
+                      <a href="javascript:void(0)" onclick="modalPage('events_paragraph_add', {{ result.event_id }})" class="btn btn-light">
+                        <i class="fas fa-plus"></i> {{ lang('Admin.process.addNewRecord') }}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab5">
+                    <div class="row row-sm">
+                      <div class="col-12 col-lg-12 mb-5">
+                        <label for="push_notification">{{ lang('Admin.pushNotification') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[push_notification]" id="push_notification" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ result.push_notification == FORM_ACTIVE_NUMBER ? 'checked' : NULL }} />
+                          <label for="push_notification" class="custom-control-label"></label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="event_mobile_name">{{ lang('AdminEvents.contents.general.name') }}</label>
+                        {{ form.input('event_mobile_name', lang.data.translations, '', '', '') }}
+                      </div>
+                      <div class="col-12 col-lg-12">
+												<label for="event_mobile_description">{{ lang('AdminEvents.contents.general.description') }}</label>
+												{{ form.textarea('event_mobile_description', lang.data.translations, '', '', '', '10') }}
+											</div>
+                    </div>
+                  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

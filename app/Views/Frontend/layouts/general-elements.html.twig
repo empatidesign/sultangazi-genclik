@@ -1,0 +1,71 @@
+{% macro getAQuote(product_name, countries, cities, url) %}
+
+	<div id="getAQuote" class="mfp-hide white-popup-block">
+		<h4>{{ lang('WebCart.getAQuote.title') }}</h4>
+		{{ form_open(web_url(url), 'method="POST" id="global-form" onsubmit="return false"') }}
+			<div class="form-row">
+				<div class="col-12 col-md-6 mb-15">
+					<label for="name" class="label-required">{{ lang('Web.general.form.name') }} </label>
+					<input type="text" name="name" id="name" class="required mb-0" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+				</div>
+				<div class="col-12 col-md-6 mb-15">
+					<label for="surname" class="label-required">{{ lang('Web.general.form.surname') }} </label>
+					<input type="text" name="surname" id="surname" class="required mb-0" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+				</div>
+				<div class="col-12 col-md-12 mb-15">
+					<label for="company_name">{{ lang('Web.general.form.companyName') }}</label>
+					<input type="text" name="company_name" id="company_name" class="mb-0" />
+				</div>
+				<div class="col-12 col-md-6 mb-15">
+					<label for="telephone" class="label-required">{{ lang('Web.general.form.telephone') }} </label>
+					<input type="text" name="telephone" id="telephone" class="telephone-international required mb-0" class="form-control" autocomplete="off" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+				</div>
+				<div class="col-12 col-md-6 mb-15">
+					<label for="email_address" class="label-required">{{ lang('Web.general.form.emailAddress') }} </label>
+					<input type="email" name="email_address" id="email_address" class="required mb-0" spellcheck="false" autocomplete="off" autocapitalize="off" data-msg-required="{{ lang('Web.general.validate.required') }}" data-msg-email="{{ lang('Web.general.validate.validEmailAddress') }}" />
+				</div>
+				<div class="col-12 col-md-12 mb-15">
+					<label for="message">{{ lang('Web.general.form.message') }}</label>
+					<textarea name="message" id="message" rows="5" class="mb-0">{{ product_name != null ? lang('WebCart.getAQuote.autoDescription', [product_name]) : null }}</textarea>
+				</div>
+				<div class="col-12 col-md-4 mb-15">
+					<label for="country" class="label-required">{{ lang('Web.general.form.country') }} </label>
+					<select name="country" id="country" class="required mb-0" data-change=".city_id" data-get="city_id" data-msg-required="{{ lang('Web.general.validate.required') }}">
+						{% if countries != null %}
+							{% for row in countries %}
+							<option value="{{ row.country_id }}" {{ row.country_default == FORM_ACTIVE_NUMBER ? 'selected' : null }}>{{ row.country_name }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+				<div class="col-12 col-md-4 mb-15">
+					<label for="city" class="label-required">{{ lang('Web.general.form.city') }} </label>
+					<select name="city" id="city" class="city_id required mb-0" data-change=".district_id" data-get="district_id" data-msg-required="{{ lang('Web.general.validate.required') }}">
+						<option value="">{{ lang('Web.general.other.choose') }}</option>
+						{% if cities != null %}
+							{% for row in cities %}
+							<option value="{{ row.city_id }}">{{ row.city_name }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+				<div class="col-12 col-md-4 mb-15">
+					<label for="district" class="label-required">{{ lang('Web.general.form.district') }} </label>
+					<select name="district" id="district" class="district_id required mb-0" data-msg-required="{{ lang('Web.general.validate.required') }}">
+						<option value="">{{ lang('Web.general.choose') }}</option>
+					</select>
+				</div>
+				<div class="col-12 col-md-12 mt-30 text-center">
+					<button type="submit" class="btn btn--secondary" data-button="{{ lang('Web.general.button.send') }}">{{ lang('Web.general.button.send') }}</button>
+				</div>
+			</div>
+		{{ form_close() }}
+		<script>
+		Loader.require({
+      type: "script",
+      name: "plugin_validate"
+    });
+		</script>
+	</div>
+
+{% endmacro %}

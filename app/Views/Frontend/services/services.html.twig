@@ -1,0 +1,111 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% block body %}
+<section class="page-header newkrms">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebServices.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <a href="{{ web_url(PARAMETER.WEB_URL_SERVICES) }}" class="breadcrumb-text">{{ lang('WebServices.title') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+
+        {% if result.default != null %}
+          <span class="breadcrumb-text">{{ result.default.service_name }}</span>
+        {% else %}
+          <span class="breadcrumb-text">{{ result.service_name }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="service-page">
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {% if list.all_services != null %}
+            <div class="sidebar">
+              <div class="page-filter">
+                <div class="filter-card card">
+                  <div class="card-header" style="display:flex;justify-content:space-between;align-items:center">
+                  <div style="display:flex;align-items:center;">
+                    <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/menu-small-logo.png') }}" class="img-fluid card-header-img" title="" alt="" />
+                    <h5 class="card-header-title mb-0">{{ lang('WebServices.title') }}</h5>
+                    </div>
+                    <div class="buttonServiceOpens" onclick="openItemNew('newServiceOpen','iconId')">
+                      <i id="iconId" class="fas fa-bars"></i>
+                    </div>
+                  </div>
+                  <div class="card-body" id="newServiceOpen">
+                    <ul >
+                      {% for row in list.all_services %}
+
+                      {% set active = null %}
+                      {% if result.default.service_id == row.service_id %}
+                        {% set active = 'active' %}
+                      {% else %}
+                        {% if result.service_id == row.service_id %}
+                          {% set active = 'active' %}
+                        {% endif %}
+                      {% endif %}
+
+                      <li class="filter-item {{ active ? 'active' : null }}">
+                        <a href="{{ row.service_link }}" class="filter-link">
+                          <div>
+                            <span>{{ row.service_name }}</span>
+                          </div>
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="service-page-content my-3 mb-5 " style="padding:15px 0">
+            {% if result.default != null %}
+              <div class="service-title d-flex align-items-end mb-3">
+                <div class="title-line me-3"></div>
+                <h5>{{ result.default.service_name }}</h5>
+              </div>
+
+              {% if result.default.image.normal != null %}
+                <div class="service-image">
+                  <img src="{{ result.default.image.base }}" class="img-fluid" aria-label="{{ result.default.service_name }}" title="{{ result.default.service_name }}" alt="{{ result.default.service_name }}" />
+                </div>
+              {% endif %}
+
+              {% if result.default.service_description != null %}
+                <div class="service-description">{{ result.default.service_description|raw }}</div>
+              {% endif %}
+            {% else %}
+
+              <div class="service-title d-flex align-items-end mb-3">
+             
+                <h5>{{ result.service_name }}</h5>
+              </div>
+
+              {% if result.image.normal != null %}
+                <div class="service-image">
+                  <img src="{{ result.image.base }}" class="img-fluid" aria-label="{{ result.service_name }}" title="{{ result.service_name }}" alt="{{ result.service_name }}" />
+                </div>
+              {% endif %}
+
+              {% if result.service_description != null %}
+                <div class="service-description">{{ result.service_description|raw }}</div>
+              {% endif %}
+
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

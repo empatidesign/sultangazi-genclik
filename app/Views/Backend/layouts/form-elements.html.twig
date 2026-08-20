@@ -1,0 +1,131 @@
+{% macro input(name, translations, placeholder, class, maxlength_character) %}
+	{% if languages != null %}
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<div class="input-group-text p-0">
+					<div class="input-group-append">
+						<button type="button" class="btn btn-info dropdown-toggle text-uppercase" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="min-width:97px;">
+							<span>{{ DEFAULT_LANGUAGES_CODE }}</span> <i class="mdi mdi-chevron-down"></i>
+						</button>
+						<div class="dropdown-menu language-editor-dropdown" style="min-width:97px;">
+							{% for row in languages %}
+							<span class="dropdown-item text-uppercase" data-lang="{{ row.lang_code }}">{{ row.lang_code }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% for row in languages %}
+			<div class="lang-editor {{ row.lang_code == DEFAULT_LANGUAGES_CODE ? null : 'd-none' }}" data-lang="{{ row.lang_code }}">
+				<input type="text" name="lang[{{ row.lang_id }}][{{ name }}]" id="{{ name }}" class="form-control {{ class }}" value="{{ translations[row.lang_id][name]|raw }}" {% if maxlength_character != null %}maxlength="{{ maxlength_character }}"{% endif %} {{ placeholder ? 'placeholder='~placeholder }} />
+			</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro selectNormal(name, options, selected, class, multiple, langMain) %}
+	<select name="form[{{ name }}]" id="{{ name }}" class="form-control custom-select {{ class }}" {{ multiple ? 'multiple="multiple"' }}>
+		{% if langMain != null %}
+		<option value="" {{ selected == '' ? 'selected' : NULL }}>{{ langMain }}</option>
+		{% endif %}
+		{% for option in options %}
+			<option value="{{ option.id }}" {{ option.id == selected ? 'selected' : NULL }}>{{ option.name }}</option>
+		{% endfor %}
+	</select>
+{% endmacro %}
+
+{% macro nestedOptions(options, values, count) %}
+	{% import _self as forms %}
+	{% for option in options %}
+		<option value="{{ option.id }}" {{ values is iterable and option.id in values or option.id == values ? 'selected' }}>{{ str_repeat('-', count) }} {{ option.name }}</option>{{ option.children ? forms.nestedOptions(option.children, values, count+2) }}
+	{% endfor %}
+{% endmacro %}
+
+{% macro selectNested(name, id, options, values, class, multiple, langMain) %}
+	{% import _self as forms %}
+	<select name="{{ name }}{{ multiple ? '[]' }}" id="{{ id }}" class="form-control custom-select {{ class }}" {{ multiple ? 'multiple="multiple"' }}>
+		{% if langMain != null %}
+		<option value="" {{ value == '' ? 'selected' : NULL }}>{{ langMain }}</option>
+		{% endif %}
+		{{ forms.nestedOptions(options, values) }}
+	</select>
+{% endmacro %}
+
+{% macro textarea(name, translations, placeholder, class, maxlength_character, rows) %}
+	{% if languages != null %}
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<div class="input-group-text">
+					<div class="input-group-append">
+						<button type="button" class="btn btn-info dropdown-toggle text-uppercase" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span>{{ DEFAULT_LANGUAGES_CODE }}</span> <i class="mdi mdi-chevron-down"></i>
+						</button>
+						<div class="dropdown-menu dropdown-menu-left language-editor-dropdown">
+							{% for row in languages %}
+							<span class="dropdown-item text-uppercase" data-lang="{{ row.lang_code }}">{{ row.lang_code }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% for row in languages %}
+			<div class="lang-editor {{ row.lang_code == DEFAULT_LANGUAGES_CODE ? null : 'd-none' }}" data-lang="{{ row.lang_code }}">
+				<textarea name="lang[{{ row.lang_id }}][{{ name }}]" id="{{ name }}" class="form-control {{ class }}" {{ placeholder ? 'placeholder='~placeholder }} {% if maxlength_character != null %}maxlength="{{ maxlength_character }}"{% endif %} rows="{{ rows != '' ? rows : 5 }}">{{ translations[row.lang_id][name] }}</textarea>
+			</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro dropify(name, translations, image_remove, height) %}
+	{% if languages != null %}
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<div class="input-group-text">
+				<div class="input-group-append">
+					<button type="button" class="btn btn-info dropdown-toggle text-uppercase" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span>{{ DEFAULT_LANGUAGES_CODE }}</span> <i class="mdi mdi-chevron-down"></i>
+					</button>
+					<div class="dropdown-menu dropdown-menu-left language-editor-dropdown">
+						{% for row in languages %}
+						<span class="dropdown-item text-uppercase" data-lang="{{ row.lang_code }}">{{ row.lang_code }}</span>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% for row in languages %}
+		<div class="lang-editor {{ row.lang_code == DEFAULT_LANGUAGES_CODE ? null : 'd-none' }}" data-lang="{{ row.lang_code }}">
+			<input type="file" name="lang[{{ row.lang_id }}][{{ name }}]" id="{{ name }}" class="dropify" data-height="{{ height != '' ? height : '200' }}" data-default-file="{{ translations[row.lang_id][name] }}" data-url="{{ image_remove != '' ? translations[row.lang_id][image_remove]~'?action='~row.lang_id : null }}" />
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro help(text) %}
+	<p class="form-text text-muted mb-0">{{ text|raw }}</p>
+{% endmacro %}
+
+{% macro buttonEdit(name, position, pageUrl, id, class) %}
+	<a href="{{ id != '' ? base_url(pageUrl~'/edit/'~id) : null }}" class="btn btn-primary text-white btn-icon {{ class }}" data-placement="{{ position }}" data-toggle="tooltip" title="" data-original-title="{{ name }}">
+		<i class="far fa-edit"></i>
+	</a>
+{% endmacro %}
+
+{% macro buttonDelete(name, position, pageUrl, id, attribute, class) %}
+	<a href="javascript:void(0)" class="btn btn-danger text-white btn-icon {{ class }}" {{ id != '' ? 'data-url='~base_url(pageUrl~'/delete/'~id) : null }} {{ attribute }} data-placement="{{ position }}" data-toggle="tooltip" title="" data-original-title="{{ name }}">
+		<i class="far fa-trash-alt"></i>
+	</a>
+{% endmacro %}
+
+{% macro buttonSort(url, name, position, attribute, class) %}
+	<a href="{{ url != '' ? url : 'javascript:void(0)' }}" class="btn btn-warning text-white btn-icon {{ class }}" {{ attribute }} data-placement="{{ position }}" data-toggle="tooltip" title="" data-original-title="{{ name }}">
+		<i class="fas fa-sort"></i>
+	</a>
+{% endmacro %}
+
+{% macro text(text, class) %}
+	<h5 class="mb-0 border-bottom pb-3 {{ class }}">{{ text }}</h5>
+{% endmacro %}

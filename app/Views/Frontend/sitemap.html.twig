@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+	<url>
+		<loc>{{ base_url() }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>1.0</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_PRESIDENT_GALLERY) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_MUNICIPAL_COUNCILS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_ORGANIZATION_CHART) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_VICE_PRESIDENTS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_COUNCIL_MEMBERS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_DIRECTORATES) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_ACTIVITY_REPORT) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_STRATEGIC_PLAN_AND_PERFORMANCA) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_PLAN_AND_PROGRAM) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_INTERNAL_CONTROL) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_LOGOS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_PARLIAMENTARY_AGENDA) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_NEWS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_ANNOUNCEMENTS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_PROJECTS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_SULTANGAZI_GALLERY) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_SULTANGAZI~'/'~PARAMETER.WEB_URL_SULTANGAZI_CITY_GUIDES) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_GALLERY) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_VIDEO_GALLERY) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	<url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_EVENTS) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+  <url>
+		<loc>{{ base_url(PARAMETER.WEB_URL_CONTACT) }}</loc>
+		<changefreq>daily</changefreq>
+		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+		<priority>0.3</priority>
+	</url>
+
+	{% if list.pages != null %}
+    {% for row in list.pages %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_PAGES~'/'~row.page_slug~'/'~row.page_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.services != null %}
+    {% for row in list.services %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_SERVICES~'/'~row.service_slug~'/'~row.service_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.events != null %}
+    {% for row in list.events %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_EVENTS~'/'~row.event_slug~'/'~row.event_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.president_contents != null %}
+    {% for row in list.president_contents %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_PRESIDENT~'/'~row.president_content_slug~'/'~row.president_content_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.vice_presidents != null %}
+    {% for row in list.vice_presidents %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_VICE_PRESIDENTS_DETAIL~'/'~row.vice_president_slug~'/'~row.vice_president_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.directorates != null %}
+    {% for row in list.directorates %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_DIRECTORATES_DETAIL~'/'~row.directorates_slug~'/'~row.directorates_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.news != null %}
+    {% for row in list.news %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_NEWS_DETAIL~'/'~row.news_slug~'/'~row.news_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.projects != null %}
+    {% for row in list.projects %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_PROJECTS_DETAIL~'/'~row.project_slug~'/'~row.project_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.sultangazi_contents != null %}
+    {% for row in list.sultangazi_contents %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_SULTANGAZI~'/'~PARAMETER.WEB_URL_SULTANGAZI_CONTENTS~'/'~row.content_slug~'/'~row.content_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.city_guide_categories != null %}
+    {% for row in list.city_guide_categories %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_SULTANGAZI~'/'~PARAMETER.WEB_URL_SULTANGAZI_CITY_GUIDES~'/'~row.city_guide_category_slug~'/'~row.city_guide_category_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.city_guide_contents != null %}
+    {% for row in list.city_guide_contents %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_SULTANGAZI~'/'~PARAMETER.WEB_URL_SULTANGAZI_CITY_GUIDES~'/'~PARAMETER.WEB_URL_SULTANGAZI_CITY_GUIDES_DETAIL_PARAMETER~'/'~row.city_guide_content_slug~'/'~row.city_guide_content_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.gallery_categories != null %}
+    {% for row in list.gallery_categories %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_GALLERY_CATEGORY~'/'~slug(row.gallery_category_name)~'/'~row.gallery_category_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+	{% if list.gallery_details != null %}
+    {% for row in list.gallery_details %}
+		{% set lang_code = row.lang_code_end != null ? row.lang_code_end~'/' : null %}
+    <url>
+  		<loc>{{ base_url(lang_code~PARAMETER.WEB_URL_GALLERY_DETAIL~'/'~slug(row.gallery_name)~'/'~row.gallery_id) }}</loc>
+  		<changefreq>daily</changefreq>
+  		<lastmod>{{ PARAMETER.DATE }}</lastmod>
+  		<priority>0.3</priority>
+  	</url>
+    {% endfor %}
+  {% endif %}
+
+</urlset>

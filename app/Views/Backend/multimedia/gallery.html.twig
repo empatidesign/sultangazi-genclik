@@ -1,0 +1,309 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminMultimedia.multimediaTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminMultimedia.gallery.title') }}</a></li>
+						{% if page_name == 'add' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+						{% endif %}
+
+						{% if page_name == 'edit' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+						{% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminMultimedia.gallery.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminMultimedia.gallery.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  <div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminMultimedia.gallery.general.status') }}</th>
+                      <th>{{ lang('AdminMultimedia.gallery.general.category') }}</th>
+                      <th>{{ lang('AdminMultimedia.gallery.general.name') }}</th>
+                      <th>{{ lang('AdminMultimedia.gallery.general.image.total') }}</th>
+                      <th>{{ lang('AdminMultimedia.gallery.general.createdDate') }}</th>
+                      <th>{{ lang('AdminMultimedia.gallery.general.updatedDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="status">{{ lang('AdminMultimedia.gallery.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="gallery_category_id">{{ lang('AdminMultimedia.gallery.general.category') }} <span class="tx-danger">*</span></label>
+								<select name="form[gallery_category_id]" id="gallery_category_id" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+                  {% if list.categories != null %}
+                    {% for row in list.categories %}
+                    <option value="{{ row.gallery_category_id }}">{{ row.gallery_category_name }}</option>
+                    {% endfor %}
+									{% endif %}
+								</select>
+							</div>
+              <div class="col-12 col-lg-12 mb-3">
+								<label for="gallery_name">{{ lang('AdminMultimedia.gallery.general.name') }} <span class="tx-danger">*</span></label>
+								{{ form.input('gallery_name', '', '', '', '') }}
+							</div>
+							<div class="col-12 col-lg-12 mt-3">
+                <div class="alert alert-warning mb-5" role="alert">
+          				<strong>{{ lang('Admin.warning.title') }}:</strong> {{ lang('AdminMultimedia.gallery.alert.order') }}
+          			</div>
+                <div id="tab-pictures" data-id="{{ last_id }}" data-page-url="{{ page_url }}">
+                  <div class="portlet-body">
+                    <div class="row" id="showcase-picture-grid"></div>
+                    <div id="file-upload-area"></div>
+                  </div>
+                  <div id="file-upload-area"></div>
+                  <script type="text/template" id="qq-template">
+                    <div class="qq-uploader-selector qq-uploader">
+                      <div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+                        <i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+                        <h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+                        <p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+                        <div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+                          <div><i class="fas fa-cloud-upload-alt"></i> {{ lang('Admin.button.upload') }}</div>
+                        </div>
+                      </div>
+                      <span class="qq-drop-processing-selector qq-drop-processing">
+                        <span>common.fileuploader.processing</span>
+                        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                      </span>
+                      <ul class="qq-upload-list-selector qq-upload-list">
+                        <li>
+                          <div class="qq-progress-bar-container-selector">
+                            <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                          </div>
+                          <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                          <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+                          <span class="qq-upload-file-selector qq-upload-file"></span>
+                          <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                          <span class="qq-upload-size-selector qq-upload-size"></span>
+                          <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+                          <a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+                          <a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+                          <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                        </li>
+                      </ul>
+                    </div>
+                  </script>
+                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.gallery_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="status">{{ lang('AdminMultimedia.gallery.general.status') }} <span class="tx-danger">*</span></label>
+								<select name="form[status]" id="status" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+									<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+									<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+								</select>
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="gallery_category_id">{{ lang('AdminMultimedia.gallery.general.category') }} <span class="tx-danger">*</span></label>
+								<select name="form[gallery_category_id]" id="gallery_category_id" class="form-control select2">
+									<option value="">{{ lang('Admin.choose') }}</option>
+                  {% if list.categories != null %}
+                    {% for row in list.categories %}
+                    <option value="{{ row.gallery_category_id }}" {{ row.gallery_category_id == result.gallery_category_id ? 'selected' : NULL }}>{{ row.gallery_category_name }}</option>
+                    {% endfor %}
+									{% endif %}
+								</select>
+							</div>
+              <div class="col-12 col-lg-12 mb-3">
+								<label for="gallery_name">{{ lang('AdminMultimedia.gallery.general.name') }}</label>
+								{{ form.input('gallery_name', lang.data.translations, '', '', '') }}
+							</div>
+							<div class="col-12 col-lg-12 mt-3">
+                <div class="alert alert-warning mb-5" role="alert">
+          				<strong>{{ lang('Admin.warning.title') }}:</strong> {{ lang('AdminMultimedia.gallery.alert.order') }}
+          			</div>
+                <div id="tab-pictures" data-id="{{ result.gallery_id }}" data-page-url="{{ page_url }}">
+                  <div class="portlet-body">
+                    <div class="row" id="showcase-picture-grid"></div>
+                    <div id="file-upload-area"></div>
+                  </div>
+                  <div id="file-upload-area"></div>
+                  <script type="text/template" id="qq-template">
+                    <div class="qq-uploader-selector qq-uploader">
+                      <div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+                        <i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+                        <h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+                        <p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+                        <div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+                          <div><i class="fas fa-cloud-upload-alt"></i> {{ lang('Admin.button.upload') }}</div>
+                        </div>
+                      </div>
+                      <span class="qq-drop-processing-selector qq-drop-processing">
+                        <span>common.fileuploader.processing</span>
+                        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                      </span>
+                      <ul class="qq-upload-list-selector qq-upload-list">
+                        <li>
+                          <div class="qq-progress-bar-container-selector">
+                            <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                          </div>
+                          <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                          <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+                          <span class="qq-upload-file-selector qq-upload-file"></span>
+                          <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                          <span class="qq-upload-size-selector qq-upload-size"></span>
+                          <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+                          <a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+                          <a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+                          <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                        </li>
+                      </ul>
+                    </div>
+                  </script>
+                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

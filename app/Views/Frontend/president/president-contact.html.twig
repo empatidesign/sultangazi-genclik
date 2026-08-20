@@ -1,0 +1,120 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import FRONTEND_TEMPLATE_PATH~'/'~folder~'/partials/menu.html.twig' as macro %}
+
+{% block body %}
+<section class="page-header page-header-president president">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ lang('WebPresident.form.title') }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <a href="javascript:void(0);" class="breadcrumb-text">{{ lang('WebPresident.title') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ lang('WebPresident.form.title') }}</span>
+      </div>
+    </div>
+
+    {% if result.president.informations != null %}
+      <div class="position-relative">
+        <div class="page-header-images">
+          <div class="president-header">
+            <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/hep-birlikte-daha-iyiye.png') }}" class="img-fluid" title="" alt="" />
+          </div>
+          <div class="president-header-image-profile">
+            <img src="{{ base_url(FILE_PATH_ASSETS~'/'~FILE_PATH_IMAGES~'/baskan-2.png') }}" class="img-fluid" aria-label="{{ result.president.informations.president_name_surname }}" title="{{ result.president.informations.president_name_surname }}" alt="{{ result.president.informations.president_name_surname }}" />
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+    <div class="pt-3">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          {{ macro.menu(list.left_menu) }}
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <div class="presidents page-inner-top">
+            {{ form_open(web_url('/'~PARAMETER.WEB_URL_PRESIDENT_CONTACT_SEND), 'method="POST" id="global-form" onsubmit="return false"') }}
+              <div class="president-form">
+                <div class="row g-3">
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="input-group">
+                      <label for="name" class="form-label">{{ lang('Web.general.form.name') }}</label>
+                      <input type="text" name="name" id="name" class="form-control required" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="input-group">
+                      <label for="surname" class="form-label">{{ lang('Web.general.form.surname') }}</label>
+                      <input type="text" name="surname" id="surname" class="form-control required" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="input-group">
+                      <label for="telephone" class="form-label">{{ lang('Web.general.form.telephone') }}</label>
+                      <input type="text" name="telephone" id="telephone" class="form-control required" autocomplete="off" data-msg-required="{{ lang('Web.general.validate.required') }}" />
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="input-group">
+                      <label for="email_address" class="form-label">{{ lang('Web.general.form.emailAddress') }}</label>
+                      <input type="email" name="email_address" id="email_address" class="form-control required" spellcheck="false" autocomplete="off" autocapitalize="off" data-msg-required="{{ lang('Web.general.validate.required') }}" data-msg-email="{{ lang('Web.general.validate.validEmailAddress') }}" />
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="input-group">
+                      <label for="message" class="form-label">{{ lang('Web.general.form.message') }}</label>
+                      <textarea name="message" id="message" class="form-control required" rows="5" data-msg-required="{{ lang('Web.general.validate.required') }}"></textarea>
+                    </div>
+                  </div>
+
+                  {% if list.agreement != null %}
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <div class="form-checks">
+                        {% for key, row in list.agreement %}
+                        {% set key = key + 1 %}
+                        <div class="form-check form-switch mb-0">
+                          <input type="checkbox" name="agreement{{ key }}" id="agreement3" class="form-check-input" />
+                          <label for="agreement3" class="form-check-label">
+                            <a href="javascript:void(0);" onclick="theme.PopupAgreement({{ row.contract_id }})">{{ lang('Web.general.form.agreement', [row.contract_name]) }}</a>
+                          </label>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  <div class="col-sm-12 col-md-12 col-lg-12">
+                    {% if settings.google_recaptcha_status == FORM_CHECKBOX_VALUE_NUMBER and settings.google_recaptcha_page_president_contact == FORM_CHECKBOX_VALUE_NUMBER %}
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <script src="https://www.google.com/recaptcha/api.js"></script>
+                          <div class="g-recaptcha" data-sitekey="{{ settings.google_recaptcha_key }}"></div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <button type="submit" class="btn btn-purple" data-button="{{ lang('Web.general.button.send') }}">{{ lang('Web.general.button.send') }}</button>
+                  </div>
+                </div>
+              </div>
+            {{ form_close() }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="agreementPopup" class="mfp-hide white-popup-block">
+  <h4></h4>
+  <div class="content"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% block body %}
+	<!-- Content Header Start -->
+	<section
+		class="py-6 2xl:py-12 bg-primary-900 relative overflow-hidden">
+		<!-- Background Layer Start -->
+		<div class="absolute top-0 left-0 size-full z-[10] mix-blend-overlay select-none">
+			<img class="absolute size-full object-cover opacity-20 blur-lg" src="{{ base_url('assets/img/general/section-bg.webp') }}"/>
+		</div>
+		<!-- Background Layer End -->
+
+		<!-- Background Overlay Layer Start -->
+		<div class="hidden absolute z-[15] size-[85%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10"></div>
+		<!-- Background Overlay Layer End -->
+
+		<div class="relative z-[30]">
+			<div class="container px-6 mx-auto">
+				<div class="text-2xl md:text-3xl lg:text-3xl font-bold text-white mb-0.5">
+					{{ lang('WebContact.title') }}
+				</div>
+				<div class="flex flex-nowrap items-center overflow-x-auto overflow-y-hidden gap-1.5">
+					<a href="{{ web_url() }}" class="text-sm text-white opacity-75 font-light transition-all hover:opacity-100 duration-300">
+						{{ lang('Web.general.homePage') }}
+					</a>
+					<i class="fal fa-angle-right text-white text-xs opacity-75"></i>
+					<span class="text-sm text-white font-normal">
+						{{ lang('WebContact.title') }}
+					</span>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Content Header End -->
+
+	<!-- Content Start -->
+	<section class="py-6">
+		<div class="container mx-auto px-6">
+			<div class="flex flex-nowrap overflow-x-auto overflow-y-auto -mx-6 px-6 py-6 gap-6 xl:grid xl:grid-cols-3 2xl:grid-cols-5">
+
+				<div class="shrink-0 w-70 md:w-80 xl:w-full rounded-xl overflow-hidden shadow-lg">
+					<div class="flex flex-col items-center justify-center bg-tertiary-500 text-white px-6 h-28 gap-2">
+						<i class="fal fa-user-circle text-4xl"></i>
+						<span class="text-lg font-semibold tracking-wider">{{ lang('WebContact.telephone') }}</span>
+					</div>
+					<div class="px-6 h-28 flex flex-col items-center justify-center">
+						<a href="tel:{{ contact.contact_telephone|replace({' ': ''}) }}" class="text-4xl font-bold">{{ contact.contact_telephone }}</a>
+					</div>
+				</div>
+
+				<div class="shrink-0 w-70 md:w-80 xl:w-full rounded-xl overflow-hidden shadow-lg">
+					<div class="flex flex-col items-center justify-center bg-[#70D460] text-white px-6 h-28 gap-2">
+						<i class="fab fa-whatsapp text-4xl"></i>
+						<span class="text-lg font-semibold tracking-wider">{{ lang('WebContact.whatsapp') }}</span>
+					</div>
+					<div class="px-6 h-28 flex flex-col items-center justify-center">
+						<a target="_blank" href="https://api.whatsapp.com/send?phone={{ contact.contact_whatsapp|replace({' ': '', '+': ''}) }}" class="text-4xl font-bold text-[#70D460]">{{ contact.contact_whatsapp }}</a>
+					</div>
+				</div>
+
+				<div class="shrink-0 w-70 md:w-80 xl:w-full rounded-xl overflow-hidden shadow-lg">
+					<div class="flex flex-col items-center justify-center bg-tertiary-500 text-white px-6 h-28 gap-2">
+						<i class="fal fa-at text-4xl"></i>
+						<span class="text-lg font-semibold tracking-wider">{{ lang('WebContact.kep') }}</span>
+					</div>
+					<div class="px-6 h-28 flex flex-col items-center justify-center">
+						<a href="mailto:{{ settings.company_kep_address }}" class="text-lg">{{ settings.company_kep_address }}</a>
+					</div>
+				</div>
+
+				<div class="shrink-0 w-70 md:w-80 xl:w-full rounded-xl overflow-hidden shadow-lg">
+					<div class="flex flex-col items-center justify-center bg-tertiary-500 text-white px-6 h-28 gap-2">
+						<i class="fal fa-at text-4xl"></i>
+						<span class="text-lg font-semibold tracking-wider">{{ lang('WebContact.emailAddress') }}</span>
+					</div>
+					<div class="px-6 h-28 flex flex-col items-center justify-center">
+						<a href="mailto:{{ contact.contact_email }}" class="text-lg">{{ contact.contact_email }}</a>
+					</div>
+				</div>
+
+				<div class="shrink-0 w-70 md:w-80 xl:w-full rounded-xl overflow-hidden shadow-lg">
+					<div class="flex flex-col items-center justify-center bg-tertiary-500 text-white px-6 h-28 gap-2">
+						<i class="fal fa-map-marker-alt text-4xl"></i>
+						<span class="text-lg font-semibold tracking-wider">{{ lang('WebContact.address') }}</span>
+					</div>
+					<div class="px-6 h-28 flex flex-col items-center justify-center">
+						<a target="_blank" href="{{ contact.contact_map_url }}" class="text-lg">{{ contact.contact_address|nl2br }}</a>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="py-22 text-center">
+				<h6 class="text-2xl font-semibold mb-10">{{ lang('WebContact.socialMedia') }}</h6>
+
+				<div class="flex justify-center flex-wrap gap-10">
+					{% if social_media.instagram != null %}
+						<a href="{{ social_media.instagram }}" class="size-20 grid place-items-center text-5xl text-tertiary-500 hover:bg-tertiary-500 hover:text-white transition-all duration-300 hover:rounded-full">
+							<i class="fab fa-instagram"></i>
+						</a>
+					{% endif %}
+					{% if social_media.facebook != null %}
+						<a href="{{ social_media.facebook }}" class="size-20 grid place-items-center text-5xl text-tertiary-500 hover:bg-tertiary-500 hover:text-white transition-all duration-300 hover:rounded-full">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+					{% endif %}
+					{% if social_media.twitter != null %}
+						<a href="{{ social_media.twitter }}" class="size-20 grid place-items-center text-5xl text-tertiary-500 hover:bg-tertiary-500 hover:text-white transition-all duration-300 hover:rounded-full">
+							<i class="fab fa-x-twitter"></i>
+						</a>
+					{% endif %}
+					{% if social_media.youtube != null %}
+						<a href="{{ social_media.youtube }}" class="size-20 grid place-items-center text-5xl text-tertiary-500 hover:bg-tertiary-500 hover:text-white transition-all duration-300 hover:rounded-full">
+							<i class="fab fa-youtube"></i>
+						</a>
+					{% endif %}
+					{% if social_media.linkedin != null %}
+						<a href="{{ social_media.linkedin }}" class="size-20 grid place-items-center text-5xl text-tertiary-500 hover:bg-tertiary-500 hover:text-white transition-all duration-300 hover:rounded-full">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<h6 class="text-2xl font-semibold mb-10">{{ lang('WebContact.map') }}</h6>
+
+			<div class="w-full">
+				<iframe class="w-full h-[500px] xl:h-[700px]" src="{{ contact.contact_map_embed_url }}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			</div>
+		</div>
+
+		<div class="container px-6 mx-auto grid place-items-center pt-16">
+			{# <h6 class="text-2xl font-semibold mb-10 text-center">{{ lang('WebContact.contactForm') }}</h6> #}
+						
+			<a href="https://ulakbel.sultangazi.bel.tr/WebBasvuru/istekvesikayet-web" class="inline-block text-lg text-primary-600 text-center bg-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)] backdrop-blur-md">
+				<span class="font-normal">{{ lang('WebContact.ulak') }}</strong>
+			</a>
+
+			{# {{ form_open(web_url('/'~PARAMETER.WEB_URL_CONTACT_SEND), 'method="POST" id="global-form" onsubmit="return false"') }}
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+				<div class="relative">
+					<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+						<i class="fal fa-user-circle text-2xl text-tertiary-500"></i>
+					</div>
+					<input type="text" placeholder="{{ lang('Web.general.form.name') }}" class="w-full bg-white h-20 px-6 !ps-18.5 outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"/>
+				</div>
+
+				<div class="relative">
+					<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+						<i class="fal fa-user-circle text-2xl text-tertiary-500"></i>
+					</div>
+					<input type="text" placeholder="{{ lang('Web.general.form.surname') }}" class="w-full bg-white h-20 px-6 !ps-18.5 outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"/>
+				</div>
+
+				<div class="relative">
+					<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+						<i class="fal fa-phone text-2xl text-tertiary-500"></i>
+					</div>
+					<input type="text" placeholder="{{ lang('Web.general.form.telephone') }}" class="w-full bg-white h-20 px-6 !ps-18.5 outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"/>
+				</div>
+
+				<div class="relative">
+					<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+						<i class="fal fa-envelope text-2xl text-tertiary-500"></i>
+					</div>
+					<input type="text" placeholder="{{ lang('Web.general.form.emailAddress') }}" class="w-full bg-white h-20 px-6 !ps-18.5 outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"/>
+				</div>
+
+				<div class="relative md:col-span-2">
+					<div class="absolute top-1/2 -translate-y-1/2 left-6 size-6 grid place-items-center border-r border-gray-200 pe-9.5">
+						<i class="fal fa-list-alt text-2xl text-tertiary-500"></i>
+					</div>
+					<select class="w-full bg-white h-20 px-6 !ps-18.5 appearance-none outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed">
+						<option value="">{{ lang('Web.general.form.subject') }}</option>
+						<option value="genel">{{ lang('Web.general.form.subjectOptions.genel') }}</option>
+						<option value="teknik">{{ lang('Web.general.form.subjectOptions.teknik') }}</option>
+						<option value="kayit">{{ lang('Web.general.form.subjectOptions.kayit') }}</option>
+						<option value="oneri">{{ lang('Web.general.form.subjectOptions.oneri') }}</option>
+						<option value="sikayet">{{ lang('Web.general.form.subjectOptions.sikayet') }}</option>
+					</select>
+				</div>
+
+				<div class="md:col-span-2">
+					<textarea placeholder="{{ lang('Web.general.form.message') }}" class="w-full bg-white h-40 px-6 py-4 outline-0 border border-gray-100 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.05)] text-[15px] transition-all focus:shadow-[0_0_10px_0_rgba(0,0,0,0.1)] focus:border-tertiary-500 focus:ring-2 focus:ring-tertiary-100 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed resize-none"></textarea>
+				</div>
+			</div>
+
+			<div class="mt-10 flex items-center flex-wrap gap-6">
+				<div class="flex flex-col items-start gap-y-4 me-auto">
+					<label class="inline-flex items-start cursor-pointer">
+						<input type="checkbox" value="" class="sr-only peer">
+						<div class="shrink-0 relative w-10.5 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:start-[3px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-green-600"></div>
+						<span class="ms-3 text-sm text-gray-900">{{ lang('WebContact.agreements.agreement1') }}</span>
+					</label>
+
+					<label class="inline-flex items-start cursor-pointer">
+						<input type="checkbox" value="" class="sr-only peer">
+						<div class="shrink-0 relative w-10.5 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:start-[3px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-green-600"></div>
+						<span class="ms-3 text-sm text-gray-900">{{ lang('WebContact.agreements.agreement2') }}</span>
+					</label>
+
+					{% if list.agreement != null %}
+						{% for key, row in list.agreement %}
+							{% set key = key + 1 %}
+							<label class="inline-flex items-start cursor-pointer">
+								<input type="checkbox" name="agreement{{ key }}" id="agreement{{ key }}" class="sr-only peer">
+								<div class="shrink-0 relative w-10.5 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:start-[3px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-green-600"></div>
+								<a href="javascript:void(0);" onclick="theme.PopupAgreement({{ row.contract_id }})" class="ms-3 text-sm text-gray-900">{{ lang('Web.general.form.agreement', [row.contract_name]) }}</a>
+							</label>
+						{% endfor %}
+					{% endif %}
+				</div>
+
+				<button type="button" class="cursor-pointer inline-block text-lg bg-tertiary-500 text-white px-16 py-4 rounded-lg transition-all duration-300 hover:bg-secondary-500 hover:text-white shadow-[0_4px_16px_0_rgba(0,0,0,0.15)] backdrop-blur-md">
+					{{ lang('Web.general.button.send') }}
+				</button>
+			</div>
+			{{ form_close() }} #}
+		</div>
+	</section>
+{% endblock %}

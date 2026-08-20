@@ -1,0 +1,220 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% block body %}
+<section class="page-header">
+  <div class="container-fluid">
+    <div class="page-header-content">
+      <h5 class="page-title">{{ result.event_name }}</h5>
+      <div class="breadcrumbs">
+        <a href="{{ web_url() }}" class="breadcrumb-text">{{ lang('Web.general.homePage') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS) }}" class="breadcrumb-text">{{ lang('WebEvents.title') }}</a>
+        <i class="fa-solid fa-angle-right breadcrumb-icon"></i>
+        <span class="breadcrumb-text">{{ result.event_name }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="project-filter-page pt-5">
+  <div class="container-fluid">
+    <div class="event-detail mt-3 p-3">
+      <div class="row g-5">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <div class="event-detail-image">
+            <img src="{{ result.image.base }}" class="img-fluid" title="{{ result.event_name }}" alt="{{ result.event_name }}" />
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <div class="event-detail-texts">
+            <h5>{{ result.event_name }}</h5>
+
+            {% if result.event_description != null %}
+              <div class="text-box">
+                <div class="text-box-content d-flex justify-content-center align-items-center">{{ result.event_description|raw }}</div>
+              </div>
+            {% endif %}
+
+            <div class="text-box">
+              <div class="text-box-content">
+                <div class="row">
+                  {% if result.event_date != null or result.event_hour != null or result.event_location != null %}
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="text-box-content-item">
+                        {% if result.event_date != null %}
+                          <div class="text-box-content-item-column">
+                            <i class="fa-regular fa-calendar-days" style="color: #FF0000;"></i>
+                            <span class="text-bold">{{ lang('WebEvents.date') }}</span>
+                            <span class="two-dots">:</span>
+                            <span class="text-normal">{{ result.event_date }}</span>
+                          </div>
+                        {% endif %}
+
+                        {% if result.event_hour != null %}
+                          <div class="text-box-content-item-column">
+                            <i class="fa-regular fa-clock" style="color: #5C0DF3"></i>
+                            <span class="text-bold">{{ lang('WebEvents.hour') }}</span>
+                            <span class="two-dots">:</span>
+                            <span class="text-normal">{{ result.event_hour }}</span>
+                          </div>
+                        {% endif %}
+
+                        {% if result.event_location != null %}
+                          <div class="text-box-content-item-column">
+                            <i class="fa-solid fa-location-dot" style="color: #19C3F0"></i>
+                            <span class="text-bold">{{ lang('WebEvents.location.text') }}</span>
+                            <span class="two-dots">:</span>
+                            <span class="text-normal">{{ result.event_location }}</span>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  {% if result.event_age_group != null or result.event_quota != null %}
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="text-box-content-item text-box-content-item-right">
+                        {% if result.event_age_group != null %}
+                          <div class="text-box-content-item-column">
+                            <span class="text-bold">{{ lang('WebEvents.ageGroup') }}</span>
+                            <span class="two-dots">:</span>
+                            <span class="text-normal" style="color: #1A0444;">{{ result.event_age_group }}</span>
+                          </div>
+                        {% endif %}
+
+                        {% if result.event_quota != null %}
+                          <div class="text-box-content-item-column">
+                            <span class="text-bold">{{ lang('WebEvents.quota') }}</span>
+                            <span class="two-dots">:</span>
+                            <span class="text-normal" style="color: #1A0444;">{{ result.event_quota }}</span>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-box mt-5">
+        <div class="text-box-content">
+          <div class="row border-bottom pb-3">
+            {% if result.event_location != null or result.event_location_address != null or result.event_location_telephone != null %}
+              <div class="col-sm-12 col-md-9 col-lg-9">
+                <div class="text-box-content-item text-box-content-item-bottom">
+                  {% if result.event_location != null %}
+                    <div class="text-box-content-item-column">
+                      <span class="text-bold">{{ lang('WebEvents.location.text') }}</span>
+                      <span class="two-dots">:</span>
+                      <span class="text-normal">{{ result.event_location }}</span>
+                    </div>
+                  {% endif %}
+
+                  {% if result.event_location_address != null %}
+                    <div class="text-box-content-item-column">
+                      <span class="text-bold">{{ lang('WebEvents.address') }}</span>
+                      <span class="two-dots">:</span>
+                      <span class="text-normal">{{ result.event_location_address }}</span>
+                    </div>
+                  {% endif %}
+
+                  {% if result.event_location_telephone != null %}
+                    <div class="text-box-content-item-column">
+                      <span class="text-bold">{{ lang('WebEvents.telephone') }}</span>
+                      <span class="two-dots">:</span>
+                      <span class="text-normal"><a href="tel:{{ result.event_location_telephone|replace({' ': ''}) }}">{{ result.event_location_telephone }}</a></span>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if result.event_location_map != null or contact.contact_telephone != null %}
+              <div class="col-sm-12 col-md-3 col-lg-3">
+                <div class="event-text-box-content-item-right">
+                  {% if result.event_location_map != null %}
+                    <div class="mb-3">
+                      <a target="_blank" href="{{ result.event_location_map }}" class="btn btn-blue btn-event-location form-control">{{ lang('WebEvents.location.link') }} >></a>
+                    </div>
+                  {% endif %}
+
+                  {% if contact.contact_telephone != null %}
+                    <div class="nav-item">
+                      <a href="tel:{{ contact.contact_telephone|replace({' ': ''}) }}" class="btn-top-nav btn btn-outline-secondary btn-header-top-call">
+                        <div class="call-phone-icon me-3">
+                          <i class="fa-solid fa-headset text-primary"></i>
+                        </div>
+                        <div class="lh-1">
+                          <div class="call-text">{{ lang('WebHeader.contact') }}</div>
+                          <div class="call-phone">{{ contact.contact_telephone }}</div>
+                        </div>
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          {% if result.event_lat_coordinate != null and result.event_long_coordinate != null %}
+            <div class="event-map">
+              <div id="map" class="map"
+                data-map-lat="{{ result.event_lat_coordinate }}"
+                data-map-lng="{{ result.event_long_coordinate }}"
+                data-icon-path=""
+                data-map-title="{{ result.event_name }}"
+                data-map-zoom="14">
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if list.other_events != null %}
+        <div class="other-events">
+          <div class="text-center py-4"><h5 class="title">{{ lang('WebEvents.other') }}</h5></div>
+          <div class="row">
+            {% for row in list.other_events %}
+            <div class="col-sm-6 col-lg-3 col-md-6">
+              <div class="card event-card mb-3">
+                <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS~'/'~row.event_slug~'/'~row.event_id) }}">
+                  <div class="event-card-image-wrapper">
+                    <div class="event-image">
+                      <img src="{{ row.image.base }}" class="card-img-top event-card-image" aria-label="{{ row.event_name }}" title="{{ row.event_name }}" alt="{{ row.event_name }}" />
+                    </div>
+                    <div class="tags">
+                      <div class="category tag-item p-3">{{ row.event_category_name }}</div>
+                      {% if row.event_date.day != null and row.event_date.month != null %}
+                        <div class="date tag-item p-3 pt-4">
+                          <h5 class="mb-0">{{ row.event_date.day }}</h5>
+                          <div>{{ row.event_date.month }}</div>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h6 class="card-title event-card-title text-grey py-4">{{ row.event_name }}</h6>
+                    <div class="pt-2">
+                      {% if row.event_hour != null %}
+                        <p class="card-text event-card-text"><i class="fas fa-clock" style="color: #5D0BFB;"></i>{{ lang('WebEvents.hour') }}: {{ row.event_hour }}</p>
+                      {% endif %}
+
+                      {% if row.event_location != null %}
+                        <p class="card-text event-card-text"><i class="fa-solid fa-location-dot text-blue"></i>{{ row.event_location }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+<?php
+return [
+	'mustBeArray'          => 'An array should be given to the email validation function.',
+	'invalidAddress'       => 'Invalid email address: {0}',
+	'attachmentMissing'    => 'Email attachment not found: {0}',
+	'attachmentUnreadable' => 'Email attachment failed to open: {0}',
+	'noFrom'               => 'Email cannot be sent without the "From" header.',
+	'noRecipients'         => 'You must specify recipients: To, Cc, or Bcc',
+	'sendFailurePHPMail'   => 'Unable to send email using PHP mail() method. Your server may not be set to send emails with this method.',
+	'sendFailureSendmail'  => 'Unable to send email using PHP Sendmail method. Your server may not be set to send emails with this method.',
+	'sendFailureSmtp'      => 'Unable to send email using PHP SMTP method. Your server may not be set to send emails with this method.',
+	'sent'                 => 'Your message was successfully sent using the {0} protocol.',
+	'noSocket'             => 'Unable to open Sendmail socket. Please check your settings.',
+	'noHostname'           => 'You need to specify the SMTP server name.',
+	'SMTPError'            => 'SMTP error received: {0}',
+	'noSMTPAuth'           => 'Error: You must specify an SMTP username and password.',
+	'failedSMTPLogin'      => 'Failed to send AUTH LOGIN command. Error: {0}',
+	'SMTPAuthUsername'     => 'Username is incorrect. Error: {0}',
+	'SMTPAuthPassword'     => 'Password incorrect Error: {0}',
+	'SMTPDataFailure'      => 'Failed to send data: {0}',
+	'exitStatus'           => 'Exit code: {0}',
+];

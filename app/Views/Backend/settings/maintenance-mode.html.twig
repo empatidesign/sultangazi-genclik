@@ -1,0 +1,152 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+    				<li class="breadcrumb-item active">{{ lang('AdminSettings.maintenanceMode.title') }}</li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.maintenanceMode.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-xl-6 col-xs-12 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="main-content-label">
+					<h4 class="header-title">{{ lang('AdminSettings.maintenanceMode.databaseRepair.title') }}</h4>
+				</div>
+				{% if FLASH_DATA_MESSAGE_SUCCESS %}
+					<div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+		      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		      		<span aria-hidden="true">&times;</span>
+		      	</button>
+		      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+		      </div>
+				{% endif %}
+				<div class="text-center text-muted mb-3">
+					<span class="bg-soft-dark rounded p-1 font-12">{{ lang('Admin.lastUpdateDate') }} {{ database_repair_date }}</span>
+				</div>
+				{{ form_open(BACKEND_URL~'/'~page_url~'/database-repair', 'class="custom-form"') }}
+					<button type="submit" class="btn btn-primary btn-with-icon btn-block" id="custom-form-button2">
+						<span class="d-none loading-spinner">
+							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+							<span>{{ lang('Admin.loading') }}</span>
+						</span>
+						<span class="button-text">
+							<i class="mdi mdi-cached"></i> {{ lang('AdminSettings.maintenanceMode.databaseRepair.button') }}
+						</span>
+					</button>
+					<div class="text-center mt-3">
+						{{ form.help(lang('AdminSettings.maintenanceMode.databaseRepair.description')) }}
+					</div>
+				{{ form_close() }}
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12 col-xl-6 col-xs-12 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="main-content-label">
+					<h4 class="header-title">{{ lang('AdminSettings.maintenanceMode.cacheClearing.title') }}</h4>
+				</div>
+				{% if FLASH_DATA.MESSAGE_2 %}
+					<div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						{{ FLASH_DATA.MESSAGE_2 }}
+					</div>
+				{% endif %}
+				<div class="text-center text-muted mb-3">
+					<span class="bg-soft-dark rounded p-1 font-12">{{ lang('Admin.lastUpdateDate') }} {{ cache_clear_date }}</span>
+				</div>
+				{{ form_open(BACKEND_URL~'/'~page_url~'/cache-clearing', 'class="custom-form"') }}
+					<button type="submit" class="btn btn-success btn-with-icon btn-block" id="custom-form-button3">
+						<span class="d-none loading-spinner">
+							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+							<span>{{ lang('Admin.loading') }}</span>
+						</span>
+						<span class="button-text">
+							<i class="mdi mdi-delete"></i> {{ lang('AdminSettings.maintenanceMode.cacheClearing.button') }}
+						</span>
+					</button>
+					<div class="text-center mt-3">
+						{{ form.help(lang('AdminSettings.maintenanceMode.cacheClearing.description')) }}
+					</div>
+				{{ form_close() }}
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/update', 'class="custom-form"') }}
+	<div class="card">
+		<div class="card-body">
+			<div class="main-content-label">
+				<h4 class="header-title">{{ lang('AdminSettings.maintenanceMode.titleForm') }}</h4>
+			</div>
+			{% if FLASH_DATA.MESSAGE_3 %}
+				<div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					{{ FLASH_DATA.MESSAGE_3 }}
+				</div>
+			{% endif %}
+			<label for="maintenance_mode_text">{{ lang('AdminSettings.maintenanceMode.description') }}</label>
+			<input type="hidden" name="maintenance_mode_status" value="{{ settings.maintenance_mode_status == 0 ? 1 : 0 }}" />
+			<div class="mb-3">
+				<label for="maintenance_mode_title">{{ lang('AdminSettings.maintenanceMode.form.title') }}</label>
+				<input type="text" name="maintenance_mode_title" id="maintenance_mode_title" value="{{ settings.maintenance_mode_title }}" class="form-control" />
+			</div>
+			<div>
+				<label for="maintenance_mode_text">{{ lang('AdminSettings.maintenanceMode.form.description') }}</label>
+				<textarea name="maintenance_mode_text" id="maintenance_mode_text" class="form-control textarea_editor" rows="5">{{ settings.maintenance_mode_text }}</textarea>
+			</div>
+			<div class="text-center mt-3">
+				{% if settings.maintenance_mode_status == 0 %}
+					<div class="text-success" role="alert">
+						{{ lang('AdminSettings.maintenanceMode.button.status.active') }}
+					</div>
+				{% else %}
+					<div class="text-danger" role="alert">
+						{{ lang('AdminSettings.maintenanceMode.button.status.passive') }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<div class="card mb-0">
+		<div class="card-body">
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+					<span class="d-none loading-spinner">
+						<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+						<span>{{ lang('Admin.loading') }}</span>
+					</span>
+					<span class="button-text">
+						<i class="mdi mdi-power"></i>
+						{% if settings.maintenance_mode_status == 1 %}
+							<span>{{ lang('AdminSettings.maintenanceMode.button.passive') }}</span>
+						{% else %}
+							<span>{{ lang('AdminSettings.maintenanceMode.button.active') }}</span>
+						{% endif %}
+					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+{{ form_close() }}
+{% endblock %}

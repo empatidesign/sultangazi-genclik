@@ -1,0 +1,230 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminForms.formsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminForms.contactRequests.title') }}</a></li>
+            {% if page_name == 'detail' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.detail') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminForms.contactRequests.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label mb-0 pb-0 border-0">
+						<h4 class="header-title">{{ lang('AdminForms.contactRequests.title') }}</h4>
+					</div>
+					<div id="accordionParent" class="accordion">
+						<div class="card mb-0 border">
+							<div id="FilterContent" class="card-header p-0">
+								<h5 class="my-1">
+									<button type="button" class="btn btn-link btn-block collapsed text-dark text-left" data-toggle="collapse" data-target="#Filter" aria-expanded="true">
+										<i class="fas fa-filter mr-2"></i> {{ lang('Admin.filter.title') }}
+									</button>
+								</h5>
+							</div>
+							<div id="Filter" class="collapse" aria-labelledby="FilterContent" data-parent="#accordionParent" style="">
+								{{ form_open(BACKEND_URL~'/'~page_url, 'id="search-form" class="custom-form" onsubmit="return false"') }}
+									<div class="card-body">
+										<div class="form-row">
+											<div class="col-md-3 mb-3">
+												<label for="contact_form_name_surname">{{ lang('AdminForms.contactRequests.general.name') }} {{ lang('AdminForms.contactRequests.general.surname') }}</label>
+												<input type="text" name="contact_form_name_surname" id="contact_form_name_surname" class="form-control" />
+											</div>
+											<div class="col-md-3 mb-3">
+												<label for="contact_form_telephone">{{ lang('AdminForms.contactRequests.general.telephone') }}</label>
+												<input type="text" name="contact_form_telephone" id="contact_form_telephone" class="form-control phone" autocomplete="off" />
+											</div>
+											<div class="col-md-3 mb-3">
+												<label for="contact_form_email">{{ lang('AdminForms.contactRequests.general.emailAddress') }}</label>
+												<input type="text" name="contact_form_email" id="contact_form_email" class="form-control" autocomplete="off" />
+											</div>
+											<div class="col-md-3 mb-3">
+												<label for="contact_form_created_date">{{ lang('AdminForms.contactRequests.general.createdDate') }}</label>
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><i class="far fa-calendar-plus"></i></span>
+													</div>
+													<input type="text" name="contact_form_created_date" id="contact_form_created_date" class="form-control daterange" autocomplete="off" />
+												</div>
+											</div>
+											<div class="col-md-12 text-right">
+												<button type="button" id="clearFilter" class="btn btn-link">{{ lang('Admin.filter.button.removeFilter') }}</button>
+												<button type="submit" id="filterSearch" class="btn btn-primary">{{ lang('Admin.filter.button.filter') }}</button>
+											</div>
+										</div>
+									</div>
+								{{ form_close() }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminForms.contactRequests.general.status') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.name') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.surname') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.telephone') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.emailAddress') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.createdDate') }}</th>
+											<th>{{ lang('AdminForms.contactRequests.general.ipAddress') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'detail' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.contact_form_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.detail') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6 mb-3">
+								<label>{{ lang('AdminForms.contactRequests.general.name') }}</label>
+								<input type="text" class="form-control" value="{{ result.contact_form_name }}" disabled />
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label>{{ lang('AdminForms.contactRequests.general.surname') }}</label>
+								<input type="text" class="form-control" value="{{ result.contact_form_surname }}" disabled />
+							</div>
+              <div class="col-12 col-lg-12 mb-3">
+                <label>{{ lang('AdminForms.contactRequests.general.companyName') }}</label>
+                <input type="text" class="form-control" value="{{ result.contact_form_company_name }}" disabled />
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label>{{ lang('AdminForms.contactRequests.general.telephone') }}</label>
+								<input type="text" class="form-control phone" value="{{ result.contact_form_telephone }}" autocomplete="off" disabled />
+							</div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label>{{ lang('AdminForms.contactRequests.general.emailAddress') }}</label>
+								<input type="text" class="form-control" value="{{ result.contact_form_email }}" disabled />
+							</div>
+							<div class="col-12 col-lg-12">
+								<label>{{ lang('AdminForms.contactRequests.general.message') }}</label>
+								<textarea class="form-control" placeholder="{{ result.contact_form_message }}" rows="5" disabled></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('AdminForms.contactRequests.adminNotes') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-12">
+								<textarea name="form[admin_notes]" class="form-control" rows="5">{{ result.admin_notes }}</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('AdminForms.contactRequests.general.answer') }}</h4>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-12">
+								{% if result.contact_form_answer == null %}
+									<textarea name="form[contact_form_answer]" id="contact_form_answer" class="form-control textarea_editor" rows="5"></textarea>
+								{% else %}
+									<div class="main-msg-wrapper d-block">
+										{{ result.contact_form_answer }}
+									</div>
+									<small class="text-danger">{{ lang('AdminForms.contactRequests.general.answerDate') }}: {{ result.contact_form_answer_date }}</small>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

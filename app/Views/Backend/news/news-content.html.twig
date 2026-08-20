@@ -1,0 +1,564 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-title-box">
+				<div class="float-right">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a>
+						</li>
+						<li class="breadcrumb-item">
+							<a href="javascript:void(0)">{{ lang('AdminNews.newsTitle') }}</a>
+						</li>
+						<li class="breadcrumb-item">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminNews.news.title') }}</a>
+						</li>
+						{% if page_name == 'add' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+						{% endif %}
+
+						{% if page_name == 'edit' %}
+							<li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+						{% endif %}
+					</ol>
+				</div>
+				<h4 class="page-title">{{ lang('AdminNews.news.title') }}</h4>
+			</div>
+		</div>
+	</div>
+
+	{% if FLASH_DATA_MESSAGE_SUCCESS %}
+		<div class="row">
+			<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+				<div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					{{ FLASH_DATA_MESSAGE_SUCCESS }}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if page_name == 'index' %}
+		<div class="row">
+			<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row row-sm">
+							<div class="col-12 col-lg-6">
+								<div class="main-content-label mb-0 pb-0 border-0">
+									<h4 class="header-title">{{ lang('AdminNews.news.title') }}</h4>
+								</div>
+							</div>
+							<div class="col-12 col-lg-6 text-lg-right text-left">
+								<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+									{{ lang('Admin.process.addNewRecord') }}
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row row-sm">
+							<div class="col-lg-12">
+								<div class="table-responsive">
+									<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+										<thead>
+											<tr>
+												<th>{{ lang('AdminNews.news.general.status') }}</th>
+												<th>{{ lang('Admin.genclik') }}</th>
+												<th>{{ lang('Admin.pushNotificationTitle') }}</th>
+												<th class="no-sort">{{ lang('AdminNews.news.general.image.title') }}</th>
+												<th>{{ lang('AdminNews.news.general.name') }}</th>
+												<th>{{ lang('AdminNews.news.general.createdDate') }}</th>
+												<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if page_name == 'add' %}
+		<div class="row">
+			<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+				{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab2') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab3') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab4') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab5" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab5') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab6" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab6') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status">{{ lang('AdminNews.news.general.status') }}
+													<span class="tx-danger">*</span>
+												</label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status_genclik">{{ lang('Admin.genclik') }}
+													<span class="tx-danger">*</span>
+												</label>
+												<select name="form[status_genclik]" id="status_genclik" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-6 mb-3 fine-uploader-name">
+												<label for="news_name">{{ lang('AdminNews.news.general.name') }}
+													<span class="tx-danger">*</span>
+												</label>
+												{{ form.input('news_name', '', '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_image">{{ lang('AdminNews.news.general.image.title') }}</label>
+												<input type="file" name="news_image" id="news_image" class="dropify" data-height="200"/>
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_description">{{ lang('AdminNews.news.general.description') }}</label>
+												{{ form.textarea('news_description', '', '', 'textarea_editor', '', '') }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_title">{{ lang('AdminNews.news.general.seo.title') }}</label>
+												{{ form.input('news_meta_title', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_keywords">{{ lang('AdminNews.news.general.seo.keywords') }}</label>
+												{{ form.textarea('news_meta_keywords', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_description">{{ lang('AdminNews.news.general.seo.description') }}</label>
+												{{ form.textarea('news_meta_description', '', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_slug">{{ lang('AdminNews.news.general.seo.slug') }}</label>
+												{{ form.input('news_slug', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab3">
+										<div class="example mb-0">
+											<div class="highlight clip-widget mt-0 mb-3 p-3">
+												<h6 class="card-title m-0">
+													<i class="fas fa-random"></i>
+													{{ lang('AdminNews.news.paragraphs.title') }}
+												</h6>
+											</div>
+											<div class="table-responsive">
+												<table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ paragraphs.datatable_url }}">
+													<thead>
+														<tr>
+															<th>{{ lang('Admin.id') }}</th>
+															<th class="no-sort">{{ lang('AdminNews.news.paragraphs.image') }}</th>
+															<th>{{ lang('AdminNews.news.paragraphs.name') }}</th>
+															<th>{{ lang('AdminNews.news.paragraphs.createdDate') }}</th>
+															<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+														</tr>
+													</thead>
+													<tbody></tbody>
+												</table>
+											</div>
+											<div class="border-top mt-3 pt-3"></div>
+											<a href="javascript:void(0)" onclick="modalPage('news_paragraph_add', {{ last_id }})" class="btn btn-light">
+												<i class="fas fa-plus"></i>
+												{{ lang('Admin.process.addNewRecord') }}
+											</a>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab4">
+										<div id="tab-pictures" data-id="{{ last_id }}" data-page-url="{{ page_url }}">
+											<div class="portlet-body">
+												<div class="row" id="showcase-picture-grid"></div>
+												<div id="file-upload-area"></div>
+											</div>
+											<div id="file-upload-area"></div>
+											<script type="text/template" id="qq-template">
+												<div class="qq-uploader-selector qq-uploader">
+													<div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+														<i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+														<h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+														<p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+														<div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+															<div>
+																<i class="fas fa-cloud-upload-alt"></i>
+																{{ lang('Admin.button.upload') }}</div>
+														</div>
+													</div>
+													<span class="qq-drop-processing-selector qq-drop-processing">
+														<span>common.fileuploader.processing</span>
+														<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+													</span>
+													<ul class="qq-upload-list-selector qq-upload-list">
+														<li>
+															<div class="qq-progress-bar-container-selector">
+																<div class="qq-progress-bar-selector qq-progress-bar"></div>
+															</div>
+															<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+															<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+															<span class="qq-upload-file-selector qq-upload-file"></span>
+															<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+															<span class="qq-upload-size-selector qq-upload-size"></span>
+															<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+															<a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+															<a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+															<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+														</li>
+													</ul>
+												</div>
+											</script>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab5">
+										<select name="form[directorates_id][]" id="directorates_id" class="form-control multi-select" multiple>
+											{% if list.directorates != null %}
+												{% for row in list.directorates %}
+													<option value="{{ row.directorates_id }}">{{ row.directorates_name }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+									<div class="tab-pane" id="tab6">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-5">
+												<label for="push_notification">{{ lang('Admin.pushNotification') }}</label>
+												<div class="custom-switch switch-primary">
+													<input type="checkbox" name="form[push_notification]" id="push_notification" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}"/>
+													<label for="push_notification" class="custom-control-label"></label>
+												</div>
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_mobile_name">{{ lang('AdminNews.news.general.name') }}</label>
+												{{ form.input('news_mobile_name', '', '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_mobile_description">{{ lang('AdminNews.news.general.description') }}</label>
+												{{ form.textarea('news_mobile_description', '', '', '', '', '10') }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+								<span class="d-none loading-spinner">
+									<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+									<span>{{ lang('Admin.loading') }}</span>
+								</span>
+								<span class="button-text">
+									<i class="mdi mdi-spin mdi-star"></i>
+									<span>{{ lang('Admin.button.save') }}</span>
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				{{ form_close() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if page_name == 'edit' %}
+		<div class="row">
+			<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+				{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.news_id, 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab2') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab3') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab4" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab4') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab5" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab5') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab6" class="nav-link" data-toggle="tab">{{ lang('AdminNews.news.tabMenu.tab6') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status">{{ lang('AdminNews.news.general.status') }}
+													<span class="tx-danger">*</span>
+												</label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-3 mb-3">
+												<label for="status_genclik">{{ lang('Admin.genclik') }}
+													<span class="tx-danger">*</span>
+												</label>
+												<select name="form[status_genclik]" id="status_genclik" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option {{ result.status_genclik == FORM_ACTIVE_NUMBER ? 'selected' : NULL }} value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option {{ result.status_genclik != FORM_ACTIVE_NUMBER ? 'selected' : NULL }} value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-6 mb-3 fine-uploader-name">
+												<label for="news_name">{{ lang('AdminNews.news.general.name') }}
+													<span class="tx-danger">*</span>
+												</label>
+												{{ form.input('news_name', lang.data.translations, '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_image">{{ lang('AdminNews.news.general.image.title') }}</label>
+												<input type="file" name="news_image" id="news_image" class="dropify" data-height="200" data-default-file="{{ result.image }}" data-url="{{ result.image_remove }}"/>
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_description">{{ lang('AdminNews.news.general.description') }}</label>
+												{{ form.textarea('news_description', lang.data.translations, '', 'textarea_editor', '', '') }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_title">{{ lang('AdminNews.news.general.seo.title') }}</label>
+												{{ form.input('news_meta_title', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_keywords">{{ lang('AdminNews.news.general.seo.keywords') }}</label>
+												{{ form.textarea('news_meta_keywords', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_meta_description">{{ lang('AdminNews.news.general.seo.description') }}</label>
+												{{ form.textarea('news_meta_description', lang.data.translations, '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_slug">{{ lang('AdminNews.news.general.seo.slug') }}</label>
+												{{ form.input('news_slug', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab3">
+										<div class="example mb-0">
+											<div class="highlight clip-widget mt-0 mb-3 p-3">
+												<h6 class="card-title m-0">
+													<i class="fas fa-random"></i>
+													{{ lang('AdminNews.news.paragraphs.title') }}
+												</h6>
+											</div>
+											<div class="table-responsive">
+												<table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ paragraphs.datatable_url }}">
+													<thead>
+														<tr>
+															<th>{{ lang('Admin.id') }}</th>
+															<th class="no-sort">{{ lang('AdminNews.news.paragraphs.image') }}</th>
+															<th>{{ lang('AdminNews.news.paragraphs.name') }}</th>
+															<th>{{ lang('AdminNews.news.paragraphs.createdDate') }}</th>
+															<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+														</tr>
+													</thead>
+													<tbody></tbody>
+												</table>
+											</div>
+											<div class="border-top mt-3 pt-3"></div>
+											<a href="javascript:void(0)" onclick="modalPage('news_paragraph_add', {{ result.news_id }})" class="btn btn-light">
+												<i class="fas fa-plus"></i>
+												{{ lang('Admin.process.addNewRecord') }}
+											</a>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab4">
+										<div id="tab-pictures" data-id="{{ result.news_id }}" data-page-url="{{ page_url }}">
+											<div class="portlet-body">
+												<div class="row" id="showcase-picture-grid"></div>
+												<div id="file-upload-area"></div>
+											</div>
+											<div id="file-upload-area"></div>
+											<script type="text/template" id="qq-template">
+												<div class="qq-uploader-selector qq-uploader">
+													<div class="qq-upload-drop-area-selector fine-uploader-file-area dz-clickable">
+														<i class="fas fa-cloud-upload-alt text-primary" style="font-size:110px;"></i>
+														<h4 class="sbold">{{ lang('Admin.fineUploader.messages.dragDrop') }}</h4>
+														<p>{{ lang('Admin.fineUploader.messages.dragDropDesc') }}</p>
+														<div class="qq-upload-button-selector qq-upload-button btn btn-primary" style="width:200px; margin:0 auto;">
+															<div>
+																<i class="fas fa-cloud-upload-alt"></i>
+																{{ lang('Admin.button.upload') }}</div>
+														</div>
+													</div>
+													<span class="qq-drop-processing-selector qq-drop-processing">
+														<span>common.fileuploader.processing</span>
+														<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+													</span>
+													<ul class="qq-upload-list-selector qq-upload-list">
+														<li>
+															<div class="qq-progress-bar-container-selector">
+																<div class="qq-progress-bar-selector qq-progress-bar"></div>
+															</div>
+															<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+															<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+															<span class="qq-upload-file-selector qq-upload-file"></span>
+															<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+															<span class="qq-upload-size-selector qq-upload-size"></span>
+															<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">common.fileuploader.cancel</a>
+															<a class="qq-upload-retry-selector qq-upload-retry" href="#">{{ lang('Admin.tryAgain') }}</a>
+															<a class="qq-upload-delete-selector qq-upload-delete" href="#">common.fileuploader.delete</a>
+															<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+														</li>
+													</ul>
+												</div>
+											</script>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab5">
+										<select name="form[directorates_id][]" id="directorates_id" class="form-control multi-select" multiple>
+											{% if list.directorates != null %}
+												{% for row in list.directorates %}
+													<option value="{{ row.directorates_id }}" {{ row.selected }}>{{ row.directorates_name }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+									<div class="tab-pane" id="tab6">
+										<div class="row row-sm">
+											<div class="col-12 col-lg-12 mb-5">
+												<label for="push_notification">{{ lang('Admin.pushNotification') }}</label>
+												<div class="custom-switch switch-primary">
+													<input type="checkbox" name="form[push_notification]" id="push_notification" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ result.push_notification == FORM_ACTIVE_NUMBER ? 'checked' : NULL }}/>
+													<label for="push_notification" class="custom-control-label"></label>
+												</div>
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="news_mobile_name">{{ lang('AdminNews.news.general.name') }}</label>
+												{{ form.input('news_mobile_name', lang.data.translations, '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="news_mobile_description">{{ lang('AdminNews.news.general.description') }}</label>
+												{{ form.textarea('news_mobile_description', lang.data.translations, '', '', '', '10') }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i>
+											<span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i>
+											<span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{ form_close() }}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminSettings.emailTemplates.title') }}</a></li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.emailTemplates.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="main-content-label">
+					<h4 class="header-title">{{ lang('AdminSettings.emailTemplates.title') }}</h4>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="action">{{ lang('AdminSettings.emailTemplates.general.choose') }}</label>
+						{% if list.email_templates != null %}
+							<select name="form[ssl_status]" id="ssl_status" class="form-control select2" onChange="window.location='{{ base_url(BACKEND_URL~'/'~page_url~'/?action=') }}'+this.value">
+								<option value="">{{ lang('Admin.choose') }}</option>
+								{% for row in list.email_templates %}
+								<option value="{{ row.email_template_id }}" {{ row.email_template_id == action ? 'selected' : NULL }}>{{ row.email_template_name }}</option>
+								{% endfor %}
+							</select>
+						{% else %}
+							<div class="alert alert-danger mb-0" role="alert">{{ lang('Admin.error.noRecord') }}</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if action != null %}
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~action, 'class="custom-form"') }}
+				<div class="accordion">
+					<div class="card">
+						<div class="card-header">{{ lang('AdminSettings.emailTemplates.general.detail') }}</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-lg-6 mb-3">
+									<label for="status">{{ lang('AdminSettings.emailTemplates.general.status') }} <span class="tx-danger">*</span></label>
+									<select name="form[status]" id="status" class="form-control select2">
+										<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+										<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+									</select>
+								</div>
+								<div class="col-lg-6 mb-3">
+									<label for="email_template_name">{{ lang('AdminSettings.emailTemplates.general.name') }} <span class="tx-danger">*</span></label>
+									{{ form.input('email_template_name', lang.data.translations, '', '', '') }}
+								</div>
+								<div class="col-lg-6 mb-3">
+									<label for="send_to_customer">
+										{{ lang('AdminSettings.emailTemplates.general.sendCustomer.title') }}
+										<a href="javascript:void(0)" data-placement="right" data-toggle="tooltip" title="{{ lang('AdminSettings.emailTemplates.general.sendCustomer.description') }}"><i class="fa fa-info-circle"></i></a>
+									</label>
+									<select name="form[send_to_customer]" id="send_to_customer" class="form-control select2">
+										<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.send_to_customer == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+										<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.send_to_customer == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+									</select>
+								</div>
+								<div class="col-lg-6 mb-3">
+									<label for="send_to_admin">
+										{{ lang('AdminSettings.emailTemplates.general.sendAdmin.title') }}
+										<a href="javascript:void(0)" data-placement="right" data-toggle="tooltip" title="{{ lang('AdminSettings.emailTemplates.general.sendAdmin.description') }}"><i class="fa fa-info-circle"></i></a>
+									</label>
+									<select name="form[send_to_admin]" id="send_to_admin" class="form-control select2">
+										<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.send_to_admin == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+										<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.send_to_admin == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+									</select>
+								</div>
+								<div class="col-lg-12">
+									<label for="email_template_description" class="col-form-label d-flex justify-content-between align-items-center">
+										{{ lang('AdminSettings.emailTemplates.general.description') }}
+										<a href="#modalPopup" class="btn btn-sm btn-danger modal-effect" data-effect="effect-scale" data-toggle="modal">
+											{{ lang('AdminSettings.templatesVariableList.title') }}
+										</a>
+									</label>
+									{{ form.textarea('email_template_description', lang.data.translations, '', 'textarea_editor', '', '10') }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+
+			<div id="modalPopup" class="modal">
+				<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title mt-0" id="myLargeModalLabel">{{ lang('AdminSettings.templatesVariableList.title') }}</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						</div>
+						<div class="modal-body" style="background-color: #e9e7f7;">
+							<div class="row">
+								<div class="col-md-6 mb-4">
+									<div class="card h-100 mb-0">
+										<div class="card-body">
+											<h5 class="mg-b-10 mg-t-0 tx-17">{{ lang('AdminSettings.templatesVariableList.email.contactRequests.title') }}</h5>
+											<ul class="mb-0 pd-l-15">
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.name') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_NAME }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.surname') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_SURNAME }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.telephone') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_TELEPHONE }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.email') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_EMAIL }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.message') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_MESSAGE }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.contactRequests.date') }}: {{ PARAMETER.CONTACT_REQUESTS.TMP_CONTACT_REQUESTS_DATE }}</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+                <div class="col-md-6 mb-4">
+									<div class="card h-100 mb-0">
+										<div class="card-body">
+											<h5 class="mg-b-10 mg-t-0 tx-17">{{ lang('AdminSettings.templatesVariableList.email.offers.title') }}</h5>
+											<ul class="mb-0 pd-l-15">
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.name') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_NAME }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.surname') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_SURNAME }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.telephone') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_TELEPHONE }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.email') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_EMAIL }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.message') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_MESSAGE }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.offers.date') }}: {{ PARAMETER.OFFERS.TMP_OFFERS_DATE }}</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card h-100 mb-0">
+										<div class="card-body">
+											<h5 class="mg-b-10 mg-t-0 tx-17">{{ lang('AdminSettings.templatesVariableList.email.general.title') }}</h5>
+											<ul class="mb-0 pd-l-15">
+												<li>{{ lang('AdminSettings.templatesVariableList.email.general.siteTelephone') }}: {{ PARAMETER.GENERAL.TMP_GENERAL_SITE_TELEPHONE }}</li>
+												<li>{{ lang('AdminSettings.templatesVariableList.email.general.siteEmail') }}: {{ PARAMETER.GENERAL.TMP_GENERAL_SITE_EMAIL }}</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="accordion">
+				<div class="card">
+					<div class="card-header">{{ lang('AdminSettings.emailTemplates.general.detail') }}</div>
+					<div class="card-body">{{ lang('AdminSettings.emailTemplates.general.alert.title') }}</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

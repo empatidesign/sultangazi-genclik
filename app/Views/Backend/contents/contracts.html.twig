@@ -1,0 +1,323 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.contracts.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.contracts.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.contracts.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminContents.contracts.general.status') }}</th>
+											<th>{{ lang('AdminContents.contracts.general.name') }}</th>
+											<th>{{ lang('AdminContents.contracts.general.contactPage') }}</th>
+                      <th>{{ lang('AdminContents.contracts.general.presidentContactPage') }}</th>
+											<th>{{ lang('AdminContents.contracts.general.createdDate') }}</th>
+											<th>{{ lang('AdminContents.contracts.general.updatedDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminContents.contracts.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminContents.contracts.tabMenu.tab2') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row">
+											<div class="col-12 col-lg-6 mb-3">
+												<label for="status">{{ lang('AdminContents.contracts.general.status') }} <span class="tx-danger">*</span></label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-6 mb-3">
+												<label for="contract_name">{{ lang('AdminContents.contracts.general.name') }} <span class="tx-danger">*</span></label>
+												{{ form.input('contract_name', '', '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_description">{{ lang('AdminContents.contracts.general.description') }}</label>
+												{{ form.textarea('contract_description', '', '', 'textarea_editor', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-4">
+                        <label for="show_on_contact_page" class="mb-0">{{ lang('AdminContents.contracts.general.showOnContactPage') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[show_on_contact_page]" id="show_on_contact_page" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" />
+                          <label for="show_on_contact_page" class="custom-control-label"></label>
+                        </div>
+											</div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="show_on_president_contact_page" class="mb-0">{{ lang('AdminContents.contracts.general.showOnPresidentContactPage') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[show_on_president_contact_page]" id="show_on_president_contact_page" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" />
+                          <label for="show_on_president_contact_page" class="custom-control-label"></label>
+                        </div>
+                      </div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_title">{{ lang('AdminContents.contracts.general.seo.title') }}</label>
+												{{ form.input('contract_meta_title', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_keywords">{{ lang('AdminContents.contracts.general.seo.keywords') }}</label>
+												{{ form.textarea('contract_meta_keywords', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_description">{{ lang('AdminContents.contracts.general.seo.description') }}</label>
+												{{ form.textarea('contract_meta_description', '', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="contract_slug">{{ lang('AdminContents.contracts.general.seo.slug') }}</label>
+												{{ form.input('contract_slug', '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.contract_id, 'class="custom-form"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+						<div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminContents.contracts.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminContents.contracts.tabMenu.tab2') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+										<div class="row">
+											<div class="col-12 col-lg-6 mb-3">
+												<label for="status">{{ lang('AdminContents.contracts.general.status') }} <span class="tx-danger">*</span></label>
+												<select name="form[status]" id="status" class="form-control select2">
+													<option value="">{{ lang('Admin.choose') }}</option>
+													<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+													<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+												</select>
+											</div>
+											<div class="col-12 col-lg-6 mb-3">
+												<label for="contract_name">{{ lang('AdminContents.contracts.general.name') }} <span class="tx-danger">*</span></label>
+												{{ form.input('contract_name', lang.data.translations, '', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_description">{{ lang('AdminContents.contracts.general.description') }}</label>
+												{{ form.textarea('contract_description', lang.data.translations, '', 'textarea_editor', '', '') }}
+											</div>
+											<div class="col-12 col-lg-12 mb-4">
+                        <label for="show_on_contact_page" class="mb-0">{{ lang('AdminContents.contracts.general.showOnContactPage') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[show_on_contact_page]" id="show_on_contact_page" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ result.show_on_contact_page == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+                          <label for="show_on_contact_page" class="custom-control-label"></label>
+                        </div>
+											</div>
+                      <div class="col-12 col-lg-12 mb-3">
+                        <label for="show_on_president_contact_page" class="mb-0">{{ lang('AdminContents.contracts.general.showOnPresidentContactPage') }}</label>
+                        <div class="custom-switch switch-primary">
+                          <input type="checkbox" name="form[show_on_president_contact_page]" id="show_on_president_contact_page" class="custom-control-input" value="{{ FORM_CHECKBOX_VALUE_NUMBER }}" {{ result.show_on_president_contact_page == FORM_CHECKBOX_VALUE_NUMBER ? 'checked' : NULL }} />
+                          <label for="show_on_president_contact_page" class="custom-control-label"></label>
+                        </div>
+                      </div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab2">
+										<div class="row">
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_title">{{ lang('AdminContents.contracts.general.seo.title') }}</label>
+												{{ form.input('contract_meta_title', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.title')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_keywords">{{ lang('AdminContents.contracts.general.seo.keywords') }}</label>
+												{{ form.textarea('contract_meta_keywords', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.keywords')) }}
+											</div>
+											<div class="col-12 col-lg-12 mb-3">
+												<label for="contract_meta_description">{{ lang('AdminContents.contracts.general.seo.description') }}</label>
+												{{ form.textarea('contract_meta_description', lang.data.translations, '', '', '', '') }}
+												{{ form.help(lang('Admin.seo.description')) }}
+											</div>
+											<div class="col-12 col-lg-12">
+												<label for="contract_slug">{{ lang('AdminContents.contracts.general.seo.slug') }}</label>
+												{{ form.input('contract_slug', lang.data.translations, '', '', '') }}
+												{{ form.help(lang('Admin.seo.slug')) }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

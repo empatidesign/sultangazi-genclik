@@ -1,0 +1,23 @@
+{{ form_open(BACKEND_URL~'/'~page_url~'/'~order_id, 'class="custom-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="order_note">{{ lang('AdminOrders.orderLists.detail.notes.orderNote') }}</label>
+			<textarea name="form[order_note]" id="order_note" class="form-control" rows="5">{{ result.order_note }}</textarea>
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="order_admin_note">{{ lang('AdminOrders.orderLists.detail.notes.adminNote') }}</label>
+			<textarea name="form[order_admin_note]" id="order_admin_note" class="form-control" rows="5">{{ result.order_admin_note }}</textarea>
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+				<span class="d-none loading-spinner">
+					<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+					<span>{{ lang('Admin.loading') }}</span>
+				</span>
+				<span class="button-text">
+					<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+{{ form_close() }}

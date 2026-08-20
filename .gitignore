@@ -1,0 +1,29 @@
+# Ortam / gizli bilgiler
+.env
+.env.*
+!.env.example
+
+# Bağımlılıklar
+/vendor/
+node_modules/
+
+# CodeIgniter runtime
+/writable/
+/storage/
+
+# Yüklenen dosyalar
+/uploads/
+
+# Veritabanı yedekleri
+/_database/
+
+# Loglar
+error_log
+*.log
+
+# Sunucu / editör
+.ftpquota
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

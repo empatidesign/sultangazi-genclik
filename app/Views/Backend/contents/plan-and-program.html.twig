@@ -1,0 +1,255 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.planAndProgram.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.planAndProgram.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.planAndProgram.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminContents.planAndProgram.general.status') }}</th>
+											<th class="no-sort">{{ lang('AdminContents.planAndProgram.general.file.title') }}</th>
+                      <th class="no-sort">{{ lang('AdminContents.planAndProgram.general.image.title') }}</th>
+											<th>{{ lang('AdminContents.planAndProgram.general.name') }}</th>
+                      <th>{{ lang('AdminContents.planAndProgram.general.year') }}</th>
+                      <th>{{ lang('AdminContents.planAndProgram.general.number') }}</th>
+											<th>{{ lang('AdminContents.planAndProgram.general.createdDate') }}</th>
+											<th>{{ lang('AdminContents.planAndProgram.general.updatedDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="status">{{ lang('AdminContents.planAndProgram.general.status') }} <span class="tx-danger">*</span></label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="strategic_plan_name">{{ lang('AdminContents.planAndProgram.general.name') }} <span class="tx-danger">*</span></label>
+								{{ form.input('strategic_plan_name', '', '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="strategic_plan_year">{{ lang('AdminContents.planAndProgram.general.year') }} <span class="tx-danger">*</span></label>
+                <select name="form[strategic_plan_year]" id="strategic_plan_year" class="form-control select2">
+                  {% set nowYear = date() | date('Y') %}
+                  {% set startYear = nowYear - 14 %}
+                  {% set endYear = startYear + 20 %}
+
+                  {% for i in range(startYear, endYear) %}
+                  <option value="{{ i }}" {{ i == nowYear ? 'selected' : null }}>{{ i }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="strategic_plan_number">{{ lang('AdminContents.planAndProgram.general.number') }}</label>
+								<input type="number" name="form[strategic_plan_number]" id="strategic_plan_number" class="form-control" min="0" />
+							</div>
+							<div class="col-12 col-lg-6">
+								<label for="strategic_plan_file">{{ lang('AdminContents.planAndProgram.general.file.title') }}</label>
+								<input type="file" name="strategic_plan_file" id="strategic_plan_file" class="dropify" data-height="200" />
+                {{ form.help(lang('Admin.fileUpload.description1')) }}
+							</div>
+              <div class="col-12 col-lg-6">
+								<label for="strategic_plan_image">{{ lang('AdminContents.planAndProgram.general.image.title') }}</label>
+								<input type="file" name="strategic_plan_image" id="strategic_plan_image" class="dropify" data-height="200" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.strategic_plan_id, 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="status">{{ lang('AdminContents.planAndProgram.general.status') }} <span class="tx-danger">*</span></label>
+                <select name="form[status]" id="status" class="form-control select2">
+                  <option value="">{{ lang('Admin.choose') }}</option>
+                  <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                  <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                </select>
+              </div>
+							<div class="col-12 col-lg-6 mb-3">
+								<label for="strategic_plan_name">{{ lang('AdminContents.planAndProgram.general.name') }}</label>
+								{{ form.input('strategic_plan_name', lang.data.translations, '', '', '') }}
+							</div>
+              <div class="col-12 col-lg-6 mb-3">
+                <label for="strategic_plan_year">{{ lang('AdminContents.planAndProgram.general.year') }} <span class="tx-danger">*</span></label>
+                <select name="form[strategic_plan_year]" id="strategic_plan_year" class="form-control select2">
+                  {% set nowYear = date() | date('Y') %}
+                  {% set startYear = nowYear - 14 %}
+                  {% set endYear = startYear + 20 %}
+
+                  {% for i in range(startYear, endYear) %}
+                  <option value="{{ i }}" {{ i == result.strategic_plan_year ? 'selected' : null }}>{{ i }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+								<label for="strategic_plan_number">{{ lang('AdminContents.planAndProgram.general.number') }}</label>
+								<input type="number" name="form[strategic_plan_number]" id="strategic_plan_number" class="form-control" value="{{ result.strategic_plan_number }}" min="0" />
+							</div>
+							<div class="col-12 col-lg-6">
+								<label for="strategic_plan_file">{{ lang('AdminContents.planAndProgram.general.file.title') }}</label>
+								<input type="file" name="strategic_plan_file" id="strategic_plan_file" class="dropify" data-height="200" data-default-file="{{ result.file }}" data-url="{{ result.file_remove }}" />
+                {{ form.help(lang('Admin.fileUpload.description1')) }}
+
+                {% if result.file != null %}
+                  <a target="_blank" href="{{ result.file }}" class="badge badge-danger mt-3">{{ lang('AdminContents.planAndProgram.general.file.click') }}</a>
+                {% endif %}
+              </div>
+              <div class="col-12 col-lg-6">
+								<label for="strategic_plan_image">{{ lang('AdminContents.planAndProgram.general.image.title') }}</label>
+								<input type="file" name="strategic_plan_image" id="strategic_plan_image" class="dropify" data-height="200" data-default-file="{{ result.image }}" data-url="{{ result.image_remove }}" />
+              </div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

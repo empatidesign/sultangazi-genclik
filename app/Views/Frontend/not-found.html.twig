@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lang('Web.pageNotFound.title') }}</title>
+    <link rel="stylesheet" href="{{ base_url('assets/css/output.css') }}">
+</head>
+<body class="h-screen grid place-items-center">
+    <div class="text-center space-y-4">
+        <h1 class="text-6xl font-bold">{{ lang('Web.pageNotFound.title') }}</h1>
+        <p class="text-gray-500 text-lg">{{ lang('Web.pageNotFound.description') }}</p>
+
+        <a href="{{ web_url() }}" class="text-blue-500 hover:underline">{{ lang('Web.general.homePage') }}</a>
+    </div>
+</body>
+</html>

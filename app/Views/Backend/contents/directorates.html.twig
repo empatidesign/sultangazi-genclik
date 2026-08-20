@@ -1,0 +1,390 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminContents.contentsTitle') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL~'/'~page_url) }}">{{ lang('AdminContents.directorates.title') }}</a></li>
+            {% if page_name == 'add' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.addNewRecord') }}</li>
+            {% endif %}
+
+            {% if page_name == 'edit' %}
+              <li class="breadcrumb-item active" aria-current="page">{{ lang('Admin.process.editRecord') }}</li>
+            {% endif %}
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminContents.directorates.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if page_name == 'index' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="main-content-label mb-0 pb-0 border-0">
+								<h4 class="header-title">{{ lang('AdminContents.directorates.title') }}</h4>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 text-lg-right text-left">
+							<a href="{{ base_url(BACKEND_URL~'/'~page_url~'/add') }}" class="btn btn-purple">
+								{{ lang('Admin.process.addNewRecord') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ datatable_url }}">
+									<thead>
+										<tr>
+											<th>{{ lang('AdminContents.directorates.general.status') }}</th>
+                      <th>{{ lang('Admin.mobile') }}</th>
+                      <th class="no-sort">{{ lang('AdminContents.directorates.general.icon.title') }}</th>
+											<th>{{ lang('AdminContents.directorates.general.name') }}</th>
+                      <th>{{ lang('AdminContents.directorates.general.person.name') }}</th>
+                      <th>{{ lang('AdminContents.directorates.general.person.surname') }}</th>
+											<th>{{ lang('AdminContents.directorates.general.createdDate') }}</th>
+											<th>{{ lang('AdminContents.directorates.general.updatedDate') }}</th>
+											<th class="no-sort">{{ lang('Admin.process.title') }}</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'add' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/insert', 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.addNewRecord') }}</h4>
+						</div>
+            <div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab2') }}</a>
+										</li>
+                    <li class="nav-item waves-effect waves-light">
+											<a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab3') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+              <div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+                    <div class="row">
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status">{{ lang('AdminContents.directorates.general.status') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status]" id="status" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+        								<label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+        								<select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+        									<option value="">{{ lang('Admin.choose') }}</option>
+        									<option value="{{ FORM_ACTIVE_NUMBER }}">{{ lang('Admin.active') }}</option>
+        									<option value="{{ FORM_PASSIVE_NUMBER }}">{{ lang('Admin.passive') }}</option>
+        								</select>
+        							</div>
+                      <div class="col-12 col-lg-6 mb-3">
+        								<label for="directorates_name">{{ lang('AdminContents.directorates.general.name') }} <span class="tx-danger">*</span></label>
+        								{{ form.input('directorates_name', '', '', '', '') }}
+        							</div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_telephone">{{ lang('AdminContents.directorates.general.telephone') }}</label>
+                        <input type="text" name="form[directorates_telephone]" id="directorates_telephone" class="form-control phone" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_fax">{{ lang('AdminContents.directorates.general.fax') }}</label>
+                        <input type="text" name="form[directorates_fax]" id="directorates_fax" class="form-control phone" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_email_address">{{ lang('AdminContents.directorates.general.emailAddress') }}</label>
+                        <input type="text" name="form[directorates_email_address]" id="directorates_email_address" class="form-control" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12">
+        								<label for="directorates_icon">{{ lang('AdminContents.directorates.general.icon.title') }}</label>
+        								<input type="file" name="directorates_icon" id="directorates_icon" class="dropify" data-height="200" />
+        							</div>
+        						</div>
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                    <div class="row">
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_person_name">{{ lang('AdminContents.directorates.general.person.name') }} <span class="tx-danger">*</span></label>
+                        <input type="text" name="form[directorates_person_name]" id="directorates_person_name" class="form-control" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_person_surname">{{ lang('AdminContents.directorates.general.person.surname') }} <span class="tx-danger">*</span></label>
+                        <input type="text" name="form[directorates_person_surname]" id="directorates_person_surname" class="form-control" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+        								<label for="directorates_person_sub_title">{{ lang('AdminContents.directorates.general.person.sub_title') }}</label>
+        								{{ form.input('directorates_person_sub_title', '', '', '', '') }}
+        							</div>
+                      <div class="col-12 col-lg-12">
+        								<label for="directorates_person_image">{{ lang('AdminContents.directorates.general.person.image') }}</label>
+        								<input type="file" name="directorates_person_image" id="directorates_person_image" class="dropify" data-height="200" />
+        							</div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="example mb-0">
+                      <div class="highlight clip-widget mt-0 mb-3 p-3">
+                        <h6 class="card-title m-0">
+                          <i class="fas fa-random"></i> {{ lang('AdminContents.directorates.files.title') }}
+                        </h6>
+                      </div>
+                      <div class="table-responsive">
+                        <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ files.datatable_url }}">
+                          <thead>
+                            <tr>
+                              <th>{{ lang('Admin.id') }}</th>
+                              <th class="no-sort">{{ lang('AdminContents.directorates.files.file') }}</th>
+                              <th>{{ lang('AdminContents.directorates.files.name') }}</th>
+                              <th>{{ lang('AdminContents.directorates.files.createdDate') }}</th>
+                              <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                      <div class="border-top mt-3 pt-3"></div>
+                      <a href="javascript:void(0)" onclick="modalPage('directories_file_add', {{ last_id }})" class="btn btn-light">
+                        <i class="fas fa-plus"></i> {{ lang('Admin.process.addNewRecord') }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+	            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+	  						<span class="d-none loading-spinner">
+	  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+	  							<span>{{ lang('Admin.loading') }}</span>
+	  						</span>
+	  						<span class="button-text">
+	  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+	  						</span>
+	  					</button>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+
+{% if page_name == 'edit' %}
+	<div class="row">
+		<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+			{{ form_open(BACKEND_URL~'/'~page_url~'/update/'~result.directorates_id, 'class="custom-form" enctype="multipart/form-data"') }}
+				<div class="card">
+					<div class="card-body">
+						<div class="main-content-label">
+							<h4 class="header-title">{{ lang('Admin.process.editRecord') }}</h4>
+						</div>
+            <div class="panel panel-primary tabs-style-1">
+							<div class="tab-menu-heading">
+								<div class="tabs-menu1">
+									<ul class="nav nav-pills nav-justified" role="tablist">
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab1" class="nav-link active" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab1') }}</a>
+										</li>
+										<li class="nav-item waves-effect waves-light">
+											<a href="#tab2" class="nav-link" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab2') }}</a>
+										</li>
+                    <li class="nav-item waves-effect waves-light">
+											<a href="#tab3" class="nav-link" data-toggle="tab">{{ lang('AdminContents.directorates.tabMenu.tab3') }}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+              <div class="panel-body p-4 border">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab1">
+                    <div class="row">
+                      <div class="col-12 col-lg-3 mb-3">
+                        <label for="status">{{ lang('AdminContents.directorates.general.status') }} <span class="tx-danger">*</span></label>
+                        <select name="form[status]" id="status" class="form-control select2">
+                          <option value="">{{ lang('Admin.choose') }}</option>
+                          <option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+                          <option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-3 mb-3">
+        								<label for="status_mobile">{{ lang('Admin.mobile') }} <span class="tx-danger">*</span></label>
+        								<select name="form[status_mobile]" id="status_mobile" class="form-control select2">
+        									<option value="">{{ lang('Admin.choose') }}</option>
+        									<option value="{{ FORM_ACTIVE_NUMBER }}" {{ result.status_mobile == FORM_ACTIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.active') }}</option>
+        									<option value="{{ FORM_PASSIVE_NUMBER }}" {{ result.status_mobile == FORM_PASSIVE_NUMBER ? 'selected' : NULL }}>{{ lang('Admin.passive') }}</option>
+        								</select>
+        							</div>
+        							<div class="col-12 col-lg-6 mb-3">
+        								<label for="directorates_name">{{ lang('AdminContents.directorates.general.name') }}</label>
+        								{{ form.input('directorates_name', lang.data.translations, '', '', '') }}
+        							</div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_telephone">{{ lang('AdminContents.directorates.general.telephone') }}</label>
+                        <input type="text" name="form[directorates_telephone]" id="directorates_telephone" class="form-control phone" value="{{ result.directorates_telephone }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_fax">{{ lang('AdminContents.directorates.general.fax') }}</label>
+                        <input type="text" name="form[directorates_fax]" id="directorates_fax" class="form-control phone" value="{{ result.directorates_fax }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_email_address">{{ lang('AdminContents.directorates.general.emailAddress') }}</label>
+                        <input type="text" name="form[directorates_email_address]" id="directorates_email_address" class="form-control" value="{{ result.directorates_email_address }}" autocomplete="off" />
+                      </div>
+                      <div class="col-12 col-lg-12">
+        								<label for="directorates_icon">{{ lang('AdminContents.directorates.general.icon.title') }}</label>
+        								<input type="file" name="directorates_icon" id="directorates_icon" class="dropify" data-height="200" data-default-file="{{ result.icon }}" data-url="{{ result.image_remove }}?action=icon" />
+                      </div>
+        						</div>
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                    <div class="row">
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_person_name">{{ lang('AdminContents.directorates.general.person.name') }} <span class="tx-danger">*</span></label>
+                        <input type="text" name="form[directorates_person_name]" id="directorates_person_name" class="form-control" value="{{ result.directorates_person_name }}" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+                        <label for="directorates_person_surname">{{ lang('AdminContents.directorates.general.person.surname') }} <span class="tx-danger">*</span></label>
+                        <input type="text" name="form[directorates_person_surname]" id="directorates_person_surname" class="form-control" value="{{ result.directorates_person_surname }}" />
+                      </div>
+                      <div class="col-12 col-lg-6 mb-3">
+        								<label for="directorates_person_sub_title">{{ lang('AdminContents.directorates.general.person.sub_title') }}</label>
+        								{{ form.input('directorates_person_sub_title', lang.data.translations, '', '', '') }}
+        							</div>
+                      <div class="col-12 col-lg-12">
+        								<label for="directorates_person_image">{{ lang('AdminContents.directorates.general.person.image') }}</label>
+        								<input type="file" name="directorates_person_image" id="directorates_person_image" class="dropify" data-height="200" data-default-file="{{ result.person_image }}" data-url="{{ result.image_remove }}?action=person_image" />
+        							</div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab3">
+                    <div class="example mb-0">
+                      <div class="highlight clip-widget mt-0 mb-3 p-3">
+                        <h6 class="card-title m-0">
+                          <i class="fas fa-random"></i> {{ lang('AdminContents.directorates.files.title') }}
+                        </h6>
+                      </div>
+                      <div class="table-responsive">
+                        <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100" data-table-url="{{ files.datatable_url }}">
+                          <thead>
+                            <tr>
+                              <th>{{ lang('Admin.id') }}</th>
+                              <th class="no-sort">{{ lang('AdminContents.directorates.files.file') }}</th>
+                              <th>{{ lang('AdminContents.directorates.files.category') }}</th>
+                              <th>{{ lang('AdminContents.directorates.files.name') }}</th>
+                              <th>{{ lang('AdminContents.directorates.files.createdDate') }}</th>
+                              <th class="no-sort">{{ lang('Admin.process.title') }}</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                      <div class="border-top mt-3 pt-3"></div>
+                      <a href="javascript:void(0)" onclick="modalPage('directories_file_add', {{ result.directorates_id }})" class="btn btn-light">
+                        <i class="fas fa-plus"></i> {{ lang('Admin.process.addNewRecord') }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+					</div>
+				</div>
+
+				<div class="card mb-0">
+					<div class="card-body">
+						<div class="text-center">
+							<div class="row">
+								<div class="col-12 col-lg-6 text-lg-right text-center mb-lg-0 mb-2">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE1 }}" class="btn btn-primary" id="custom-form-button1">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndStayButton') }}</span>
+										</span>
+									</button>
+								</div>
+								<div class="col-12 col-lg-6 text-lg-left text-center">
+									<button type="submit" name="redirect" value="{{ FORM_BUTTON_REDIRECT_PAGE2 }}" class="btn btn-secondary" id="custom-form-button2">
+										<span class="d-none loading-spinner">
+											<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+											<span>{{ lang('Admin.loading') }}</span>
+										</span>
+										<span class="button-text">
+											<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.saveAndExitButton') }}</span>
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{ form_close() }}
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

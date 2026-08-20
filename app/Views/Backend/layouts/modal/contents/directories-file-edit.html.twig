@@ -1,0 +1,36 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/files/update/'~directorates_file_id, 'class="directorates-file-form" enctype="multipart/form-data"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="directorate_category_id">{{ lang('AdminContents.directorates.files.category') }} <span class="tx-danger">*</span></label>
+			<select name="form[directorate_category_id]" id="directorate_category_id" class="form-control select2">
+				<option value="">{{ lang('Admin.string.choose') }}</option>
+				{% if list.categories != null %}
+					{% for row in list.categories %}
+					<option value="{{ row.directorate_category_id }}" {{ row.directorate_category_id == result.directorate_category_id ? 'selected' : null }}>{{ row.directorate_category_name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="directorates_file_name">{{ lang('AdminContents.directorates.files.name') }} <span class="tx-danger">*</span></label>
+			{{ form.input('directorates_file_name', lang.data.translations, '', '', '') }}
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="directorates_file">{{ lang('AdminContents.directorates.files.file') }} <span class="tx-danger">*</span></label>
+			<input type="file" name="directorates_file" id="directorates_file" class="dropify" data-height="200" data-default-file="{{ result.file }}" data-url="{{ result.file_remove }}" />
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-outline-primary btn-block waves-effect waves-light" id="custom-form-button4">
+				<span class="d-none loading-spinner">
+					<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+					<span>{{ lang('Admin.loading') }}</span>
+				</span>
+				<span class="button-text">
+					<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+{{ form_close() }}

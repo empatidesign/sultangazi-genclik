@@ -1,0 +1,68 @@
+{
+    "name": "empati/public_html",
+    "autoload": {
+        "psr-4": {
+            "Empati\\PublicHtml\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Empati Design"
+        }
+    ],
+    "require": {
+        "webmozart/assert": "^1.11",
+        "twig/twig": "^3.18",
+        "theseer/tokenizer": "^1.2",
+        "symfony/polyfill-mbstring": "^1.31",
+        "symfony/polyfill-ctype": "^1.31",
+        "symfony/deprecation-contracts": "^3.5",
+        "sebastian/version": "^5.0",
+        "sebastian/type": "^5.1",
+        "sebastian/resource-operations": "^3.0",
+        "sebastian/recursion-context": "^6.0",
+        "sebastian/object-reflector": "^4.0",
+        "sebastian/object-enumerator": "^6.0",
+        "sebastian/lines-of-code": "^3.0",
+        "sebastian/global-state": "^7.0",
+        "sebastian/exporter": "^6.3",
+        "sebastian/environment": "^7.2",
+        "sebastian/diff": "^6.0",
+        "sebastian/complexity": "^4.0",
+        "sebastian/comparator": "^6.3",
+        "sebastian/code-unit-reverse-lookup": "^4.0",
+        "sebastian/code-unit": "^3.0",
+        "sebastian/cli-parser": "^3.0",
+        "rosell-dk/webp-convert": "^2.9",
+        "rosell-dk/locate-binaries": "^1.0",
+        "rosell-dk/image-mime-type-sniffer": "^1.1",
+        "rosell-dk/image-mime-type-guesser": "^1.1",
+        "rosell-dk/file-util": "^0.1.1",
+        "rosell-dk/exec-with-fallback": "^1.2",
+        "psr/log": "^3.0",
+        "psr/container": "^2.0",
+        "phpunit/phpunit": "^11.5",
+        "phpunit/php-timer": "^7.0",
+        "phpunit/php-text-template": "^4.0",
+        "phpunit/php-invoker": "^5.0",
+        "phpunit/php-file-iterator": "^5.1",
+        "phpunit/php-code-coverage": "^11.0",
+        "phpspec/prophecy": "^1.20",
+        "phpdocumentor/type-resolver": "^1.10",
+        "phpdocumentor/reflection-docblock": "^5.6",
+        "phpdocumentor/reflection-common": "^2.2",
+        "phar-io/version": "^3.2",
+        "phar-io/manifest": "^2.0",
+        "nikic/php-parser": "^5.4",
+        "myclabs/deep-copy": "^1.12",
+        "mikey179/vfsstream": "^1.6",
+        "laminas/laminas-escaper": "^2.15",
+        "kint-php/kint": "^6.0",
+        "kenjis/codeigniter-ss-twig": "^4.2",
+        "firebase/php-jwt": "^6.10",
+        "fakerphp/faker": "^1.24",
+        "drewm/mailchimp-api": "^2.5",
+        "doctrine/instantiator": "^2.0",
+        "codeigniter4/framework": "^4.6"
+    }
+}

@@ -1,0 +1,21 @@
+<?php
+return [
+	'sourceImageRequired'    => 'You must specify a source image in your preferences.',
+	'gdRequired'             => 'GD image library is required to use this feature.',
+	'gdRequiredForProps'     => 'Your server must support the GD image library in order to specify the properties of the image.',
+	'gifNotSupported'        => 'GIF images are generally not supported due to license restrictions. You can use JPG or PNG images instead.',
+	'jpgNotSupported'        => 'JPG images are not supported.',
+	'pngNotSupported'        => 'PNG images are not supported.',
+	'unsupportedImageCreate' => 'Your server does not support the GD function required to render this type of image.',
+	'jpgOrPngRequired'       => 'The image resizing protocol you specify in your preferences only works with JPEG or PNG image types.',
+	'rotateUnsupported'      => 'Image rotation is not supported by your server.',
+	'libPathInvalid'         => 'The image library path is not correct. Please specify the correct path in your image preferences. {0, string)',
+	'imageProcessFailed'     => 'Image processing failed. Please check that your server supports the selected protocol and the image library path is correct.',
+	'rotationAngleRequired'  => 'To be able to rotate the image, a rotation angle must be specified.',
+	'invalidPath'            => 'The path of the image is not correct.',
+	'copyFailed'             => 'Image copy failed.',
+	'missingFont'            => 'Could not find a font to use.',
+	'saveFailed'             => 'The picture could not be saved. Make sure the image file and folder are writable.',
+	'invalidDirection'       => 'The flip direction can only be `vertical` or `horizontal`. Given: {0}',
+	'exifNotSupported'       => 'Reading EXIF data reading is not supported in this PHP installation.',
+];

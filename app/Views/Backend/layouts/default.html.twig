@@ -1,0 +1,213 @@
+{{ doctype() }}
+
+<html lang="{{ DEFAULT_LANGUAGES_CODE }}">
+
+<head>
+<meta charset="UTF-8" />
+<base href="{{ base_url(BACKEND_URL) }}" />
+<title>{{ settings.site_title }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/sweet-alert2/sweetalert2.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/select2/select2.min.css') }}
+
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/dataTables.bootstrap4.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/buttons.bootstrap4.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/responsive.bootstrap4.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/dropify/css/dropify.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/daterangepicker/daterangepicker.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/timepicker/bootstrap-material-datetimepicker.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/fineuploader/fineuploader-4.2.2.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/telephone-input/telephone-input.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/multiselect/multi-select.css') }}
+
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/css/bootstrap.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/css/icons.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/css/metisMenu.min.css') }}
+{{ link_tag('assets/'~BACKEND_TEMPLATE_PATH~'/css/style.css?v='~random()) }}
+
+{% block meta%} {% endblock%}
+</head>
+
+<body {{ page_name == 'project-index' or page_name == 'city-guide-content-index' ? 'class="enlarge-menu"' : null }}>
+<div id="global-loader" style="display: none;"></div>
+
+{% include BACKEND_TEMPLATE_PATH~'/layouts/partials/header.html.twig' %}
+
+{% block body%} {% endblock%}
+
+{% include BACKEND_TEMPLATE_PATH~'/layouts/partials/footer.html.twig' %}
+
+<div class="ajax-modal-content modal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content modal-content-demo">
+			<div class="modal-header">
+				<h6 class="modal-title"></h6>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/jquery.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/jquery-ui.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/bootstrap.bundle.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/jquery.upload.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/metisMenu.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/waves.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/jquery.slimscroll.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/jquery.dataTables.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/dataTables.bootstrap4.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/datatables/tabledit.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/moment/moment.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/ckeditor/ckeditor.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/sweet-alert2/sweetalert2.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/select2/select2.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/dropify/js/dropify.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/daterangepicker/daterangepicker.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/timepicker/bootstrap-material-datetimepicker.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/fineuploader/jquery.fineuploader-4.2.2.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/telephone-input/telephone-input.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/jquery.nestable.min.js') }}
+
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/apexcharts/apexcharts.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/pages/jquery.crm_dashboard.init.js') }}
+
+<script>
+window.theme = {
+  strings: {
+    success: {
+      title: "{{ lang('Admin.success.title') }}",
+      description: "{{ lang('Admin.success.description') }}"
+    },
+    warning: {
+      title: "{{ lang('Admin.warning.title') }}",
+      description: "{{ lang('Admin.warning.description') }}"
+    },
+    error: {
+      title: "{{ lang('Admin.error.title') }}"
+    },
+    close: "{{ lang('Admin.close') }}",
+    choose: "{{ lang('Admin.choose') }}",
+    button: {
+      accept: "{{ lang('Admin.button.acceptButton') }}",
+  		cancel: "{{ lang('Admin.button.cancelButton') }}",
+      save: "{{ lang('Admin.button.save') }}"
+    },
+    apply: "{{ lang('Admin.process.apply') }}",
+    clear: "{{ lang('Admin.process.clear') }}",
+    loading: "{{ lang('Admin.loading') }}",
+    link: "{{ lang('Admin.link') }}",
+    search: "{{ lang('Admin.search') }}"
+  },
+  datatable: {
+    copy: "{{ lang('Admin.datatable.copy') }}",
+    copyTotal: "{{ lang('Admin.datatable.copyTotal') }}",
+    decimal: "{{ lang('Admin.datatable.decimal') }}",
+    noRecord: "{{ lang('Admin.datatable.noRecord') }}",
+    info: "{{ lang('Admin.datatable.info') }}",
+    infoEmpty: "{{ lang('Admin.datatable.infoEmpty') }}",
+    infoFiltered: "{{ lang('Admin.datatable.infoFiltered') }}",
+    infoPostFix: "{{ lang('Admin.datatable.infoPostFix') }}",
+    infoThousands: "{{ lang('Admin.datatable.infoThousands') }}",
+    lengthMenu: "{{ lang('Admin.datatable.lengthMenu') }}",
+    loadingRecords: "{{ lang('Admin.datatable.loadingRecords') }}",
+    processing: "{{ lang('Admin.datatable.processing') }}",
+    search: "{{ lang('Admin.datatable.search') }}",
+    zeroRecords: "{{ lang('Admin.datatable.zeroRecords') }}",
+    pagination: {
+      first: "{{ lang('Admin.datatable.pagination.first') }}",
+      last: "{{ lang('Admin.datatable.pagination.last') }}",
+      next: "{{ lang('Admin.datatable.pagination.next') }}",
+      previous: "{{ lang('Admin.datatable.pagination.previous') }}"
+    }
+  },
+  select2: {
+    noRecord: "{{ lang('Admin.select2.noRecord') }}"
+  },
+  multiSelect: {
+    all: "{{ lang('Admin.multiSelect.allAdd') }}",
+    delete: "{{ lang('Admin.multiSelect.allRemove') }}",
+    selected: "{{ lang('Admin.multiSelect.selected') }}"
+  },
+  fineUploader: {
+    messages: {
+      uploadError: "{{ lang('Admin.fineUploader.messages.uploadError') }}"
+    }
+  },
+  dropify: {
+    messages: {
+      default: "{{ lang('Admin.dropifyMessages.messages.default') }}",
+      replace: "{{ lang('Admin.dropifyMessages.messages.replace') }}",
+      remove: "{{ lang('Admin.dropifyMessages.messages.remove') }}",
+      error: "{{ lang('Admin.dropifyMessages.messages.error') }}"
+    }
+  },
+  moment: {
+    monthsLong: {
+      january: "{{ lang('Admin.moment.monthsLong.january') }}",
+      february: "{{ lang('Admin.moment.monthsLong.february') }}",
+      march: "{{ lang('Admin.moment.monthsLong.march') }}",
+      april: "{{ lang('Admin.moment.monthsLong.april') }}",
+      may: "{{ lang('Admin.moment.monthsLong.may') }}",
+      june: "{{ lang('Admin.moment.monthsLong.june') }}",
+      july: "{{ lang('Admin.moment.monthsLong.july') }}",
+      august: "{{ lang('Admin.moment.monthsLong.august') }}",
+      september: "{{ lang('Admin.moment.monthsLong.september') }}",
+      october: "{{ lang('Admin.moment.monthsLong.october') }}",
+      november: "{{ lang('Admin.moment.monthsLong.november') }}",
+      december: "{{ lang('Admin.moment.monthsLong.december') }}"
+    },
+    monthsShort: {
+      jan: "{{ lang('Admin.moment.monthsShort.jan') }}",
+      feb: "{{ lang('Admin.moment.monthsShort.feb') }}",
+      mar: "{{ lang('Admin.moment.monthsShort.mar') }}",
+      apr: "{{ lang('Admin.moment.monthsShort.apr') }}",
+      may: "{{ lang('Admin.moment.monthsShort.may') }}",
+      jun: "{{ lang('Admin.moment.monthsShort.jun') }}",
+      jul: "{{ lang('Admin.moment.monthsShort.jul') }}",
+      aug: "{{ lang('Admin.moment.monthsShort.aug') }}",
+      sep: "{{ lang('Admin.moment.monthsShort.sep') }}",
+      oct: "{{ lang('Admin.moment.monthsShort.oct') }}",
+      nov: "{{ lang('Admin.moment.monthsShort.nov') }}",
+      dec: "{{ lang('Admin.moment.monthsShort.dec') }}"
+    }
+  },
+  parameter: {
+    lang: "{{ DEFAULT_LANGUAGES_CODE }}",
+    formCheckboxValueNumber: "{{ FORM_CHECKBOX_VALUE_NUMBER }}",
+    mapModule: {
+      types: {
+      	type1: "{{ MAP_LOCATIONS_TYPE_1 }}"
+      }
+    }
+  },
+  showcase: {
+    subject: "{{ lang('AdminDesigns.showcaseModule.general.image.subject') }}",
+    mobile: "{{ lang('AdminDesigns.showcaseModule.general.mobile') }}",
+    tablet: "{{ lang('AdminDesigns.showcaseModule.general.tablet') }}",
+    desktop: "{{ lang('AdminDesigns.showcaseModule.general.desktop') }}"
+  }
+};
+</script>
+
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/plugins/multiselect/jquery.multi-select.js') }}
+{{ script_tag('assets/'~BACKEND_TEMPLATE_PATH~'/js/app.js?v='~random()) }}
+
+{% if settings.google_map_api_key != null %}
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ settings.google_map_api_key }}&callback=googleMapLocations"></script>
+{% endif %}
+
+{% block assets %}{% endblock %}
+</body>
+
+</html>

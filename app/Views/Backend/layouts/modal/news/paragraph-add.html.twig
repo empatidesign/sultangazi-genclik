@@ -1,0 +1,29 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/paragraphs/insert/'~news_paragraph_id, 'class="news-paragraphs-form" enctype="multipart/form-data"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="news_paragraph_name">{{ lang('AdminNews.news.paragraphs.name') }} <span class="tx-danger">*</span></label>
+			{{ form.input('news_paragraph_name', '', '', '', '') }}
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="news_paragraph_image">{{ lang('AdminNews.news.paragraphs.image') }}</label>
+			<input type="file" name="news_paragraph_image" id="news_paragraph_image" class="dropify" data-height="200" />
+		</div>
+		<div class="col-12 col-lg-12 mb-3">
+			<label for="news_paragraph_description">{{ lang('AdminNews.news.paragraphs.description') }}</label>
+			{{ form.textarea('news_paragraph_description', '', '', 'textarea_editor', '', '') }}
+		</div>
+		<div class="col-12 col-lg-12 modal-footer">
+			<button type="submit" class="btn btn-outline-primary btn-block waves-effect waves-light" id="custom-form-button4">
+				<span class="d-none loading-spinner">
+					<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+					<span>{{ lang('Admin.loading') }}</span>
+				</span>
+				<span class="button-text">
+					<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+{{ form_close() }}

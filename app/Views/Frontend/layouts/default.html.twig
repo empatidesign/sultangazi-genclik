@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    {% block meta%} {% endblock%}
+    
+    {% include FRONTEND_TEMPLATE_PATH~'/layouts/partials/header-meta.html.twig' %}
+</head>
+<body>
+
+{% include FRONTEND_TEMPLATE_PATH~'/layouts/partials/header.html.twig' %}
+
+{% block body%} {% endblock%}
+
+{% include FRONTEND_TEMPLATE_PATH~'/layouts/partials/footer.html.twig' %}
+
+{% include FRONTEND_TEMPLATE_PATH~'/layouts/partials/footer-js.html.twig' %}
+</body>
+</html>

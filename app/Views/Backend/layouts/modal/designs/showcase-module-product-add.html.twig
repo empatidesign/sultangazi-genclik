@@ -1,0 +1,20 @@
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{{ form_open(BACKEND_URL~'/'~page_url~'/product/insert/'~showcase_module_product_id, 'class="showcase-module-product-form"') }}
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-3">
+			{% if list.products != null %}
+				<select name="form[product_id][]" id="product_id" class="form-control searchable" multiple>
+					{% for row in list.products %}
+					<option value="{{ row.product_id }}">{{ row.product_name }}</option>
+					{% endfor %}
+				</select>
+			{% else %}
+				<div class="alert alert-danger mb-0">{{ lang('Admin.error.noRecord') }}</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-outline-primary btn-block">{{ lang('Admin.button.transferSelected') }}</button>
+	</div>
+{{ form_close() }}

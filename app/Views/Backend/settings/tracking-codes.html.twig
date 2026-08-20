@@ -1,0 +1,147 @@
+{% extends BACKEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% import BACKEND_TEMPLATE_PATH~'/layouts/form-elements.html.twig' as form %}
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="page-title-box">
+      <div class="float-right">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ base_url(BACKEND_URL) }}">{{ lang('Admin.homePage') }}</a></li>
+    				<li class="breadcrumb-item"><a href="javascript:void(0)">{{ lang('AdminSettings.settingsTitle') }}</a></li>
+    				<li class="breadcrumb-item active">{{ lang('AdminSettings.trackingCodes.title') }}</li>
+          </ol>
+      </div>
+      <h4 class="page-title">{{ lang('AdminSettings.trackingCodes.title') }}</h4>
+    </div>
+  </div>
+</div>
+
+{% if FLASH_DATA_MESSAGE_SUCCESS %}
+  <div class="row">
+    <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+      <div class="alert alert-secondary mb-4 alert-dismissible fade show" role="alert">
+      	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      		<span aria-hidden="true">&times;</span>
+      	</button>
+      	{{ FLASH_DATA_MESSAGE_SUCCESS }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
+		{{ form_open(BACKEND_URL~'/'~page_url~'/update', 'class="custom-form"') }}
+			<div class="card">
+				<div class="card-body">
+					<div class="main-content-label">
+						<h4 class="header-title">{{ lang('AdminSettings.trackingCodes.title') }}</h4>
+					</div>
+					<div class="row row-sm">
+						<div class="col-lg-6 mb-3">
+							<label for="google_analytics">{{ lang('AdminSettings.trackingCodes.general.googleAnalytics.title') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-google"></i></span>
+								</div>
+								<input type="text" name="form[google_analytics]" id="google_analytics" class="form-control" value="{{ result.google_analytics }}" />
+							</div>
+							{{ form.help(lang('AdminSettings.trackingCodes.general.googleAnalytics.description')) }}
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="google_web_console">{{ lang('AdminSettings.trackingCodes.general.googleWebConsole') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-google"></i></span>
+								</div>
+								<input type="text" name="form[google_web_console]" id="google_web_console" class="form-control" value="{{ result.google_web_console }}" />
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="google_tag_manager">{{ lang('AdminSettings.trackingCodes.general.googleTagManager') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-google"></i></span>
+								</div>
+								<textarea name="form[google_tag_manager]" id="google_tag_manager" class="form-control" rows="5">{{ result.google_tag_manager }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="google_remarketing">{{ lang('AdminSettings.trackingCodes.general.googleRemarketing') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-google"></i></span>
+								</div>
+								<textarea name="form[google_remarketing]" id="google_remarketing" class="form-control" rows="5">{{ result.google_remarketing }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="google_conversion">{{ lang('AdminSettings.trackingCodes.general.googleConversion') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-google"></i></span>
+								</div>
+								<textarea name="form[google_conversion]" id="google_conversion" class="form-control" rows="5">{{ result.google_conversion }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="facebook_pixel">{{ lang('AdminSettings.trackingCodes.general.facebookPixel') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-facebook"></i></span>
+								</div>
+								<textarea name="form[facebook_pixel]" id="facebook_pixel" class="form-control" rows="5">{{ result.facebook_pixel }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="mailchimp">{{ lang('AdminSettings.trackingCodes.general.mailchimp') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fab fa-codepen"></i></span>
+								</div>
+								<textarea name="form[mailchimp]" id="mailchimp" class="form-control" rows="5">{{ result.mailchimp }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3">
+							<label for="head_tags">{{ lang('AdminSettings.trackingCodes.general.headTags') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+								</div>
+								<textarea name="form[head_tags]" id="head_tags" class="form-control" rows="5">{{ result.head_tags }}</textarea>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<label for="other">{{ lang('AdminSettings.trackingCodes.general.other') }}</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-code"></i></span>
+								</div>
+								<textarea name="form[other]" id="other" class="form-control" rows="8">{{ result.other }}</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-0">
+				<div class="card-body">
+					<div class="text-center">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" id="custom-form-button1">
+  						<span class="d-none loading-spinner">
+  							<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+  							<span>{{ lang('Admin.loading') }}</span>
+  						</span>
+  						<span class="button-text">
+  							<i class="mdi mdi-spin mdi-star"></i> <span>{{ lang('Admin.button.save') }}</span>
+  						</span>
+  					</button>
+					</div>
+				</div>
+			</div>
+		{{ form_close() }}
+	</div>
+</div>
+{% endblock %}

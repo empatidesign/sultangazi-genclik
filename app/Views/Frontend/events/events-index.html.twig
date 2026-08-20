@@ -1,0 +1,83 @@
+{% extends FRONTEND_TEMPLATE_PATH~'/layouts/default.html.twig' %}
+
+{% block body %}
+{% if calendar.days != null %}
+  <section class="page-header page-header-events newkrms">
+    <div class="container-fluid">
+      <div class="page-header-content">
+        <div class="event-page-title">
+          <h5 class="page-title mb-0">{{ lang('WebEvents.calendarHeader.month', [calendar.month]) }}</h5>
+          <div class="date-month d-flex align-items-center">
+            <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS~'?month='~months.before.number) }}"><i class="fa-solid fa-chevron-left icon-left me-2"></i></a>
+            <div class="d-flex align-items-center">
+              <span>{{ months.before.name }}</span>
+              <i class="fa-solid fa-circle icon-circle"></i>
+              <span>{{ months.now.name }}</span>
+            </div>
+            <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS~'?month='~months.now.number) }}"><i class="fa-solid fa-chevron-right icon-right ms-2"></i></a>
+          </div>
+        </div>
+        <div class="event-dates">
+          {% for row in calendar.days %}
+          <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS~'/?month='~row.month~'-'~row.year~'&date='~row.year~'-'~row.month~'-'~row.day.original) }}" class="event-date-box {{ row.day.active == true ? 'event-date-box-active' : null }}">
+            <div>
+              <div class="number text-center">{{ row.day.number }}</div>
+              <div class="day text-center">{{ row.day.name }}</div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<section class="project-filter-page pt-5">
+  <div class="container-fluid">
+    <div class="event-detail mt-3 p-3">
+      <div class="row">
+        {% if list.all_events != null %}
+          {% for row in list.all_events %}
+          <div class="col-sm-12 col-md-6 col-lg-3 mb-5">
+            <div class="event-card">
+              <a href="{{ web_url(PARAMETER.WEB_URL_EVENTS~'/'~row.event_slug~'/'~row.event_id) }}">
+                <div class="event-card-image-wrapper">
+                  <div class="event-image">
+                    <img src="{{ row.image.base }}" class="card-img-top event-card-image" aria-label="{{ row.event_name }}" title="{{ row.event_name }}" alt="{{ row.event_name }}" />
+                  </div>
+                  <div class="tags">
+                    <div class="category tag-item p-3">{{ row.event_category_name }}</div>
+                    {% if row.event_date.day != null and row.event_date.month != null %}
+                      <div class="date tag-item p-3 pt-4">
+                        <h5 class="mb-0">{{ row.event_date.day }}</h5>
+                        <div>{{ row.event_date.month }}</div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h6 class="card-title event-card-title text-grey py-4">{{ row.event_name }}</h6>
+                  <div class="pt-2">
+                    {% if row.event_hour != null %}
+                      <p class="card-text event-card-text"><i class="fas fa-clock" style="color: #5D0BFB;"></i>{{ lang('WebEvents.hour') }}: {{ row.event_hour }}</p>
+                    {% endif %}
+
+                    {% if row.event_location != null %}
+                      <p class="card-text event-card-text"><i class="fa-solid fa-location-dot text-blue"></i>{{ row.event_location }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+
+          {{ pagination.list|raw }}
+        {% else %}
+          <div class="alert alert-danger">{{ lang('Web.error.noRecord') }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

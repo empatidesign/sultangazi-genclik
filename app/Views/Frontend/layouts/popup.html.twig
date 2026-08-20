@@ -1,0 +1,15 @@
+{% if footer.popup != null %}
+	<div id="popupContent" class="mfp-hide white-popup-block {{ footer.popup.display_field }}">
+
+		{% if footer.popup.html != null %}
+			{{ footer.popup.html|raw }}
+		{% elseif footer.popup.image != null %}
+			{% if footer.popup.image_link != null %}
+				<a href="{{ footer.popup.image_link }}"><img src="{{ footer.popup.image }}" class="img-fluid" title="" alt="" /></a>
+			{% else %}
+				<img src="{{ footer.popup.image }}" class="img-fluid" title="" alt="" />
+			{% endif %}
+		{% endif %}
+
+	</div>
+{% endif %}
