@@ -52,8 +52,11 @@
             <div class="flex flex-nowrap gap-4 overflow-y-hidden overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-40">
               <img src="{{ row.image.base }}" class="bg-red-100 shrink-0 w-[240px] rounded-lg lg:w-full h-full lg:row-span-2 lg:col-span-16 lg:object-cover" />
 
-              {% for image in row.image.list %}
-                <img src="{{ image.format }}" class="bg-red-100 shrink-0 w-[240px] rounded-lg lg:w-full lg:col-span-8 lg:h-full lg:object-cover" />
+              {# images() her kaydi 'image' anahtari altinda dondurur (bkz. projects-detail) #}
+              {% for row_image in row.image.list %}
+                {% if row_image.image.format %}
+                  <img src="{{ row_image.image.format }}" alt="{{ row.project_name }}" loading="lazy" class="bg-red-100 shrink-0 w-[240px] rounded-lg lg:w-full lg:col-span-8 lg:h-full lg:object-cover" />
+                {% endif %}
               {% endfor %}
             </div>
 
