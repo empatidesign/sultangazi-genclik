@@ -44,7 +44,8 @@
 		{% endif %}
 
 		{% if design.favicon == TRUE %}
-			<link rel="shortcut icon" href="{{ base_url(FILE_PATH_MAIN~design.favicon) }}" type="image/png"/>
+			{# type belirtilmez: webp_url .webp dondurebilir, tarayici kendisi algilar #}
+			<link rel="shortcut icon" href="{{ webp_url(FILE_PATH_MAIN~design.favicon) }}"/>
 		{% endif %}
 
 		{% if languages != null %}

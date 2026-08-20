@@ -58,7 +58,7 @@ foreach ($it as $f) {
         continue;
     }
 
-    $webp = $f->getPath() . '/' . $f->getBasename('.' . $uzanti) . '.webp';
+    $webp = $f->getPath() . '/' . $f->getBasename('.' . $f->getExtension()) . '.webp';
     if (is_file($webp)) {
         continue;
     }

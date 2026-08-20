@@ -766,7 +766,7 @@ class BaseController extends Controller
     $agent = $this->request->getUserAgent();
         
     $twigConfig = [
-      'functions_safe' => ['doctype', 'lang', 'form', 'link_tag', 'current_url', 'script_tag', 'web_url', 'slug', 'sultangazi_url']
+      'functions_safe' => ['doctype', 'lang', 'form', 'link_tag', 'current_url', 'script_tag', 'web_url', 'slug', 'sultangazi_url', 'webp_url']
     ];
 
     $this->twig = new Twig($twigConfig);

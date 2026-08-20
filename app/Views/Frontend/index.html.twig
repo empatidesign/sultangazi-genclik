@@ -305,7 +305,7 @@
 					<div class="select-none group overflow-hidden relative shrink-0 w-[160px] md:w-full 2xl:aspect-[4/3] p-4 bg-white rounded-lg grid place-items-center shadow-xs transitin-all duration-300 hover:shadow-2xl">
 						<!-- Default Layer Start -->
 						<div class="flex flex-col justify-center items-center gap-y-3 transition-all group-hover:opacity-0 duration-500">
-							<img src="{{ site_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image) }}" alt="{{ sport.project_name }}"/>
+							<img src="{{ webp_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image) }}" alt="{{ sport.project_name }}"/>
 
 							<h3 class="font-bold text-lg text-primary-900">{{ sport.project_name }}</h3>
 						</div>
@@ -313,7 +313,7 @@
 
 						<!-- Hover Layer Start -->
 						<div class="absolute top-0 left-0 size-full opacity-0 group-hover:opacity-100 transition-all duration-500">
-							<img class="size-full object-cover transitin-all duration-300 scale-0 group-hover:scale-100" alt="{{ sport.project_name }}" src="{{ site_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image2) }}"/>
+							<img class="size-full object-cover transitin-all duration-300 scale-0 group-hover:scale-100" alt="{{ sport.project_name }}" src="{{ webp_url(FILE_PATH_PROJECT ~'/thumb/'~ sport.project_image2) }}"/>
 
 							<span class="absolute left-0 top-0 z-10 size-full bg-secondary-600 opacity-0 group-hover:opacity-60 transition-all duration-500"></span>
 
