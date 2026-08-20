@@ -7,6 +7,7 @@ use CodeIgniter\Controller;
 use App\Models\Frontend\IndexModel;
 use App\Libraries\PopupModule;
 use App\Libraries\SportAcademyApi;
+use App\Libraries\NexoraApi;
 
 class Index extends BaseController
 {
@@ -14,12 +15,14 @@ class Index extends BaseController
 	protected $IndexModel;
 	protected $PopupModule;
 	protected $sportAcademy;
+	protected $nexora;
 
 	public function __construct()
 	{
 		$this->IndexModel = new IndexModel();
 		$this->PopupModule = new PopupModule();
 		$this->sportAcademy = new SportAcademyApi();
+		$this->nexora = new NexoraApi();
 	}
 
 	public function index()
@@ -42,8 +45,8 @@ class Index extends BaseController
 			],
 			'list' => [
 				'events' => $this->events(),
-				// Spor Akademisi etkinlik/kurs programı
-				'academy_events' => $this->academyEvents(),
+				// Etkinlikler: Nexora genel katalog servisi
+				'nexora_events' => $this->nexoraEvents(),
 				'banner' => [
 					'main' => $this->mainBanner(),
 					'mini' => $this->miniBanner()
@@ -78,8 +81,8 @@ class Index extends BaseController
 				],
 				// Eğitim kurumları: tanımlar Constants.php, metinler WebIndex dil dosyasında
 				'education' => $this->educationInstitutions(),
-				// Spor Akademisi (Nexorada) servisinden gelen tesisler
-				'facilities' => $this->sportFacilities()
+				// Hizmet tesisleri: Nexora genel katalog servisi
+				'facilities' => $this->nexoraFacilities()
 			],
 			'PARAMETER' => [
 				'WEB_URL_ANNOUNCEMENTS' => WEB_URL_ANNOUNCEMENTS,
@@ -119,46 +122,27 @@ class Index extends BaseController
 	}
 
 	/**
-	 * Spor Akademisi etkinlik / kurs programı.
+	 * Nexora genel katalog servisinden yaklaşan etkinlikler.
 	 * Servis erişilemezse boş dizi döner, alan gizlenir.
 	 */
-	private function academyEvents(): array
+	private function nexoraEvents(): array
 	{
 		$list = [];
 
-		foreach ($this->sportAcademy->events() as $row) {
-			$list[] = [
-				'title'       => $row['title'] ?? NULL,
-				'branch'      => $row['branch'] ?? NULL,
-				'age_group'   => $row['ageGroup'] ?? NULL,
-				'schedule'    => $row['schedule'] ?? NULL,
-				'location'    => $row['location'] ?? NULL,
-				'description' => $row['description'] ?? NULL,
-				'image'       => $this->sportAcademy->imageUrl($row['image'] ?? NULL),
-				'url'         => $this->sportAcademy->branchUrl($this->branchSlugFromName($row['branch'] ?? NULL)),
-			];
-		}
-
-		return $list;
-	}
-
-	/**
-	 * Spor Akademisi hizmet tesisleri.
-	 */
-	private function sportFacilities(): array
-	{
-		$list = [];
-
-		foreach ($this->sportAcademy->facilities() as $row) {
+		foreach ($this->nexora->events(8) as $row) {
 			$list[] = [
 				'name'        => $row['name'] ?? NULL,
-				'location'    => $row['location'] ?? NULL,
-				'capacity'    => $row['capacity'] ?? NULL,
-				'description' => $row['desc'] ?? NULL,
-				'features'    => array_slice($row['features'] ?? [], 0, 4),
-				'sports'      => array_slice($row['sports'] ?? [], 0, 4),
-				'image'       => $this->sportAcademy->imageUrl($row['image'] ?? NULL),
-				'url'         => $this->sportAcademy->facilityUrl($row['slug'] ?? NULL),
+				'category'    => $row['categoryName'] ?? NULL,
+				'place'       => $row['facilityName'] ?? ($row['hallName'] ?? ($row['location']['name'] ?? NULL)),
+				'date'        => $this->nexoraDate($row['startDate'] ?? NULL),
+				'time'        => $this->nexoraTime($row['startTime'] ?? NULL),
+				'is_paid'     => (bool) ($row['isPaid'] ?? FALSE),
+				'price_info'  => $row['priceInfo'] ?? NULL,
+				'open'        => (bool) ($row['registrationOpen'] ?? FALSE),
+				'capacity'    => $row['availableCapacity'] ?? NULL,
+				'description' => $row['description'] ?? NULL,
+				'image'       => $this->nexora->imageUrl($row['primaryImageUrl'] ?? NULL),
+				'url'         => $this->nexora->eventUrl($row['id'] ?? NULL),
 			];
 		}
 
@@ -166,17 +150,61 @@ class Index extends BaseController
 	}
 
 	/**
-	 * Branş adından servisteki slug'ı bulur (ör. "Voleybol" -> "voleybol").
+	 * Nexora genel katalog servisinden hizmet tesisleri.
 	 */
-	private function branchSlugFromName(?string $name): ?string
+	private function nexoraFacilities(): array
 	{
-		if (!isNotNull($name)) {
+		$list = [];
+
+		foreach ($this->nexora->facilities(8) as $row) {
+			// Tesis olanakları etiket olarak gösterilir.
+			$features = array_slice($row['facilities'] ?? [], 0, 4);
+
+			$list[] = [
+				'name'        => $row['name'] ?? NULL,
+				'location'    => $row['district'] ?? ($row['city'] ?? NULL),
+				'address'     => $row['address'] ?? NULL,
+				'capacity'    => isNotNull($row['capacity'] ?? NULL) ? $row['capacity'] . ' kişi' : NULL,
+				'description' => $row['description'] ?? ($row['about'] ?? NULL),
+				'features'    => $features,
+				'image'       => $this->nexora->imageUrl($row['primaryImageUrl'] ?? NULL),
+				'url'         => $this->nexora->eventUrl(),
+			];
+		}
+
+		return $list;
+	}
+
+	/**
+	 * ISO tarihi "12 Mart" biçimine çevirir.
+	 */
+	private function nexoraDate(?string $iso): ?string
+	{
+		if (!isNotNull($iso)) {
 			return NULL;
 		}
 
-		$aday = slug($name);
+		$zaman = strtotime($iso);
+		if ($zaman === FALSE) {
+			return NULL;
+		}
 
-		return in_array($aday, $this->sportAcademy->branchSlugs(), TRUE) ? $aday : NULL;
+		$aylar = [1 => 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+				  'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+		return date('j', $zaman) . ' ' . $aylar[(int) date('n', $zaman)];
+	}
+
+	/**
+	 * "18:00:00" -> "18:00"
+	 */
+	private function nexoraTime(?string $time): ?string
+	{
+		if (!isNotNull($time)) {
+			return NULL;
+		}
+
+		return substr($time, 0, 5);
 	}
 
 	/**

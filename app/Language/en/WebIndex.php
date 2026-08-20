@@ -70,4 +70,17 @@ return [
     'age_group'   => 'Age Group',
     'all'         => 'ALL PROGRAMMES',
   ],
+
+  /**
+   * Events section (homepage) - Nexora public catalog service.
+   */
+  'nexora_events' => [
+    'title'       => 'OUR EVENT',
+    'title_bold'  => 'CALENDAR',
+    'description' => 'Join the events organised by Sultangazi Municipality; applications are handled through Sultansehir.',
+    'date'        => 'Date',
+    'available'   => 'Places Left',
+    'free'        => 'Free',
+    'all'         => 'ALL EVENTS',
+  ],
 ];

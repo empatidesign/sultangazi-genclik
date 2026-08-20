@@ -7,8 +7,11 @@ use Config\Services;
 /**
  * Spor Akademisi (Nexorada) Genel API İstemcisi
  * -------------------------------------------------------------
- * sporakademi.sultangazi.bel.tr üzerindeki genel uç noktalardan
- * branş, tesis, etkinlik ve haber verilerini okur.
+ * sporakademi.sultangazi.bel.tr üzerindeki genel uçtan spor branşlarını
+ * okur ve branşlar için akademideki detay adresini üretir.
+ *
+ * Not: Etkinlik ve hizmet tesisi verileri bu servisten DEĞİL,
+ * Nexora genel katalog servisinden gelir (bkz. NexoraApi).
  *
  * Tasarım ilkeleri:
  *  - Sonuçlar önbelleğe alınır; her sayfa isteğinde dış servise gidilmez.
@@ -53,39 +56,6 @@ class SportAcademyApi
     }
 
     /**
-     * Hizmet tesisleri.
-     */
-    public function facilities(): array
-    {
-        return $this->fetch('facilities');
-    }
-
-    /**
-     * Etkinlikler / kurs programları.
-     * Servis tarafında etkinlik takvimi "courses" uç noktası ile sunulur.
-     */
-    public function events(): array
-    {
-        return $this->fetch('courses');
-    }
-
-    /**
-     * Haberler.
-     */
-    public function news(): array
-    {
-        return $this->fetch('news');
-    }
-
-    /**
-     * Başarılar / ödüller.
-     */
-    public function achievements(): array
-    {
-        return $this->fetch('achievements');
-    }
-
-    /**
      * Branş slug'ı için akademideki detay adresi.
      * Slug servis tarafında yoksa branşlar listesine yönlendirir.
      */
@@ -96,18 +66,6 @@ class SportAcademyApi
         }
 
         return $this->siteUrl . '/' . SPORT_ACADEMY_PATH_BRANCHES;
-    }
-
-    /**
-     * Tesis slug'ı için akademideki detay adresi.
-     */
-    public function facilityUrl(?string $slug = NULL): string
-    {
-        if ($slug !== NULL && $slug !== '') {
-            return $this->siteUrl . '/' . SPORT_ACADEMY_PATH_FACILITIES . '/' . $slug;
-        }
-
-        return $this->siteUrl . '/' . SPORT_ACADEMY_PATH_FACILITIES;
     }
 
     /**
@@ -123,25 +81,6 @@ class SportAcademyApi
         }
 
         return $slugs;
-    }
-
-    /**
-     * Göreli görsel yolunu mutlak adrese çevirir.
-     */
-    public function imageUrl(?string $path): ?string
-    {
-        if ($path === NULL || $path === '') {
-            return NULL;
-        }
-
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
-            return $path;
-        }
-
-        // Dosya adlarında Türkçe karakter ve boşluk bulunabiliyor.
-        $encoded = implode('/', array_map('rawurlencode', explode('/', ltrim($path, '/'))));
-
-        return $this->siteUrl . '/' . $encoded;
     }
 
     /**

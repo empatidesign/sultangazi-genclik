@@ -90,6 +90,27 @@ defined('APP_BASE_URL') OR define('APP_BASE_URL', ($_SERVER['SERVER_PORT'] == 44
 defined('SULTANGAZI_URL') OR define('SULTANGAZI_URL', 'https://www.sultangazi.bel.tr/');
 
 /*
+ * Nexora Genel Katalog Servisi
+ * Etkinlikler ve hizmet tesisleri buradan okunur.
+ * Istemci: app/Libraries/NexoraApi.php
+ *
+ * Adres ve API anahtari .env dosyasindan gecersiz kilinabilir:
+ *   nexora.url = https://...
+ *   nexora.apiKey = ...
+ *   nexora.portalUrl = https://sultansehir.sultangazi.bel.tr
+ */
+const NEXORA_URL = 'http://localhost:5207';
+const NEXORA_API_PATH = '/api/v1/public';
+const NEXORA_PORTAL_URL = 'https://sultansehir.sultangazi.bel.tr';
+
+// Basarili yanit onbellek suresi (saniye)
+const NEXORA_CACHE_TTL = 900;
+// Servis erisilemedigi zaman kisa bekleme
+const NEXORA_CACHE_TTL_ERROR = 120;
+// Istek zaman asimi (saniye)
+const NEXORA_TIMEOUT = 3;
+
+/*
  * Spor Akademisi (Nexorada) Servisi
  * Branş, tesis, etkinlik ve haber verileri buradan okunur.
  * İstemci: app/Libraries/SportAcademyApi.php
@@ -97,7 +118,6 @@ defined('SULTANGAZI_URL') OR define('SULTANGAZI_URL', 'https://www.sultangazi.be
 const SPORT_ACADEMY_URL = 'https://sporakademi.sultangazi.bel.tr';
 const SPORT_ACADEMY_API_PATH = '/api/public/v1';
 const SPORT_ACADEMY_PATH_BRANCHES = 'branslar';
-const SPORT_ACADEMY_PATH_FACILITIES = 'tesisler';
 
 // Başarılı yanıt önbellek süresi (saniye)
 const SPORT_ACADEMY_CACHE_TTL = 1800;

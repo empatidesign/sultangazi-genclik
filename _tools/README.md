@@ -33,31 +33,55 @@ npx @tailwindcss/cli@4.1.11 -i assets/css/style.css -o assets/css/output.css
 | Logo dosyaları | `assets/img/education/` |
 | Tasarım | `app/Views/Frontend/index.html.twig` (`Education Institutions`) |
 
-## Spor Akademisi (Nexorada) Servisi
+## Spor Akademisi Servisi (spor branşları)
 
-Spor branşları, hizmet tesisleri ve akademi programı `sporakademi.sultangazi.bel.tr`
-üzerindeki genel API'den okunur.
+Anasayfadaki spor branşı kartları, `sporakademi.sultangazi.bel.tr` üzerindeki
+genel API'den branş listesini okur ve her branş için akademideki detay adresini üretir.
 
 | Konu | Yer |
 | --- | --- |
 | İstemci | `app/Libraries/SportAcademyApi.php` |
-| Adres, önbellek süresi, zaman aşımı | `app/Config/Constants.php` (`SPORT_ACADEMY_*`) |
-| Başlık ve açıklama metinleri | `app/Language/{tr,en}/WebIndex.php` |
+| Adres, önbellek, zaman aşımı | `app/Config/Constants.php` (`SPORT_ACADEMY_*`) |
+
+Yerel branş slug'ı akademideki slug ile eşleşirse (futbol, basketbol, voleybol,
+gures) doğrudan branş detayına, eşleşmezse branş listesine gidilir.
+
+## Nexora Genel Katalog Servisi (etkinlikler ve hizmet tesisleri)
+
+Etkinlikler ve hizmet tesisleri Nexora backend'inin token gerektirmeyen
+genel uçlarından okunur:
+
+```
+GET /api/v1/public/events
+GET /api/v1/public/service-facilities
+```
+
+Uçlar `X-Api-Key` başlığı ile korunur.
+
+| Konu | Yer |
+| --- | --- |
+| İstemci | `app/Libraries/NexoraApi.php` |
+| Adres ve API anahtarı | `.env` (`nexora.url`, `nexora.apiKey`, `nexora.portalUrl`) |
+| Varsayılanlar | `app/Config/Constants.php` (`NEXORA_*`) |
+| Metinler | `app/Language/{tr,en}/WebIndex.php` |
 | Tasarım | `app/Views/Frontend/index.html.twig` |
 
-Kullanılan uç noktalar (`/api/public/v1`): `branches`, `facilities`, `courses`, `news`, `achievements`.
+`.env` örneği:
+
+```
+nexora.url = http://localhost:5207
+nexora.apiKey = dev-public-key-2026
+nexora.portalUrl = https://sultansehir.sultangazi.bel.tr
+```
 
 Davranış:
-- Yanıtlar 30 dakika önbelleklenir (`SPORT_ACADEMY_CACHE_TTL`).
-- Servis erişilemezse ilgili alanlar gizlenir, site çalışmaya devam eder.
-- Bağlantı kurulamazsa devre kesici devreye girer; aynı sayfa yüklemesinde
-  diğer uç noktalar için tekrar beklenmez.
+- Yanıtlar 15 dakika önbelleklenir (`NEXORA_CACHE_TTL`).
+- API anahtarı boşsa servise hiç gidilmez.
+- Servis erişilemez veya anahtar geçersizse ilgili alanlar gizlenir, site çalışır.
+- Bağlantı kurulamazsa devre kesici devreye girer.
 
 Önbelleği temizlemek için:
 
 ```bash
-rm -rf writable/cache/sport_academy_*
+rm -rf writable/cache/nexora_* writable/cache/sport_academy_*
 ```
-
-Not: Yerel branş slug'ları akademideki slug'larla eşleşirse (futbol, basketbol,
-voleybol, gures) doğrudan branş detayına, eşleşmezse branş listesine gidilir.

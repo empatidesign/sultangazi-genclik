@@ -73,4 +73,17 @@ return [
     'age_group'   => 'Yaş Grubu',
     'all'         => 'TÜM PROGRAMLAR',
   ],
+
+  /**
+   * Etkinlikler alani (anasayfa) - Nexora genel katalog servisi.
+   */
+  'nexora_events' => [
+    'title'       => 'ETKİNLİK',
+    'title_bold'  => 'TAKVİMİMİZ',
+    'description' => 'Sultangazi Belediyesi bünyesinde düzenlenen etkinliklere katılın; başvurular Sultanşehir üzerinden alınır.',
+    'date'        => 'Tarih',
+    'available'   => 'Kalan Kontenjan',
+    'free'        => 'Ücretsiz',
+    'all'         => 'TÜM ETKİNLİKLER',
+  ],
 ];

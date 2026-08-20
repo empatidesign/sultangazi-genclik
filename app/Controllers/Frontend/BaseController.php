@@ -766,7 +766,8 @@ class BaseController extends Controller
     // Spor Akademisi (Nexorada) bağlantıları
     $this->twig->addGlobal('SPORT_ACADEMY_URL', SPORT_ACADEMY_URL);
     $this->twig->addGlobal('SPORT_ACADEMY_PATH_BRANCHES', SPORT_ACADEMY_PATH_BRANCHES);
-    $this->twig->addGlobal('SPORT_ACADEMY_PATH_FACILITIES', SPORT_ACADEMY_PATH_FACILITIES);
+    // Nexora genel katalog / vatandas portali
+    $this->twig->addGlobal('NEXORA_PORTAL_URL', env('nexora.portalUrl', NEXORA_PORTAL_URL));
     $this->twig->addGlobal('FORM_ACTIVE_NUMBER', FORM_ACTIVE_NUMBER);
     $this->twig->addGlobal('FORM_CHECKBOX_VALUE_NUMBER', FORM_CHECKBOX_VALUE_NUMBER);
     $this->twig->addGlobal('WEB_URL_CONTRACTS', WEB_URL_CONTRACTS);
