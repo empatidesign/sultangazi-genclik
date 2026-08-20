@@ -6,24 +6,65 @@ use App\Controllers\Frontend\BaseController;
 use CodeIgniter\Controller;
 
 use App\Models\Frontend\President\PresidentContentsModel;
+use App\Models\Frontend\President\SultangaziPresidentModel;
 use App\Models\Frontend\Contents\CorporateModel;
 
 class PresidentContents extends BaseController
 {
 
 	protected $PresidentContentsModel;
+	protected $SultangaziPresidentModel;
 	protected $CorporateModel;
 	protected $folder;
 
 	public function __construct()
 	{
 		$this->PresidentContentsModel = new PresidentContentsModel();
+		$this->SultangaziPresidentModel = new SultangaziPresidentModel();
 		$this->CorporateModel = new CorporateModel();
 		$this->folder = 'contents';
 	}
 
+	/**
+	 * Baskan icerigi (ozgecmis, mesaj).
+	 *
+	 * Icerik Sultangazi Belediyesi ana sitesinin genel mobil servisinden
+	 * cron ile yerel tabloya aktarilir (bkz. _tools/sync_president.php).
+	 * Kayit yoksa eski yerel kaynaga dusulur; boylece senkron hic
+	 * calismamis kurulumlarda da sayfa bos kalmaz.
+	 */
 	public function index($slug, $president_content_id)
 	{
+		$row = $this->SultangaziPresidentModel->content((string) $slug, (int) $president_content_id);
+
+		if (isNotNull($row)) {
+			return $this->twig->render($this->FRONTEND_TEMPLATE_PATH . '/president/president-contents.html', [
+				'head' => [
+					'title' => $row->name,
+					'keywords' => $this->settings->site_keywords,
+					'description' => isNotNull($row->description)
+						? mb_substr(trim(strip_tags($row->description)), 0, 160)
+						: $this->settings->site_description
+				],
+				'result' => [
+					'president_content_name' => $row->name,
+					'image' => [
+						'normal' => $row->image_url,
+						'base' => $row->image_url
+					],
+					'president_content_description' => $row->description,
+					'president' => [
+						'informations' => $this->informations()
+					]
+				],
+				'list' => [
+					'left_menu' => $this->CorporateModel->leftMenuSlugInfoModel('president', $this->defaultLangId, NULL, $president_content_id)
+				],
+				'folder' => $this->folder
+			]);
+		}
+
+		// Yedek: eski yerel kaynak
 		$sql = $this->PresidentContentsModel->presidentContentInfoModel($slug, $president_content_id, $this->defaultLangId);
 		if (isNotNull($sql)) {
 
@@ -50,6 +91,8 @@ class PresidentContents extends BaseController
 				'folder' => $this->folder
 			]);
 		}
+
+		return redirect()->to('404');
 	}
 
 	public function informations()

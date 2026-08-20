@@ -6,6 +6,7 @@ Site her ziyaretçi isteğinde dış servise gitmez; yalnızca yerel tabloyu oku
 | Görev | Betik | Sıklık |
 | --- | --- | --- |
 | Etkinlik senkronizasyonu | `_tools/sync_events.php` | 06:00 ve 18:00 |
+| Başkan içerikleri | `_tools/sync_president.php` | 06:05 ve 18:05 |
 
 ## Sunucuda kurulum (crontab)
 
@@ -16,8 +17,10 @@ crontab -e
 Aşağıdaki iki satırı ekleyin (yolu kendi kurulumunuza göre düzeltin):
 
 ```cron
-0 6  * * * cd /var/www/genclik && /usr/bin/php _tools/sync_events.php >> writable/logs/cron-events.log 2>&1
-0 18 * * * cd /var/www/genclik && /usr/bin/php _tools/sync_events.php >> writable/logs/cron-events.log 2>&1
+0 6  * * * cd /var/www/genclik && /usr/bin/php _tools/sync_events.php    >> writable/logs/cron-events.log 2>&1
+0 18 * * * cd /var/www/genclik && /usr/bin/php _tools/sync_events.php    >> writable/logs/cron-events.log 2>&1
+5 6  * * * cd /var/www/genclik && /usr/bin/php _tools/sync_president.php >> writable/logs/cron-president.log 2>&1
+5 18 * * * cd /var/www/genclik && /usr/bin/php _tools/sync_president.php >> writable/logs/cron-president.log 2>&1
 ```
 
 `cd` şart: betik `.env` dosyasını proje köküne göre okur.
@@ -44,9 +47,27 @@ launchctl load ~/Library/LaunchAgents/local.sultangazi-sync-events.plist
 ## Elle çalıştırma
 
 ```bash
-php _tools/sync_events.php            # senkronize et
-php _tools/sync_events.php --dry-run  # yalnizca rapor, yazmaz
+php _tools/sync_events.php               # etkinlikler
+php _tools/sync_events.php --dry-run
+
+php _tools/sync_president.php            # baskan icerikleri
+php _tools/sync_president.php --dry-run
 ```
+
+## Başkan içerikleri
+
+Kaynak: `https://www.sultangazi.bel.tr/api/mobile` (adres `.env` içindeki
+`sultangazi.apiUrl` ile değiştirilebilir).
+
+- `president-contents` -> özgeçmiş ve mesaj (`sultangazi_president_contents`)
+- `president-general-information` -> ad, unvan, foto (`sultangazi_president_info`)
+
+Mevcut sayfa adresleri korunur: `/baskan/baskanin-ozgecmisi/1` ve
+`/baskan/baskanin-mesaji/2`. Slug ve kimlik numaraları betikteki sabit
+eşleme ile atanır, servis başlığı değişse bile bağlantılar kırılmaz.
+
+Senkron tablosu boşsa (ör. cron hiç çalışmadıysa) sayfa eski yerel
+kaynaktan içerik gösterir; boş sayfa çıkmaz.
 
 ## İzleme
 

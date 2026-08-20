@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Etkinlik senkronizasyonu: her gun 06:00 ve 18:00'de calisir.
+  Kurulum:
+    cp _tools/cron/local.sultangazi-sync-president.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/local.sultangazi-sync-president.plist
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.sultangazi-sync-president</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/homebrew/bin/php</string>
+		<string>_tools/sync_president.php</string>
+	</array>
+
+	<key>WorkingDirectory</key>
+	<string>/Volumes/PROJELER/Web/sultangazi-genclik2026</string>
+
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict>
+			<key>Hour</key>
+			<integer>6</integer>
+			<key>Minute</key>
+			<integer>5</integer>
+		</dict>
+		<dict>
+			<key>Hour</key>
+			<integer>18</integer>
+			<key>Minute</key>
+			<integer>5</integer>
+		</dict>
+	</array>
+
+	<key>StandardOutPath</key>
+	<string>/Volumes/PROJELER/Web/sultangazi-genclik2026/writable/logs/cron-president.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Volumes/PROJELER/Web/sultangazi-genclik2026/writable/logs/cron-president.log</string>
+</dict>
+</plist>

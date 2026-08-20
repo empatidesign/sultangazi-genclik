@@ -53,6 +53,27 @@ yönlendirme kartı çıkar. Bu alan yalnızca spor branşı kategorisinde
 (`SPORT_PROJECT_CATEGORY_ID`) görünür, diğer projeler etkilenmez.
 Metinler: `app/Language/{tr,en}/WebProjects.php` -> `academy`.
 
+## Başkan İçerikleri (ana site API'si + cron)
+
+Başkanın özgeçmişi ve mesajı, Sultangazi Belediyesi ana sitesinin genel mobil
+servisinden çekilir (yerel kopya bayat kalıyordu):
+
+```
+GET https://www.sultangazi.bel.tr/api/mobile/president-contents
+GET https://www.sultangazi.bel.tr/api/mobile/president-general-information
+```
+
+| Konu | Yer |
+| --- | --- |
+| Senkron betiği | `_tools/sync_president.php` |
+| Şema | `_database/sultangazi_president.sql` |
+| Model | `app/Models/Frontend/President/SultangaziPresidentModel.php` |
+| API adresi | `.env` -> `sultangazi.apiUrl` |
+
+Sayfa adresleri korunur: `/baskan/baskanin-ozgecmisi/1`, `/baskan/baskanin-mesaji/2`.
+Senkron tablosu boşsa sayfa eski yerel kaynağa düşer, boş kalmaz.
+Servis erişilemezse mevcut kayıtlar silinmez.
+
 ## Etkinlikler (site içi detay + cron)
 
 Etkinlik detayları artık dış portalda değil, **site içinde** açılır:
